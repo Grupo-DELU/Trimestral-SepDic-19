@@ -58,7 +58,7 @@ public class BulletSpawner : MonoBehaviour {
         worldEntityManager.SetComponentData (newBullet, new Translation { Value = bulletPos });
 
         // Set up rotation
-        quaternion bulletRot = Quaternion.FromToRotation (bulletVelocity, Vector3.up);
+        quaternion bulletRot = Quaternion.LookRotation (Vector3.forward, bulletVelocity);
         worldEntityManager.SetComponentData (newBullet, new Rotation { Value = bulletRot });
 
         // Set up the Bullet Movement
@@ -76,7 +76,7 @@ public class BulletSpawner : MonoBehaviour {
                 vel.x = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.Normalize ();
-                vel *= UnityEngine.Random.Range (1.0f, 4.0f);
+                vel *= UnityEngine.Random.Range (3.0f, 7.0f);
                 //Debug.Log(string.Format("Pos: {0}, Vel: {1}", pos, vel));
                 ShootBullet (pos, vel);
             }
