@@ -4,6 +4,9 @@ using UnityEngine;
 
 public enum EnemyType { Normal, Shotgun, Laser, Kamikaze};
 
+/// <summary>
+/// NADA DE ESTO ES ALGO
+/// </summary>
 [System.Serializable]
 public struct WaveEnemy
 {

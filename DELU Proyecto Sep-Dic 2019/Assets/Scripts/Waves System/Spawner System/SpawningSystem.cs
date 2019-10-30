@@ -5,8 +5,19 @@ using UnityEngine;
 public enum SpawningPositions { left, upper_left, up, upper_right, right}
 public class SpawningSystem : MonoBehaviour
 {
+    public static SpawningSystem Manager { get; private set; }
     public Transform[] whereToSpawn;
 
+    private void Awake()
+    {
+        #region Singleton
+        if (Manager != null && Manager != this)
+        {
+            Debug.LogError("Hay dos sistemas de spawning!");
+        }
+        Manager = this;
+        #endregion
+    }
     void SpawnEnemyNode(EnemyNode node)
     {
         SpawningPositions[] spawners = node.spawningPos;
@@ -17,6 +28,8 @@ public class SpawningSystem : MonoBehaviour
             SpawnHere(whereToSpawn[(int)spawners[pos]]);
         }
     }
+
+    public GameObject SpawnEnemy() { return null; }
 
     void SpawnHere(Transform pos) { }
 }

@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1024465521}
-  testSpawn: 100
+  testSpawn: 200
 --- !u!4 &779448821
 Transform:
   m_ObjectHideFlags: 0

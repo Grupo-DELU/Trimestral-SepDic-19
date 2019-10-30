@@ -27,6 +27,10 @@ public class BezierCurves : MonoBehaviour
 
     public Vector2 CubicBezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
     {
+        //a anchor 1
+        //d anchor 2
+        //b control 1
+        //c control 2
         Vector2 quadABC = QuadraticInt(a, b, c, t);
         Vector2 quadBCD = QuadraticInt(b, c, d, t);
         Vector2 final = LinearInterpolation(quadABC, quadBCD, t);

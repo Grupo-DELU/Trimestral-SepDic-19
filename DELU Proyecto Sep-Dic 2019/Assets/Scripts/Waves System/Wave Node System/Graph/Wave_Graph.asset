@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 40, y: -296}
+  position: {x: 40, y: -360}
   ports:
     keys:
     - input
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 40, y: -120}
+  position: {x: 40, y: -136}
   ports:
     keys:
     - input

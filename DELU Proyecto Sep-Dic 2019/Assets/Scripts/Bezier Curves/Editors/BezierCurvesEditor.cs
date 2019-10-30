@@ -4,23 +4,6 @@ using UnityEngine;
 using UnityEditor;
 
 [System.Serializable]
-public class Segment
-{
-    public Vector2 startPos;
-    public Vector2 endPos;
-    public Vector2 startTan;
-    public Vector2 endTan;
-
-    public Segment(Vector2 startPos, Vector2 endPos, Vector2 startTan, Vector2 endTan)
-    {
-        this.startPos = startPos;
-        this.endPos = endPos;
-        this.startTan = startTan;
-        this.endTan = endTan;
-    }
-}
-
-[System.Serializable]
 public class Curve
 {
     public List<Vector2> points;
@@ -131,12 +114,38 @@ public class Curve
 }
 
 [CustomEditor(typeof(BezierCurves))]
-public class BezierEditor : Editor
+public class BezierCurvesEditor : Editor
 {
+    #region PEDRO MUEVE ESTA MIERDA MARICO, SI ALGUIEN VE ESTO, POR FAVOR DIGANME QUE LO MUEVA
+    public Vector2 LinearInterpolation(Vector2 a, Vector2 b, float t)
+    {
+        Vector2 linearInterpolation = a + (b - a) * t;
+        return linearInterpolation;
+    }
+
+    public Vector2 QuadraticInt(Vector2 a, Vector2 b, Vector2 c, float t)
+    {
+        Vector2 linearAB = LinearInterpolation(a, b, t);
+        Vector2 linearBC = LinearInterpolation(b, c, t);
+        Vector2 final = LinearInterpolation(linearAB, linearBC, t);
+        return final;
+    }
+
+    public Vector2 CubicBezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
+    {
+        Vector2 quadABC = QuadraticInt(a, b, c, t);
+        Vector2 quadBCD = QuadraticInt(b, c, d, t);
+        Vector2 final = LinearInterpolation(quadABC, quadBCD, t);
+        return final;
+    }
+    #endregion
+
     BezierCurves creator;
     Curve curve;
     bool removed = false;
     bool added = false;
+    [Range(0f,1f)]
+    public float step = 0.1f;
 
     void Draw()
     {
@@ -237,5 +246,37 @@ public class BezierEditor : Editor
         Input();
         Draw();
         creator.curve = curve;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        //Slider y label para el step de la funcion
+        step = GUILayout.HorizontalSlider(step, 0.01f, 1f);
+        GUILayout.Label(step.ToString());
+        //Boton para crear scriptable object de curva
+        if (GUILayout.Button("*honk* *honk*"))
+        {
+            List<Vector2> points = new List<Vector2>();
+            //Hacer caso para curvas cerradas
+            for (int i = 0; i < curve.NumSegments; i++)
+            {
+                Vector2 handler1 = curve.GetPointsInSegment(i)[1];
+                Vector2 handler2 = curve.GetPointsInSegment(i)[2];
+                Vector2 anchor1 = curve.GetPointsInSegment(i)[0];
+                Vector2 anchor2 = curve.GetPointsInSegment(i)[3];
+                float t = step;
+                while (t <= 1)
+                {
+                    points.Add(CubicBezier(anchor1, handler1, handler2, anchor2, t));
+                    t += step;
+                }
+            }
+            CurveScriptObject final = ScriptableObject.CreateInstance<CurveScriptObject>();
+            final.CreateCurve(points.ToArray(), curve.isClosed);
+            AssetDatabase.CreateAsset(final, "Assets/test1.asset");
+            AssetDatabase.SaveAssets();
+            
+        }
     }
 }
