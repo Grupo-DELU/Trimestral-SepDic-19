@@ -20,6 +20,11 @@ public class BulletMovementSystem : JobComponentSystem {
     /// </summary>
     EntityCommandBufferSystem m_Barrier;
 
+    /// <summary>
+    /// What is considered the front of the bullet (in local coordinates)
+    /// </summary>
+    private float3 front = new float3(0.0f, 1.0f, 0.0f);
+
     protected override void OnCreate () {
         // Cached access to a set of ComponentData based on a specific query
         m_Group = GetEntityQuery (
@@ -77,6 +82,12 @@ public class BulletMovementSystem : JobComponentSystem {
         [WriteOnly]
         public EntityCommandBuffer.Concurrent CommandBuffer;
 
+        /// <summary>
+        /// What is considered the front of the bullet (in local coordinates)
+        /// </summary>
+        [ReadOnly]
+        public float3 Front;
+
         public void Execute (ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex) {
             var chuckEntities = chunk.GetNativeArray (EntityType);
             var chunkTranslation = chunk.GetNativeArray (TranslationType);
@@ -90,7 +101,7 @@ public class BulletMovementSystem : JobComponentSystem {
                 // Move bullet with its velocity
                 chunkTranslation[i] = new Translation {
                     Value = translation.Value + 
-                        math.mul(rotation.Value, new float3(0.0f, 1.0f, 0.0f)) * bulletMovement.speed * DeltaTime
+                        math.mul(rotation.Value, Front) * bulletMovement.speed * DeltaTime
                 };
 
                 // If out of bounds delete
@@ -123,7 +134,8 @@ public class BulletMovementSystem : JobComponentSystem {
                 BulletMovementType = bulletMovementType,
                 DeltaTime = Time.deltaTime,
                 WorldLimits = new float4 (-10.0f, -10.0f, 10.0f, 10.0f),
-                CommandBuffer = m_Barrier.CreateCommandBuffer ().ToConcurrent ()
+                CommandBuffer = m_Barrier.CreateCommandBuffer ().ToConcurrent (),
+                Front = front
         }.Schedule (m_Group, inputDependencies);
 
         // Execute Barrier after job

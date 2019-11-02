@@ -81,7 +81,6 @@ public class BulletSpawner : MonoBehaviour {
                 vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.Normalize ();
                 vel *= UnityEngine.Random.Range (3.0f, 7.0f);
-                //Debug.Log(string.Format("Pos: {0}, Vel: {1}", pos, vel));
                 ShootBullet (pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI);
             }
         }

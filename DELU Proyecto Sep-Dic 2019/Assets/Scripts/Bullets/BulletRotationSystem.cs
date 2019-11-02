@@ -16,6 +16,11 @@ public class BulletRotationSystem : JobComponentSystem {
     /// </summary>
     EntityQuery m_Group;
 
+    /// <summary>
+    /// Axis of rotation, for sprite bullets it should be Z
+    /// </summary>
+    private readonly float3 axisOfRotation = new float3(0.0f, 0.0f, 1.0f);
+
     protected override void OnCreate () {
         // Cached access to a set of ComponentData based on a specific query
         m_Group = GetEntityQuery (
@@ -46,6 +51,12 @@ public class BulletRotationSystem : JobComponentSystem {
         [ReadOnly]
         public ArchetypeChunkComponentType<BulletRotation> BulletRotationType;
 
+        /// <summary>
+        /// Axis of rotation, for sprite bullets it should be Z
+        /// </summary>
+        [ReadOnly]
+        public float3 AxisOfRotation;
+
         public void Execute (ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex) {
             var chunkRotation = chunk.GetNativeArray (RotationType);
             var chunkBulletRotation = chunk.GetNativeArray (BulletRotationType);
@@ -56,7 +67,7 @@ public class BulletRotationSystem : JobComponentSystem {
                 // Rotate bullet with its angular speed
                 chunkRotation[i] = new Rotation {
                     Value = math.mul(math.normalize(rotation.Value),
-                        quaternion.AxisAngle(new float3(0.0f, 0.0f, 1.0f), bulletRotation.radiansPerSecond * DeltaTime))
+                        quaternion.AxisAngle(AxisOfRotation, bulletRotation.radiansPerSecond * DeltaTime))
                 };
             }
         }
@@ -74,7 +85,8 @@ public class BulletRotationSystem : JobComponentSystem {
         var job = new BulletRotationJob () {
                 RotationType = rotationType,
                 BulletRotationType = bulletRotationType,
-                DeltaTime = Time.deltaTime
+                DeltaTime = Time.deltaTime,
+                AxisOfRotation = axisOfRotation
         }.Schedule (m_Group, inputDependencies);
 
         return job;
