@@ -9,7 +9,7 @@ using System;
 public struct BulletMovement  : IComponentData
 {
     /// <summary>
-    /// Velocity at which the bullet is moving
+    /// Speed at which the bullet is moving
     /// </summary>
-   public float3 velocity;
+   public float speed;
 }

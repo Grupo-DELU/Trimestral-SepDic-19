@@ -60,6 +60,12 @@ public class BulletMovementSystem : JobComponentSystem {
         public ArchetypeChunkComponentType<Translation> TranslationType;
 
         /// <summary>
+        /// Array of Rotation Components of Bullets
+        /// </summary>
+        [ReadOnly]
+        public ArchetypeChunkComponentType<Rotation> RotationType;
+
+        /// <summary>
         /// Array of BulletMovement Components of Bullets
         /// </summary>
         [ReadOnly]
@@ -74,14 +80,17 @@ public class BulletMovementSystem : JobComponentSystem {
         public void Execute (ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex) {
             var chuckEntities = chunk.GetNativeArray (EntityType);
             var chunkTranslation = chunk.GetNativeArray (TranslationType);
+            var chunkRotation = chunk.GetNativeArray (RotationType);
             var chunkBulletMovement = chunk.GetNativeArray (BulletMovementType);
             for (var i = 0; i < chunk.Count; i++) {
                 var translation = chunkTranslation[i];
+                var rotation = chunkRotation[i];
                 var bulletMovement = chunkBulletMovement[i];
 
                 // Move bullet with its velocity
                 chunkTranslation[i] = new Translation {
-                    Value = translation.Value + bulletMovement.velocity * DeltaTime
+                    Value = translation.Value + 
+                        math.mul(rotation.Value, new float3(0.0f, 1.0f, 0.0f)) * bulletMovement.speed * DeltaTime
                 };
 
                 // If out of bounds delete
@@ -103,12 +112,14 @@ public class BulletMovementSystem : JobComponentSystem {
         // - Read-Only access to RotationSpeed_IJobChunk
         var entityType = GetArchetypeChunkEntityType ();
         var translationType = GetArchetypeChunkComponentType<Translation> ();
+        var rotationType = GetArchetypeChunkComponentType<Rotation> (true);
         var bulletMovementType = GetArchetypeChunkComponentType<BulletMovement> (true);
 
         // Create and Schedule
         var job = new BulletMovementJob () {
-            EntityType = entityType,
+                EntityType = entityType,
                 TranslationType = translationType,
+                RotationType = rotationType,
                 BulletMovementType = bulletMovementType,
                 DeltaTime = Time.deltaTime,
                 WorldLimits = new float4 (-10.0f, -10.0f, 10.0f, 10.0f),
