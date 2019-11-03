@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
+public enum EnemyType { NormalShot, Lazer, Kamikaze};
 public class EnemyNode : Node
 {
     [Input] public Nothing input;

@@ -6,8 +6,15 @@ public enum SpawningPositions { left, upper_left, up, upper_right, right}
 public class SpawningSystem : MonoBehaviour
 {
     public static SpawningSystem Manager { get; private set; }
-    public Transform[] whereToSpawn;
-
+    public GameObject debugEnemy;
+    /// <summary>
+    /// Puntos de spawn
+    /// </summary>
+    /// <remarks>
+    /// Van en el orden del enumerador, 0 es left, 1 es upper_left...
+    /// </remarks>
+    [SerializeField] private Transform[] tSpawnPoints;
+    [SerializeField] private float fSpawnRadius;
     private void Awake()
     {
         #region Singleton
@@ -18,18 +25,40 @@ public class SpawningSystem : MonoBehaviour
         Manager = this;
         #endregion
     }
-    void SpawnEnemyNode(EnemyNode node)
+
+    /// <summary>
+    /// Spawnea un enemigo de un nodo de enmigos
+    /// </summary>
+    /// <param name="node">Node de enemigos</param>
+    /// <returns>Enemigo spawneadoo</returns>
+    public GameObject SpawnEnemyFromNode(EnemyNode node)
     {
         SpawningPositions[] spawners = node.spawningPos;
-        int quantity = node.quantity;
-        for (int i = 0; i < quantity; i++)
-        {
-            int pos = Random.Range(0, 100)%spawners.Length;
-            SpawnHere(whereToSpawn[(int)spawners[pos]]);
-        }
+        int pos = Random.Range(1, 100) % spawners.Length;
+        Vector2 spawnPos = CalculateSpawnPoint(spawners[pos]);
+        GameObject debug = Instantiate(debugEnemy);
+        debug.transform.position = spawnPos;
+        return debug;
     }
 
-    public GameObject SpawnEnemy() { return null; }
+    /// <summary>
+    /// Calcula el punto de spawn de un enemigo
+    /// </summary>
+    /// <param name="pos">SpawnPoint a spawnear</param>
+    /// <returns></returns>
+    public Vector2 CalculateSpawnPoint(SpawningPositions pos)
+    {
+        return (Vector2)tSpawnPoints[(int)pos].position 
+               + Random.insideUnitCircle * fSpawnRadius;
+    }
 
-    void SpawnHere(Transform pos) { }
+    private void OnDrawGizmos()
+    {
+        if (tSpawnPoints.Length <= 0) return;
+        Gizmos.color = Color.red;
+        foreach (Transform point in tSpawnPoints)
+        {
+            Gizmos.DrawWireSphere(point.position, fSpawnRadius);
+        }
+    }
 }

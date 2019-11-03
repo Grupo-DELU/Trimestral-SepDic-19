@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using XNode;
 
-public class WavesEvents : UnityEvent<WaveNode, WaveNode> { }
+public class WavesEvents : UnityEvent{}
 /// <summary>
 /// Wave System se encarga de llamar a las waves y navegar entre ellas,
 /// no se encarga del spawneo ni de nada de eso. 
@@ -48,12 +48,22 @@ public class WaveSystem : MonoBehaviour
     }
     public void Start()
     {
+        //Empieza a estar pendiente de cuando matas a todos los enemigos
+        WaveManager.Manager.onNoMoreEnemies.AddListener(StartRest);
+
         wavesGraph.Start();
         currentNode = wavesGraph.currentNode;
+        StartWave(currentNode);
     }
 
-    public void Update()
+    public void StartWave(WaveNode node)
     {
+        Debug.Log("Empezando la wave!");
+        EnemyNode[] enemies = GetWaveEnemyNodes(node).ToArray();
+        foreach (EnemyNode enemy in enemies)
+        {
+            StartCoroutine(WaveManager.Manager.SpawnEnemies(enemy));
+        }
     }
 
     /// <summary>
@@ -66,10 +76,12 @@ public class WaveSystem : MonoBehaviour
         {
             wavesGraph.NextWave();
             currentNode = wavesGraph.currentNode;
+            StartWave(currentNode);
         }
         else
         {
-            onAllWavesCompleted.Invoke(currentNode, currentNode);
+            Debug.Log("Ya no hay mas waves!");
+            onAllWavesCompleted.Invoke();
         }
     }
 
@@ -83,7 +95,7 @@ public class WaveSystem : MonoBehaviour
         if (node.GetOutputPort("nextWave").IsConnected)
         {
             NodePort output = node.GetOutputPort("nextWave");
-            if (output.GetConnections().Count > 0)
+            if (output.GetConnection(0).node.GetOutputPort("nextWave").GetConnections().Count > 0)
             {
                 return true;
             }
@@ -141,11 +153,10 @@ public class WaveSystem : MonoBehaviour
     /// <summary>
     /// Inicia el descanso entre rondas
     /// </summary>
-    /// <param name="node">Wave a descansar</param>
-    public void StartRest(WaveNode node)
+    public void StartRest()
     {
         if (cWaveRestRoutine != null) StopCoroutine(cWaveRestRoutine);
-        cWaveRestRoutine = StartCoroutine(RoundResting(node.roundRestingTime));
+        cWaveRestRoutine = StartCoroutine(RoundResting(currentNode.roundRestingTime));
     }
 
     /// <summary>
@@ -158,20 +169,6 @@ public class WaveSystem : MonoBehaviour
         bIsResting = true;
         yield return new WaitForSeconds(time);
         bIsResting = false;
-        //Deberia activar la siguiente wave?
-    }
-}
-
-public struct WaveInfo
-{
-    public int iQuantity;
-    public ScriptableObject baseEnemy;
-    public List<float> l_fDelays;
-
-    public WaveInfo(EnemyNode node)
-    {
-        iQuantity = node.quantity;
-        baseEnemy = node.bases;
-        l_fDelays = node.delay;
+        NextWave();
     }
 }
