@@ -46,11 +46,13 @@ public class BulletMovementSystem : JobComponentSystem {
         /// <summary>
         /// Delta Time for movement
         /// </summary>
+        [ReadOnly]
         public float DeltaTime;
 
         /// <summary>
         /// World 2D Limits xy for lowes and zw for highest point in AABB
         /// </summary>
+        [ReadOnly]
         public float4 WorldLimits;
 
         /// <summary>

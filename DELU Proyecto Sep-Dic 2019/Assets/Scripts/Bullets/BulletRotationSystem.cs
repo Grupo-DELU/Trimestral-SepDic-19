@@ -38,6 +38,7 @@ public class BulletRotationSystem : JobComponentSystem {
         /// <summary>
         /// Delta Time for movement
         /// </summary>
+        [ReadOnly]
         public float DeltaTime;
 
         /// <summary>
