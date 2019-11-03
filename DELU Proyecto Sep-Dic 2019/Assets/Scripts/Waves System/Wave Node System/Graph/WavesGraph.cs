@@ -11,7 +11,9 @@ public class WavesGraph : NodeGraph
 
     public void Start()
     {
+        //Tengo que quitar esto
         Debug.Log("Puta");
+        //jajajajaja 
         currentNode = initialWave;
         //if (initialWave == null) Debug.LogError("LA WAVE INICIAL ES NULA!");
         //if (currentNode == null) Debug.LogError("EL NODO ACTUAL ES NULO!");
@@ -25,8 +27,6 @@ public class WavesGraph : NodeGraph
         if (otherPort.node != null)
         {
             currentNode = otherPort.node as WaveNode;
-            //Se puede hacer que se conecte al sistema de rondas por un evento y este evento devuelva el nodo anterior y el actual
-            //y con la info del anterior agarre el resting time
         }
     }
 }
