@@ -3,13 +3,17 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Physics;
+using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 
 /// <summary>
 /// Bullet Movement ECS System
 /// </summary>
+[UpdateAfter (typeof (EndFramePhysicsSystem))]
 public class BulletMovementSystem : JobComponentSystem {
+
     /// <summary>
     /// Query Group saved for speedup
     /// </summary>
@@ -23,12 +27,12 @@ public class BulletMovementSystem : JobComponentSystem {
     /// <summary>
     /// What is considered the front of the bullet (in local coordinates)
     /// </summary>
-    private float3 front = new float3(0.0f, 1.0f, 0.0f);
+    private float3 front = new float3 (0.0f, 1.0f, 0.0f);
 
     protected override void OnCreate () {
-        // Cached access to a set of ComponentData based on a specific query
         m_Group = GetEntityQuery (
-            typeof (Translation),
+            typeof (PhysicsVelocity),
+            ComponentType.ReadOnly<Translation> (),
             ComponentType.ReadOnly<Rotation> (),
             ComponentType.ReadOnly<BulletMovement> ()
         );
@@ -43,11 +47,6 @@ public class BulletMovementSystem : JobComponentSystem {
     /// </summary>
     [BurstCompile]
     struct BulletMovementJob : IJobChunk {
-        /// <summary>
-        /// Delta Time for movement
-        /// </summary>
-        [ReadOnly]
-        public float DeltaTime;
 
         /// <summary>
         /// World 2D Limits xy for lowes and zw for highest point in AABB
@@ -64,7 +63,13 @@ public class BulletMovementSystem : JobComponentSystem {
         /// <summary>
         /// Array of Translation components of Bullets
         /// </summary>
+        [ReadOnly]
         public ArchetypeChunkComponentType<Translation> TranslationType;
+
+        /// <summary>
+        /// Array of Physics Velocities
+        /// </summary>
+        public ArchetypeChunkComponentType<PhysicsVelocity> VelocityType;
 
         /// <summary>
         /// Array of Rotation Components of Bullets
@@ -93,24 +98,25 @@ public class BulletMovementSystem : JobComponentSystem {
         public void Execute (ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex) {
             var chuckEntities = chunk.GetNativeArray (EntityType);
             var chunkTranslation = chunk.GetNativeArray (TranslationType);
+            var chunkVelocity = chunk.GetNativeArray (VelocityType);
             var chunkRotation = chunk.GetNativeArray (RotationType);
             var chunkBulletMovement = chunk.GetNativeArray (BulletMovementType);
             for (var i = 0; i < chunk.Count; i++) {
                 var translation = chunkTranslation[i];
+                var velocity = chunkVelocity[i];
                 var rotation = chunkRotation[i];
                 var bulletMovement = chunkBulletMovement[i];
 
-                // Move bullet with its velocity
-                chunkTranslation[i] = new Translation {
-                    Value = translation.Value + 
-                        math.mul(rotation.Value, Front) * bulletMovement.speed * DeltaTime
+                chunkVelocity[i] = new PhysicsVelocity {
+                    Linear = math.mul (rotation.Value, Front) * bulletMovement.speed,
+                    Angular = velocity.Angular
                 };
 
                 // If out of bounds delete
-                if (chunkTranslation[i].Value.x < WorldLimits.x ||
-                    chunkTranslation[i].Value.y < WorldLimits.y ||
-                    chunkTranslation[i].Value.x > WorldLimits.w ||
-                    chunkTranslation[i].Value.y > WorldLimits.z
+                if (translation.Value.x < WorldLimits.x ||
+                    translation.Value.y < WorldLimits.y ||
+                    translation.Value.x > WorldLimits.w ||
+                    translation.Value.y > WorldLimits.z
                 ) {
                     CommandBuffer.DestroyEntity (chunkIndex, chuckEntities[i]);
                 }
@@ -124,17 +130,18 @@ public class BulletMovementSystem : JobComponentSystem {
         // - Read-Write access to Rotation
         // - Read-Only access to RotationSpeed_IJobChunk
         var entityType = GetArchetypeChunkEntityType ();
-        var translationType = GetArchetypeChunkComponentType<Translation> ();
+        var translationType = GetArchetypeChunkComponentType<Translation> (true);
+        var velocityType = GetArchetypeChunkComponentType<PhysicsVelocity> ();
         var rotationType = GetArchetypeChunkComponentType<Rotation> (true);
         var bulletMovementType = GetArchetypeChunkComponentType<BulletMovement> (true);
 
         // Create and Schedule
         var job = new BulletMovementJob () {
-                EntityType = entityType,
+            EntityType = entityType,
                 TranslationType = translationType,
+                VelocityType = velocityType,
                 RotationType = rotationType,
                 BulletMovementType = bulletMovementType,
-                DeltaTime = Time.deltaTime,
                 WorldLimits = new float4 (-10.0f, -10.0f, 10.0f, 10.0f),
                 CommandBuffer = m_Barrier.CreateCommandBuffer ().ToConcurrent (),
                 Front = front

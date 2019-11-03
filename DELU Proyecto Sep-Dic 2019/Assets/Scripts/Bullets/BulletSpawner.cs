@@ -1,5 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
+using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -54,19 +56,21 @@ public class BulletSpawner : MonoBehaviour {
         // Convert to 3D
         Vector3 bulletVelocity = new Vector3 (velocity.x, velocity.y, 0.0f);
 
-        // Set up Position
+        // Add the Position component
         float3 bulletPos = new float3 (position.x, position.y, 0.0f);
         worldEntityManager.SetComponentData (newBullet, new Translation { Value = bulletPos });
 
-        // Set up rotation
+        // Add the rotation component
         quaternion bulletRot = Quaternion.LookRotation (Vector3.forward, bulletVelocity);
         worldEntityManager.SetComponentData (newBullet, new Rotation { Value = bulletRot });
 
-        // Set up the Bullet Movement
+        // Add the Bullet Movement
         worldEntityManager.AddComponentData (newBullet, new BulletMovement { speed = velocity.magnitude });
 
-        // Set up the Bullet Rotation
-        worldEntityManager.AddComponentData (newBullet, new BulletRotation { radiansPerSecond = angularSpeed });
+        // Set up the Bullet Physics movement
+        worldEntityManager.SetComponentData (newBullet,
+            new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, 1.0f) }
+        );
     }
 
     private void Update () {
@@ -80,8 +84,8 @@ public class BulletSpawner : MonoBehaviour {
                 vel.x = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.Normalize ();
-                vel *= UnityEngine.Random.Range (3.0f, 7.0f);
-                ShootBullet (pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI);
+                vel *= UnityEngine.Random.Range (10.0f, 20.0f);
+                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI);
             }
         }
 #endif // UNITY_EDITOR
