@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3722629331774641423}
   - component: {fileID: 3722629331774641422}
   - component: {fileID: 3722629331774641417}
-  - component: {fileID: 3722629331774641416}
+  - component: {fileID: 2038479324088996019}
   m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
@@ -79,8 +79,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &3722629331774641416
-MeshCollider:
+--- !u!136 &2038479324088996019
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,7 +89,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Radius: 0.04
+  m_Height: 0.99
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
