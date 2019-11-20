@@ -12,8 +12,8 @@ using UnityEngine;
 /// </summary>
 public class ActionManager : MonoBehaviour
 {
-    // Arreglo de aciones del objeto.
-    protected Action[] actions;
+    // Diccionario de aciones del objeto que usa como llaves su tag de accion.
+    protected Dictionary<ActionTags, Action> actions = new Dictionary<ActionTags, Action>();
 
     /// <summary>
     /// executeAction
@@ -22,11 +22,22 @@ public class ActionManager : MonoBehaviour
     /// por el cliente. 
     /// </summary>
     /// <param name="tag">Identificador de la accion</param>
-    public void executeAction(ActionTags tag){
-        foreach(Action action in actions){
-            if (action.tag.Equals(tag)){
-                action.doAction();
-            }
+    public void executeAction(ActionTags tag)
+    {
+        actions[tag].doAction();
+    }
+
+    /// <summary>
+    /// loadActions
+    /// 
+    /// Metodo encargado de cargar todas las acciones a usar 
+    /// por el cliente.
+    /// </summary>
+    public void loadActions(Action[] actions_to_load)
+    {
+        foreach (Action act in actions_to_load)
+        {
+            actions[act.tag] = act;
         }
     }
 

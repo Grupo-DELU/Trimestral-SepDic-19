@@ -19,7 +19,7 @@ public class PlayerManager : ActionManager {
     */
 
     void Start() {
-        base.actions = this.GetComponents<Action>();
+        loadActions(this.GetComponents<Action>());
     }
 
     void Update() {
