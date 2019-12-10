@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 551981894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -0.04, z: -10}
   m_LocalScale: {x: 0.975, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -220,16 +220,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curve:
     points:
-    - {x: 0, y: 0}
-    - {x: 0, y: 1}
-    - {x: 5.1351876, y: 3.761732}
-    - {x: 4.4012365, y: 1.4141988}
-    - {x: 3.6493838, y: -0.9154331}
-    - {x: 3.7222965, y: -0.321406}
-    - {x: 3.0624197, y: -1.482517}
-    - {x: 2.4025428, y: -2.661529}
-    - {x: 2.5945172, y: 2.506991}
-    - {x: 1.5408136, y: -0.032516234}
+    - {x: -2.2408206, y: 1.984727}
+    - {x: -2.2408206, y: 2.984727}
+    - {x: 2.792657, y: 6.9175673}
+    - {x: 2.0243754, y: 2.1981387}
+    - {x: 1.256094, y: -2.5639715}
+    - {x: -2.0463746, y: -0.25463152}
+    - {x: -2.0433366, y: 0.6447319}
+    - {x: -2.0616398, y: 1.5440953}
+    - {x: -0.33908272, y: 3.0745902}
+    - {x: 0.73100877, y: 2.0745904}
     isClosed: 0
 --- !u!114 &551981899
 MonoBehaviour:
@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curve: {fileID: 11400000, guid: 7df8e8174ec8efd479d74aeb9a0d4fc8, type: 2}
+  size: 0.1
 --- !u!114 &551981900
 MonoBehaviour:
   m_ObjectHideFlags: 0

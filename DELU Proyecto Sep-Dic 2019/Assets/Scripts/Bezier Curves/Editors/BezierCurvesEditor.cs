@@ -146,6 +146,8 @@ public class BezierCurvesEditor : Editor
     bool added = false;
     [Range(0f,1f)]
     public float step = 0.1f;
+    [Range(2, 20)]
+    public int intervals = 2;
 
     void Draw()
     {
@@ -252,8 +254,12 @@ public class BezierCurvesEditor : Editor
     {
         base.OnInspectorGUI();
         //Slider y label para el step de la funcion
-        step = GUILayout.HorizontalSlider(step, 0.01f, 1f);
+        GUILayout.Label("Step");
         GUILayout.Label(step.ToString());
+        step = GUILayout.HorizontalSlider(step, 0.01f, 1f);
+        GUILayout.Label("Intervalos");
+        GUILayout.Label(intervals.ToString());
+        intervals = Mathf.FloorToInt(GUILayout.HorizontalSlider(intervals, 2, 20));
         //Boton para crear scriptable object de curva
         if (GUILayout.Button("*honk* *honk*"))
         {
@@ -265,7 +271,7 @@ public class BezierCurvesEditor : Editor
                 Vector2 handler2 = curve.GetPointsInSegment(i)[2];
                 Vector2 anchor1 = curve.GetPointsInSegment(i)[0];
                 Vector2 anchor2 = curve.GetPointsInSegment(i)[3];
-                Vector2[] segpoints = creator.SteppedBezier(anchor1, handler1, handler2, anchor2, 20, 0.005f);
+                Vector2[] segpoints = creator.SteppedBezier(anchor1, handler1, handler2, anchor2, intervals, 0.005f);
                 foreach (Vector2 point in segpoints)
                 {
                     //Tengo que quitar los dduplicados
