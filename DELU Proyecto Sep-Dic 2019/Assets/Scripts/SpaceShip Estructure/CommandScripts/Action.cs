@@ -16,5 +16,5 @@ public abstract class Action : MonoBehaviour
     /// 
     /// Definicion del metodo que ejecuta la accion.
     /// </summary>
-    public abstract void doAction();
+    public abstract void doAction(ActionManager manager);
 }

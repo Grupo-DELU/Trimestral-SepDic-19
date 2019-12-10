@@ -10,6 +10,8 @@ using UnityEngine;
 /// Su objetivo es ejecutar las acciones dadas en el
 /// inspector.
 /// </summary>
+/// 
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerManager : ActionManager {
 
     /*
@@ -18,11 +20,17 @@ public class PlayerManager : ActionManager {
     insteractura con sus acciones de la misma manera.
     */
 
-    void Start() {
-        loadActions(this.GetComponents<Action>());
-    }
+    /// <summary>
+    /// Manejador de movimiento del jugador
+    /// </summary>
+    public PlayerMovement Movement { get; private set; }
 
-    void Update() {
+    private void Awake()
+    {
+        Movement = GetComponent<PlayerMovement>();
+    }
+    void Update()
+    {
         /*
         Bajo las condiciones requeridas se ejecuta el metodo
         executeActions con el tag asociado a la accion que se
@@ -30,11 +38,10 @@ public class PlayerManager : ActionManager {
 
         Por ejemplo:
          */
-        if (Input.GetKeyDown(KeyCode.UpArrow)){
-            executeAction(ActionTags.PlayerMovement);
-        }
+        executeAction(ActionTags.PlayerMovement);
 
-         if (Input.GetKeyDown(KeyCode.DownArrow)){
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             executeAction(ActionTags.PlayerAttack);
         }
     }

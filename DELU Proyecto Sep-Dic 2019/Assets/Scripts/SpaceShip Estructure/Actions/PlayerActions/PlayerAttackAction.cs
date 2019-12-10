@@ -17,7 +17,8 @@ public class PlayerAttackAction : Action {
     en doActions la logica que sera ejecutada de la accion.
      */
     override
-    public void doAction(){
+    public void doAction(ActionManager manager){
+        PlayerManager pm = manager as PlayerManager;
         Debug.Log("The player is in attack Action");
     }
 }

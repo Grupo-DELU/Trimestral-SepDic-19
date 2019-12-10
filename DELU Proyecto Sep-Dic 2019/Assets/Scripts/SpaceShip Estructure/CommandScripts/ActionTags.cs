@@ -6,5 +6,6 @@
 /// </summary>
 public enum ActionTags{
     PlayerMovement,
-    PlayerAttack
+    PlayerAttack,
+    EnemyCurveMove
 }
