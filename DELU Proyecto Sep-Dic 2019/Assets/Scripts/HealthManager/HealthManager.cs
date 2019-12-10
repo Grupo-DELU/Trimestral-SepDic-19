@@ -17,6 +17,10 @@ public class HealthManager : MonoBehaviour
     /// Vida actual
     /// </summary>
     [SerializeField] private int iHP;
+    public int MaxHP
+    {
+        get { return iMaxHP; }
+    }
     /// <summary>
     /// Vida maxima
     /// </summary>

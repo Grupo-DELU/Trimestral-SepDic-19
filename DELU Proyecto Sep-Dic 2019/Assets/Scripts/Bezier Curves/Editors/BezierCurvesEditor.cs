@@ -274,7 +274,7 @@ public class BezierCurvesEditor : Editor
             }
             CurveScriptObject final = ScriptableObject.CreateInstance<CurveScriptObject>();
             final.CreateCurve(points.ToArray(), curve.isClosed);
-            AssetDatabase.CreateAsset(final, "Assets/test1.asset");
+            AssetDatabase.CreateAsset(final, "Assets/curva.asset");
             AssetDatabase.SaveAssets();
             
         }
