@@ -265,13 +265,23 @@ public class BezierCurvesEditor : Editor
                 Vector2 handler2 = curve.GetPointsInSegment(i)[2];
                 Vector2 anchor1 = curve.GetPointsInSegment(i)[0];
                 Vector2 anchor2 = curve.GetPointsInSegment(i)[3];
-                float t = step;
-                while (t <= 1)
+                Vector2[] segpoints = creator.SteppedBezier(anchor1, handler1, handler2, anchor2, 20, 0.005f);
+                foreach (Vector2 point in segpoints)
                 {
-                    points.Add(CubicBezier(anchor1, handler1, handler2, anchor2, t));
-                    t += step;
+                    //Tengo que quitar los dduplicados
+                    points.Add(point);
                 }
             }
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                if (points[i] == points[i + 1])
+                {
+                    points.RemoveAt(i + 1);
+                    //Asi se mantiene en la misma posicion por si tiene otro duplicado (poco probable que pase)
+                    i -= 1;
+                }
+            }
+            
             CurveScriptObject final = ScriptableObject.CreateInstance<CurveScriptObject>();
             final.CreateCurve(points.ToArray(), curve.isClosed);
             AssetDatabase.CreateAsset(final, "Assets/curva.asset");

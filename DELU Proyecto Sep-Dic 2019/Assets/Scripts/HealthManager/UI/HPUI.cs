@@ -24,12 +24,10 @@ public class HPUI : MonoBehaviour
         {
             Debug.LogError("Player no tiene health manager");
         }
-
         if (hpIcons.Count <= 0)
         {
             Debug.LogError("No hay iconos de vida en la lista");
         }
-
     }
 
     /// <summary>
