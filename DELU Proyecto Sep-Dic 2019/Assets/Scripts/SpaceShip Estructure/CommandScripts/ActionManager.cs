@@ -43,6 +43,7 @@ public class ActionManager : MonoBehaviour
     {
         foreach (Action act in actions_to_load)
         {
+            Debug.Log(act.tag);
             actions[act.tag] = act;
         }
     }
