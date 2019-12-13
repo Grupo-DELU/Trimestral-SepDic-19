@@ -107,9 +107,16 @@ public class BulletMovementSystem : JobComponentSystem {
                 var rotation = chunkRotation[i];
                 var bulletMovement = chunkBulletMovement[i];
 
+                float3 vel = math.mul (rotation.Value, Front) * bulletMovement.speed;
+                vel.z = 0;
+
+                float3 angVel = velocity.Angular;
+                angVel.x = 0;
+                angVel.y = 0;
+
                 chunkVelocity[i] = new PhysicsVelocity {
-                    Linear = math.mul (rotation.Value, Front) * bulletMovement.speed,
-                    Angular = velocity.Angular
+                    Linear = vel,
+                    Angular = angVel
                 };
 
                 // If out of bounds delete

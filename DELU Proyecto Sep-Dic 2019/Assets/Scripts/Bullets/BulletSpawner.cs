@@ -66,10 +66,10 @@ public class BulletSpawner : MonoBehaviour {
 
         // Add the Bullet Movement
         worldEntityManager.AddComponentData (newBullet, new BulletMovement { speed = velocity.magnitude });
-
+        
         // Set up the Bullet Physics movement
         worldEntityManager.SetComponentData (newBullet,
-            new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, 1.0f) }
+            new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, angularSpeed) }
         );
     }
 
