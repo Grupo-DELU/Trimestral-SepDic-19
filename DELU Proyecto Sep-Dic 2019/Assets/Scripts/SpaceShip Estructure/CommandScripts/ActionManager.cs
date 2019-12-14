@@ -14,7 +14,7 @@ public class ActionManager : MonoBehaviour
 {
     // Diccionario de aciones del objeto que usa como llaves su tag de accion.
     protected Dictionary<ActionTags, Action> actions = new Dictionary<ActionTags, Action>();
-
+    
     //En clase base para que todos los hijos lo ejecuten
     protected virtual void Start()
     {

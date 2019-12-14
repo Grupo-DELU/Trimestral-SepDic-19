@@ -11,7 +11,7 @@ using UnityEngine;
 /// inspector.
 /// </summary>
 /// 
-[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : ActionManager {
 
     /*
@@ -19,16 +19,18 @@ public class PlayerManager : ActionManager {
     De esta manera, los objetos (player y enemigos) pueden
     insteractura con sus acciones de la misma manera.
     */
+    public float fMaxSpeed = 10;
+    [Range(-1f, 1f)]
+    public float fSpeed = 1;
 
-    /// <summary>
-    /// Manejador de movimiento del jugador
-    /// </summary>
-    public PlayerMovement Movement { get; private set; }
+    public Vector2 velocity = Vector2.zero;
+    private Rigidbody2D rb2d;
 
     private void Awake()
     {
-        Movement = GetComponent<PlayerMovement>();
+        rb2d = GetComponent<Rigidbody2D>();
     }
+
     void Update()
     {
         /*
@@ -40,9 +42,23 @@ public class PlayerManager : ActionManager {
          */
         executeAction(ActionTags.PlayerMovement);
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             executeAction(ActionTags.PlayerAttack);
+        }
+    }
+
+    public void MoveWithVel(Vector2 velocity)
+    {
+        this.velocity = velocity;
+    }
+
+    private void FixedUpdate()
+    {
+        if (velocity != Vector2.zero)
+        {
+            rb2d.MovePosition((Vector2)transform.position + velocity * Time.fixedDeltaTime);
+            velocity = Vector2.zero;
         }
     }
 

@@ -17,9 +17,21 @@ public class PlayerMovementAction : Action
     en doActions la logica que sera ejecutada de la accion.
      */
     override
-    public void doAction(ActionManager manager){
+    public void doAction(ActionManager manager)
+    {
         PlayerManager pm = manager as PlayerManager;
-        pm.Movement.Move();
-        //Debug.Log("The player is in movevement Action");
+        pm.MoveWithVel(GetVelocity(pm));
+        if(GetVelocity(pm) != Vector2.zero) Debug.Log("Velocidad: " + GetVelocity(manager));
+    }
+
+    private Vector2 GetDirection()
+    {
+        return Vector2.right * Input.GetAxisRaw("Horizontal") + Vector2.up * Input.GetAxisRaw("Vertical");
+    }
+
+    private Vector2 GetVelocity(ActionManager manager)
+    {
+        PlayerManager pm = manager as PlayerManager;
+        return GetDirection() * pm.fSpeed * pm.fMaxSpeed;
     }
 }
