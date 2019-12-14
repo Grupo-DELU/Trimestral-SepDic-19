@@ -144,10 +144,8 @@ public class BezierCurvesEditor : Editor
     Curve curve;
     bool removed = false;
     bool added = false;
-    [Range(0f,1f)]
-    public float step = 0.1f;
-    [Range(2, 20)]
-    public int intervals = 2;
+    public float separation = 0.1f;
+    public float prec_step = 2;
 
     void Draw()
     {
@@ -254,36 +252,61 @@ public class BezierCurvesEditor : Editor
     {
         base.OnInspectorGUI();
         //Slider y label para el step de la funcion
-        GUILayout.Label("Step");
-        GUILayout.Label(step.ToString());
-        step = GUILayout.HorizontalSlider(step, 0.01f, 1f);
-        GUILayout.Label("Intervalos");
-        GUILayout.Label(intervals.ToString());
-        intervals = Mathf.FloorToInt(GUILayout.HorizontalSlider(intervals, 2, 20));
+        GUILayout.Label("Separation");
+        //GUILayout.Label(separation.ToString());
+        separation = Mathf.Abs(EditorGUILayout.FloatField(separation));
+        GUILayout.Label("Precision step");
+        //GUILayout.Label(prec_step.ToString());
+        prec_step = Mathf.Abs(EditorGUILayout.FloatField(prec_step));
         //Boton para crear scriptable object de curva
         if (GUILayout.Button("*honk* *honk*"))
         {
+            float actDist = 0;
+
             List<Vector2> points = new List<Vector2>();
-            //Hacer caso para curvas cerradas
-            for (int i = 0; i < curve.NumSegments; i++)
+            int segment = 0;
+            float t = prec_step;
+
+            Vector2 handler1 = curve.GetPointsInSegment(segment)[1];
+            Vector2 handler2 = curve.GetPointsInSegment(segment)[2];
+            Vector2 anchor1 = curve.GetPointsInSegment(segment)[0];
+            Vector2 anchor2 = curve.GetPointsInSegment(segment)[3];
+
+            Vector2 prevpoint = creator.CubicBezier(anchor1, handler1, handler2, anchor2, 0);
+            Vector2 actpoint;
+            while (segment < curve.NumSegments) 
             {
-                Vector2 handler1 = curve.GetPointsInSegment(i)[1];
-                Vector2 handler2 = curve.GetPointsInSegment(i)[2];
-                Vector2 anchor1 = curve.GetPointsInSegment(i)[0];
-                Vector2 anchor2 = curve.GetPointsInSegment(i)[3];
-                Vector2[] segpoints = creator.SteppedBezier(anchor1, handler1, handler2, anchor2, intervals, 0.005f);
-                foreach (Vector2 point in segpoints)
+                handler1 = curve.GetPointsInSegment(segment)[1];
+                handler2 = curve.GetPointsInSegment(segment)[2];
+                anchor1 = curve.GetPointsInSegment(segment)[0];
+                anchor2 = curve.GetPointsInSegment(segment)[3];
+
+                actpoint = creator.CubicBezier(anchor1, handler1, handler2, anchor2, t);
+                float distbet = (actpoint - prevpoint).magnitude;
+                actDist += distbet;
+                if (actDist >= separation)
                 {
-                    //Tengo que quitar los dduplicados
-                    points.Add(point);
+                    points.Add(actpoint);
+                    actDist = 0;
                 }
+                if (t + prec_step > 1)
+                {
+                    segment += 1;
+                    //Parte fraccional del nuevo step
+                    t = (t + prec_step) - Mathf.Floor(t + prec_step);
+                }
+                else
+                {
+                    t += prec_step;
+                }
+                prevpoint = actpoint;
             }
+            //Elimina duplicados adyacentes
             for (int i = 0; i < points.Count - 1; i++)
             {
                 if (points[i] == points[i + 1])
                 {
                     points.RemoveAt(i + 1);
-                    //Asi se mantiene en la misma posicion por si tiene otro duplicado (poco probable que pase)
                     i -= 1;
                 }
             }

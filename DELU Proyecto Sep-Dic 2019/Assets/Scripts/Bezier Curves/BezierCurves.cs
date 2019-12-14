@@ -47,7 +47,7 @@ public class BezierCurves : MonoBehaviour
     /// <param name="intervals">Intervalos deseados</param>
     /// <param name="precStep">Precision del step usado para calcular los intervalos</param>
     /// <returns>Puntos entre cada intervalo</returns>
-    public Vector2[] SteppedBezier(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, int intervals, float precStep = 0.005f)
+    public Vector2[] IntervalBezier(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, int intervals, float precStep = 0.005f)
     {
         Vector2[] points = new Vector2[intervals + 1];
         points[0] = CubicBezier(p0, p1, p2, p3, 0); //Initial point
