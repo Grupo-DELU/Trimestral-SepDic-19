@@ -57,7 +57,7 @@ public class PlayerManager : ActionManager {
     {
         if (velocity != Vector2.zero)
         {
-            rb2d.MovePosition((Vector2)transform.position + velocity * Time.fixedDeltaTime);
+            rb2d.MovePosition((Vector2)transform.position + velocity);
             velocity = Vector2.zero;
         }
     }

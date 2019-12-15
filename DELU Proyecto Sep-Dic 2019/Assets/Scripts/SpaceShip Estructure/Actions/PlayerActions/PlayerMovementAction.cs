@@ -32,6 +32,6 @@ public class PlayerMovementAction : Action
     private Vector2 GetVelocity(ActionManager manager)
     {
         PlayerManager pm = manager as PlayerManager;
-        return GetDirection() * pm.fSpeed * pm.fMaxSpeed;
+        return GetDirection() * pm.fSpeed * pm.fMaxSpeed * Time.fixedDeltaTime;
     }
 }

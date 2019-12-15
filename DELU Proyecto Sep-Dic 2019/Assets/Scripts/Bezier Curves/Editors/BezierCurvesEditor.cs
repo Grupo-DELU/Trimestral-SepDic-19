@@ -116,6 +116,7 @@ public class Curve
 [CustomEditor(typeof(BezierCurves))]
 public class BezierCurvesEditor : Editor
 {
+    //Yep, sto definitivamente lo tengo que mover al namespace 
     #region PEDRO MUEVE ESTA MIERDA MARICO, SI ALGUIEN VE ESTO, POR FAVOR DIGANME QUE LO MUEVA
     public Vector2 LinearInterpolation(Vector2 a, Vector2 b, float t)
     {
@@ -144,8 +145,19 @@ public class BezierCurvesEditor : Editor
     Curve curve;
     bool removed = false;
     bool added = false;
+    /// <summary>
+    /// Separacion entre cada punto de la curva
+    /// </summary>
     public float separation = 0.1f;
-    public float prec_step = 2;
+    
+    /// <summary>
+    /// Precision del calculo de separacion uniforme de puntos en
+    /// una curva de bezier.
+    /// </summary>
+    /// <remarks>
+    /// Mientras mas bajo, mas preciso.
+    /// </remarks>
+    public float prec_step = 0.002f;
 
     void Draw()
     {
@@ -164,12 +176,12 @@ public class BezierCurvesEditor : Editor
                 Handles.color = Color.black;
                 Handles.DrawLine(segment[0], segment[1]);
                 Handles.DrawLine(segment[3], segment[2]);
-                Handles.DrawBezier(segment[0], segment[3], segment[1], segment[2], Color.green, null, 2);
+                Handles.DrawBezier(segment[0], segment[3], segment[1], segment[2], Color.green, null, 5);
             }
             for (int i = 0; i < curve.NumPoints; i++)
             {
                 Handles.color = Color.black;
-                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .1f, Vector2.zero, Handles.SphereHandleCap);
+                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector2.zero, Handles.SphereHandleCap);
                 if (newPos != curve.points[i])
                 {
                     Undo.RecordObject(creator, "Move Position");
@@ -185,7 +197,7 @@ public class BezierCurvesEditor : Editor
                 Handles.color = Color.black;
                 Handles.DrawLine(segment[0], segment[1]);
                 Handles.DrawLine(segment[3], segment[2]);
-                Handles.DrawBezier(segment[0], segment[3], segment[1], segment[2], Color.green, null, 2);
+                Handles.DrawBezier(segment[0], segment[3], segment[1], segment[2], Color.green, null, 5);
             }
             //if (curve.points[curve.points.Count - 1])
             if (!added)
@@ -194,13 +206,13 @@ public class BezierCurvesEditor : Editor
                 curve.points.Add(curve.points[0] + Vector2.down);
                 added = true;
             }
-            Handles.DrawBezier(curve.points[curve.points.Count - 3], curve.points[0], curve.points[curve.points.Count - 2], curve.points[curve.points.Count - 1], Color.red, null, 2);
+            Handles.DrawBezier(curve.points[curve.points.Count - 3], curve.points[0], curve.points[curve.points.Count - 2], curve.points[curve.points.Count - 1], Color.red, null, 5);
             Handles.DrawLine(curve.points[curve.points.Count - 3], curve.points[curve.points.Count - 2]);
             Handles.DrawLine(curve.points[0], curve.points[curve.points.Count - 1]);
             for (int i = 0; i < curve.NumPoints; i++)
             {
                 Handles.color = Color.black;
-                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .1f, Vector2.zero, Handles.SphereHandleCap);
+                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector2.zero, Handles.SphereHandleCap);
                 if (newPos != curve.points[i])
                 {
                     Undo.RecordObject(creator, "Move Position");
