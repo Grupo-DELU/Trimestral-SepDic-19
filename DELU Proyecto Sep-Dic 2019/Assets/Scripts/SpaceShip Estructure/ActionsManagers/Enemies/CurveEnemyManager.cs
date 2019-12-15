@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class CurveEnemyManager : ActionManager
 {
     /// <summary>
@@ -33,6 +34,18 @@ public class CurveEnemyManager : ActionManager
     /// </summary>
     private int iTargetIndex = 0;
 
+    public float fMaxSpeed = 10;
+    [Range(-1f, 1f)]
+    public float fSpeed = 1;
+
+    public Vector2 velocity = Vector2.zero;
+    private Rigidbody2D rb2d;
+
+    private void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();    
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -48,9 +61,23 @@ public class CurveEnemyManager : ActionManager
     /// <summary>
     /// Setea/calcula el proximo punto target del ennemigo
     /// </summary>
-    private void NextPoint()
+    public void NextPoint()
     {
         iTargetIndex = (iTargetIndex + 1) % path.points.Length;
         vTargetPos = path.points[iTargetIndex];
+    }
+
+    public void MoveWithVel(Vector2 velocity)
+    {
+        this.velocity = velocity;
+    }
+
+    private void FixedUpdate()
+    {
+        if (velocity != Vector2.zero)
+        {
+            rb2d.MovePosition((Vector2)transform.position + velocity * Time.fixedDeltaTime);
+            velocity = Vector2.zero;
+        }
     }
 }
