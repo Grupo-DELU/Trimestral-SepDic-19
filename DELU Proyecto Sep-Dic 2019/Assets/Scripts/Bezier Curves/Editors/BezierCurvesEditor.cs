@@ -8,7 +8,8 @@ using Bezier;
 public class Curve
 {
     public List<Vector2> points;
-    public bool isClosed;
+    public bool isClosed = false;
+    
     public void StartCurve(Vector2 anchorPosition)
     {
         points = new List<Vector2>();
@@ -104,7 +105,6 @@ public class Curve
                 // Si es el ante penultimo!
                 else if (i == points.Count - 4)
                 {
-                    Debug.Log(i - 3);
                     Vector2 dir = points[i + 1] - points[i];
                     points[i + 2] = points[i + 1] + dir;
                 }
@@ -140,12 +140,14 @@ public class BezierCurvesEditor : Editor
 {
     BezierCurves creator;
     Curve curve;
-    bool removed = false;
-    bool added = false;
+    /// <summary>
+    /// Indica si la curva era previamente cerrada 
+    /// </summary>
+    private bool prevClosed = false;
     /// <summary>
     /// Separacion entre cada punto de la curva
     /// </summary>
-    public float separation = 0.1f;
+    public float separation = 1f;
     
     /// <summary>
     /// Precision del calculo de separacion uniforme de puntos en
@@ -160,12 +162,12 @@ public class BezierCurvesEditor : Editor
     {
         if (!curve.isClosed)
         {
-            if (added && !removed)
+
+            // Borrar los puntos de la curva si antes era cerrada
+            if (prevClosed && !curve.isClosed)
             {
                 curve.points.RemoveAt(curve.points.Count - 1);
                 curve.points.RemoveAt(curve.points.Count - 2);
-                added = false;
-                removed = true;
             }
             for (int i = 0; i < curve.NumSegments; i++)
             {
@@ -196,13 +198,14 @@ public class BezierCurvesEditor : Editor
                 Handles.DrawLine(segment[3], segment[2]);
                 Handles.DrawBezier(segment[0], segment[3], segment[1], segment[2], Color.green, null, 5);
             }
-            //if (curve.points[curve.points.Count - 1])
-            if (!added)
+
+            // Agregar los puntos de la curva cerrada si antes era abierta
+            if (!prevClosed && curve.isClosed)
             {
                 curve.points.Add(curve.points[curve.points.Count - 1] + Vector2.up);
                 curve.points.Add(curve.points[0] + Vector2.down);
-                added = true;
             }
+
             Handles.DrawBezier(curve.points[curve.points.Count - 3], curve.points[0], curve.points[curve.points.Count - 2], curve.points[curve.points.Count - 1], Color.red, null, 5);
             Handles.DrawLine(curve.points[curve.points.Count - 3], curve.points[curve.points.Count - 2]);
             Handles.DrawLine(curve.points[0], curve.points[curve.points.Count - 1]);
@@ -217,6 +220,7 @@ public class BezierCurvesEditor : Editor
                 }
             }
         }
+        prevClosed = curve.isClosed;
     }
 
     private void Input()
@@ -225,6 +229,7 @@ public class BezierCurvesEditor : Editor
         Vector2 mousePosition = HandleUtility.GUIPointToWorldRay(guiEvent.mousePosition).origin;
         if (guiEvent.type == EventType.MouseDown && guiEvent.button == 0 && guiEvent.shift)
         {
+            if (curve.isClosed) return;
             Undo.RecordObject(creator, "New Segment");
             curve.AddSegment(mousePosition);
         }
@@ -233,8 +238,6 @@ public class BezierCurvesEditor : Editor
             creator.curve = new Curve();
             curve = creator.curve;
             curve.StartCurve(Vector2.zero);
-            removed = false;
-            added = false;
             curve.isClosed = false;
         }
     }
@@ -301,7 +304,7 @@ public class BezierCurvesEditor : Editor
                 if (t + prec_step > 1)
                 {
                     segment += 1;
-                    //Parte fraccional del nuevo step
+                    // Parte fraccional del nuevo step
                     t = (t + prec_step) - Mathf.Floor(t + prec_step);
                 }
                 else
@@ -310,7 +313,32 @@ public class BezierCurvesEditor : Editor
                 }
                 prevpoint = actpoint;
             }
-            //Elimina duplicados adyacentes
+
+            // Agrega el ultimo segmento si es una curva cerrada
+            if (curve.isClosed)
+            {
+                handler1 = curve.points[curve.points.Count - 2];
+                handler2 = curve.points[curve.points.Count - 1];
+                anchor1 = curve.points[curve.points.Count - 3];
+                anchor2 = curve.points[0];
+                t = 0;
+                actDist = 0;
+                while (t < 1)
+                {
+                    actpoint = BezierInt.CubicBezier(anchor1, handler1, handler2, anchor2, t);
+                    float distbet = (actpoint - prevpoint).magnitude;
+                    actDist += distbet;
+                    if (actDist >= separation)
+                    {
+                        points.Add(actpoint);
+                        actDist = 0;
+                    }
+                    t += prec_step;
+                    prevpoint = actpoint;
+                }
+            }
+
+            // Elimina duplicados adyacentes
             for (int i = 0; i < points.Count - 1; i++)
             {
                 if (points[i] == points[i + 1])
