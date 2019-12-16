@@ -16,6 +16,19 @@ public class KamikazeEnemyManager : ActionManager
     /// </summary>
     [SerializeField]
     private bool bSeek = true;
+    private bool bCharging = false;
+    public bool IsLaunched { get { return bLaunched; } }
+    private bool bLaunched = false;
+
+    public float LaunchSpeed { get { return fLaunchSpeed; } }
+    [SerializeField]
+    private float fLaunchSpeed = 10f;
+
+    /// <summary>
+    /// Tiempo de carga final
+    /// </summary>
+    [SerializeField]
+    private float fChargeTime = 2;
 
     /// <summary>
     /// Segundos para que updatee la posicion del jugador
@@ -56,6 +69,7 @@ public class KamikazeEnemyManager : ActionManager
     private Transform playerT;
     private Rigidbody2D rb2d;
 
+    private Coroutine chargeRoutine = null;
 
     private void Awake()
     {
@@ -67,6 +81,9 @@ public class KamikazeEnemyManager : ActionManager
     {
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
         bSeek = true;
+        bIsMoving = true;
+        bCharging = false;
+        bLaunched = false;
     }
 
     private void Update()
@@ -82,14 +99,15 @@ public class KamikazeEnemyManager : ActionManager
                 //Debug.Log("Nueva posicion: " + target);
                 updateCounter = 0;
             }
-
             if (distSqr < updateDist * updateDist)
             {
                 bSeek = false;
+                executeAction("ChargeKamikaze");
             }
+            updateCounter += Time.deltaTime;
         }
-        executeAction("KamikazeMove");
-        updateCounter += Time.deltaTime;
+  
+        if (bIsMoving) executeAction("KamikazeMove");
     }
 
     /// <summary>
@@ -99,6 +117,34 @@ public class KamikazeEnemyManager : ActionManager
     public void MoveWithVel(Vector2 velocity)
     {
         this.velocity = velocity;
+    }
+
+    /// <summary>
+    /// Empieza la corutina de carga de la nave
+    /// </summary>
+    public void StartCharge()
+    {
+        if (chargeRoutine != null) StopCoroutine(chargeRoutine);
+        chargeRoutine = StartCoroutine(Charge());
+    }
+
+    /// <summary>
+    /// Carga la nave unos segundos antes de actualziar de nuevo 
+    /// la posicion del jugador e ir hacia el
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Charge()
+    {
+        bCharging = true;
+        bIsMoving = false;
+        bLaunched = false;
+        yield return new WaitForSeconds(fChargeTime);      
+        bCharging = false;
+        bIsMoving = true;
+        bLaunched = true;
+        lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
+
+        //executeAction("LaunchKamikaze");
     }
 
     private void FixedUpdate()

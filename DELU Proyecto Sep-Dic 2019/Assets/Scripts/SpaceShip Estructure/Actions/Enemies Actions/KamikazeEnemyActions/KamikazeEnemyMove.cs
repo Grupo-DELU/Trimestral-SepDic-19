@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Accion que mueve un enemigo kamikaze dependiendo de su estado
+/// </summary>
 [CreateAssetMenu(fileName = "A_KamikazeMove", menuName = "Actions/Enemies/Kamikaze/KamikazeMove", order = 0)]
 public class KamikazeEnemyMove : Action
 {
@@ -18,6 +21,10 @@ public class KamikazeEnemyMove : Action
 
     public Vector2 GetVelocity(KamikazeEnemyManager manager)
     {
-        return GetDirection(manager) * manager.fMaxSpeed * manager.fSpeed * Time.fixedDeltaTime;
+        if (!manager.IsLaunched)
+        {
+            return GetDirection(manager) * manager.fMaxSpeed * manager.fSpeed * Time.fixedDeltaTime;
+        }
+        return GetDirection(manager) * manager.LaunchSpeed * manager.fSpeed * Time.fixedDeltaTime;
     }
 }

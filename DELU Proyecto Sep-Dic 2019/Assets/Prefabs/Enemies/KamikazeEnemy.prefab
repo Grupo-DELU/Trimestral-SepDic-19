@@ -94,14 +94,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soActions:
   - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
+  - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
   bIsMoving: 1
   bSeek: 1
+  fLaunchSpeed: 20
+  fChargeTime: 2
   timeToUpate: 2
   updateDist: 5
   fMaxSpeed: 10
   fSpeed: 1
   velocity: {x: 0, y: 0}
-  dir: {x: 0, y: 0}
+  lastPlayerDir: {x: 0, y: 0}
 --- !u!50 &8431576055460200772
 Rigidbody2D:
   serializedVersion: 4
