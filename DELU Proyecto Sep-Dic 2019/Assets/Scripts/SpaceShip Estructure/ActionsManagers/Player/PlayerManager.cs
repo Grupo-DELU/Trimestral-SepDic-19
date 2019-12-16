@@ -40,11 +40,11 @@ public class PlayerManager : ActionManager {
 
         Por ejemplo:
          */
-        executeAction(ActionTags.PlayerMovement);
+        executeAction("PlayerMove");
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            executeAction(ActionTags.PlayerAttack);
+            //executeAction(ActionTags.PlayerAttack);
         }
     }
 

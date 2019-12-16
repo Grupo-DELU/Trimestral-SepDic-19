@@ -55,7 +55,7 @@ public class CurveEnemyManager : ActionManager
     // Update is called once per frame
     void Update()
     {
-        if (bIsMoving) executeAction(ActionTags.EnemyCurveMove);
+        if (bIsMoving) executeAction("SimpleFollowCurve");
     }
 
     /// <summary>

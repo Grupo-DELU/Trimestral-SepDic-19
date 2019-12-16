@@ -6,10 +6,10 @@
 /// Clase que define la estructura de una accion para
 /// el patronde diseño command. 
 /// </summary>
-public abstract class Action : MonoBehaviour
+public abstract class Action: ScriptableObject
 {
     //Indetificador de la accion
-    public new ActionTags tag;
+    public string tag = "default";
 
     /// <summary>
     /// doAction

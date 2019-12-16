@@ -9,6 +9,7 @@ using UnityEngine;
 /// el patronde diseño command. Se encarga de ejecutar
 /// el movimiento del jugador.
 /// </summary>
+[CreateAssetMenu(fileName = "A_PlayerMovement", menuName = "Actions/Player/PlayerMovement", order = 0)]
 public class PlayerMovementAction : Action
 {
     /*
@@ -16,8 +17,7 @@ public class PlayerMovementAction : Action
     funcionamiento de esta accion. Al final, se debera colocar
     en doActions la logica que sera ejecutada de la accion.
      */
-    override
-    public void doAction(ActionManager manager)
+    override public void doAction(ActionManager manager)
     {
         PlayerManager pm = manager as PlayerManager;
         pm.MoveWithVel(GetVelocity(pm));
@@ -26,6 +26,7 @@ public class PlayerMovementAction : Action
 
     private Vector2 GetDirection()
     {
+        Debug.Log(Vector2.right * Input.GetAxisRaw("Horizontal") + Vector2.up * Input.GetAxisRaw("Vertical"));
         return Vector2.right * Input.GetAxisRaw("Horizontal") + Vector2.up * Input.GetAxisRaw("Vertical");
     }
 

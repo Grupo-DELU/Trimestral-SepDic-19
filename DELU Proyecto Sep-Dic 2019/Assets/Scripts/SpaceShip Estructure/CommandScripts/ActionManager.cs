@@ -13,12 +13,17 @@ using UnityEngine;
 public class ActionManager : MonoBehaviour
 {
     // Diccionario de aciones del objeto que usa como llaves su tag de accion.
-    protected Dictionary<ActionTags, Action> actions = new Dictionary<ActionTags, Action>();
-    
-    //En clase base para que todos los hijos lo ejecuten
+    protected Dictionary<string, Action> actions = new Dictionary<string, Action>();
+
+    // Dado a que Unity no puede serializar diccionarios (aunque podemos hacer una hash table sencilla)
+    // nos toca usar un array para meter las acciones por inspector y luego al diccionario
+    [SerializeField]
+    private Action[] soActions;
+
+    // En clase base para que todos los hijos lo ejecuten
     protected virtual void Start()
     {
-        loadActions(this.GetComponents<Action>());
+        loadActions(soActions);
     }
 
     /// <summary>
@@ -28,7 +33,7 @@ public class ActionManager : MonoBehaviour
     /// por el cliente. 
     /// </summary>
     /// <param name="tag">Identificador de la accion</param>
-    public void executeAction(ActionTags tag)
+    public void executeAction(string tag)
     {
         actions[tag].doAction(this);
     }
@@ -43,7 +48,10 @@ public class ActionManager : MonoBehaviour
     {
         foreach (Action act in actions_to_load)
         {
+            #if UNITY_EDITOR
             Debug.Log(act.tag);
+            if (act.tag == "default") Debug.LogWarning("There's an action without tag");
+            #endif
             actions[act.tag] = act;
         }
     }

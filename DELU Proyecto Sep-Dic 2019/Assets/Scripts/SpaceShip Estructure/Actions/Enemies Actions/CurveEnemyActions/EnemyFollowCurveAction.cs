@@ -2,36 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "A_EnemyFollowCurve", menuName = "Actions/Enemies/SimpleCurveEnemy/SimpleFollowCurve", order = 0)]
 public class EnemyFollowCurveAction : Action
 {
     public override void doAction(ActionManager manager)
     {
         CurveEnemyManager cm = manager as CurveEnemyManager;
         cm.MoveWithVel(GetVelocity(cm));
-        if (GetVelocity(cm) != Vector2.zero) Debug.Log("Velocidad: " + GetVelocity(manager));
-        Debug.Log("Enemigo moviendose");
     }
 
-    private Vector2 GetDirection(ActionManager manager)
+    private Vector2 GetDirection(CurveEnemyManager manager)
     {
-        CurveEnemyManager cm = manager as CurveEnemyManager;
-        Vector2 targ = (cm.Target - (Vector2)cm.transform.position);
+        Vector2 targ = (manager.Target - (Vector2)manager.transform.position);
         //chequear esto en realidad
         float dist = targ.magnitude;
-        //treshold modifical
+        //treshold modificar
         if (dist < 0.5f)
         {
-            cm.NextPoint();
+            manager.NextPoint();
             return targ;
         }
-        //Debug.Log("zorra maldita");
-        return (cm.Target - (Vector2)cm.transform.position).normalized;
+        return (manager.Target - (Vector2)manager.transform.position).normalized;
     }
 
-    private Vector2 GetVelocity(ActionManager manager)
+    private Vector2 GetVelocity(CurveEnemyManager manager)
     {
-        CurveEnemyManager cm = manager as CurveEnemyManager;
-        return GetDirection(cm) * cm.fSpeed * cm.fMaxSpeed;
+        return GetDirection(manager) * manager.fSpeed * manager.fMaxSpeed;
     }
 
 }
