@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Bezier;
 
 [System.Serializable]
 public class Curve
@@ -40,6 +41,7 @@ public class Curve
     //agrega caso de closed
     public void MovePoint(int i, Vector2 newPos)
     {
+        // Si es un anchor point... Listo
         if (i % 3 == 0)
         {
             Vector2 oldPos = points[i];
@@ -48,6 +50,12 @@ public class Curve
             if (i == 0)
             {
                 points[1] += delta;
+                // Si la curva es cerrada, ahora el ultimo es control del primero
+                // y tambien hay que moverlo con este
+                if (isClosed)
+                {
+                    points[points.Count - 1] += delta;
+                }
             }
             else if (i == points.Count - 1)
             {
@@ -59,6 +67,7 @@ public class Curve
                 points[i + 1] += delta;
             }
         }
+        // Si es un punto de control
         else
         {
             if (!isClosed)
@@ -79,22 +88,35 @@ public class Curve
             }
             else
             {
+                // Si es el ultimo punto
                 if (i == points.Count - 1)
                 {
-                    Vector2 dir = points[i - 2] - points[i];
+                    //Vector2 dir = points[i - 2] - points[i];
+                    Vector2 dir = points[0] - points[i];
                     points[1] = points[0] + dir;
                 }
+                // Si es el penultimo
                 else if (i == points.Count - 2)
                 {
                     Vector2 dir = points[i - 1] - points[i];
                     points[i - 2] = points[i - 1] + dir;
                 }
+                // Si es el ante penultimo!
+                else if (i == points.Count - 4)
+                {
+                    Debug.Log(i - 3);
+                    Vector2 dir = points[i + 1] - points[i];
+                    points[i + 2] = points[i + 1] + dir;
+                }
+                // Si es el primero
                 else if (i == 1)
                 {
                     Vector2 dir = points[0] - points[i];
                     points[points.Count - 1] = points[0] + dir;
                 }
-                if (i - 1 != 0 && i + 1 != points.Count - 1)
+                // Despues de todos los casos especiales,
+                // los puntos intermedios...
+                else
                 {
                     if (i % 3 == 1)
                     {
@@ -116,31 +138,6 @@ public class Curve
 [CustomEditor(typeof(BezierCurves))]
 public class BezierCurvesEditor : Editor
 {
-    //Yep, sto definitivamente lo tengo que mover al namespace 
-    #region PEDRO MUEVE ESTA MIERDA MARICO, SI ALGUIEN VE ESTO, POR FAVOR DIGANME QUE LO MUEVA
-    public Vector2 LinearInterpolation(Vector2 a, Vector2 b, float t)
-    {
-        Vector2 linearInterpolation = a + (b - a) * t;
-        return linearInterpolation;
-    }
-
-    public Vector2 QuadraticInt(Vector2 a, Vector2 b, Vector2 c, float t)
-    {
-        Vector2 linearAB = LinearInterpolation(a, b, t);
-        Vector2 linearBC = LinearInterpolation(b, c, t);
-        Vector2 final = LinearInterpolation(linearAB, linearBC, t);
-        return final;
-    }
-
-    public Vector2 CubicBezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
-    {
-        Vector2 quadABC = QuadraticInt(a, b, c, t);
-        Vector2 quadBCD = QuadraticInt(b, c, d, t);
-        Vector2 final = LinearInterpolation(quadABC, quadBCD, t);
-        return final;
-    }
-    #endregion
-
     BezierCurves creator;
     Curve curve;
     bool removed = false;
@@ -263,13 +260,13 @@ public class BezierCurvesEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        //Slider y label para el step de la funcion
+
         GUILayout.Label("Separation");
-        //GUILayout.Label(separation.ToString());
         separation = Mathf.Abs(EditorGUILayout.FloatField(separation));
+
         GUILayout.Label("Precision step");
-        //GUILayout.Label(prec_step.ToString());
         prec_step = Mathf.Abs(EditorGUILayout.FloatField(prec_step));
+
         //Boton para crear scriptable object de curva
         if (GUILayout.Button("*honk* *honk*"))
         {
@@ -284,7 +281,7 @@ public class BezierCurvesEditor : Editor
             Vector2 anchor1 = curve.GetPointsInSegment(segment)[0];
             Vector2 anchor2 = curve.GetPointsInSegment(segment)[3];
 
-            Vector2 prevpoint = creator.CubicBezier(anchor1, handler1, handler2, anchor2, 0);
+            Vector2 prevpoint = BezierInt.CubicBezier(anchor1, handler1, handler2, anchor2, 0);
             Vector2 actpoint;
             while (segment < curve.NumSegments) 
             {
@@ -293,7 +290,7 @@ public class BezierCurvesEditor : Editor
                 anchor1 = curve.GetPointsInSegment(segment)[0];
                 anchor2 = curve.GetPointsInSegment(segment)[3];
 
-                actpoint = creator.CubicBezier(anchor1, handler1, handler2, anchor2, t);
+                actpoint = BezierInt.CubicBezier(anchor1, handler1, handler2, anchor2, t);
                 float distbet = (actpoint - prevpoint).magnitude;
                 actDist += distbet;
                 if (actDist >= separation)

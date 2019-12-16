@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soActions:
   - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
-  - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
+  - {fileID: 11400000, guid: 68ad93c9f07ae734cb6666691f70dcfe, type: 2}
   bIsMoving: 1
   bSeek: 1
   fLaunchSpeed: 20
