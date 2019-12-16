@@ -13,7 +13,7 @@ public class KamikazeEnemyMove : Action
 
     public Vector2 GetDirection(KamikazeEnemyManager manager)
     {
-        return manager.dir.normalized;
+        return manager.lastPlayerDir.normalized;
     }
 
     public Vector2 GetVelocity(KamikazeEnemyManager manager)

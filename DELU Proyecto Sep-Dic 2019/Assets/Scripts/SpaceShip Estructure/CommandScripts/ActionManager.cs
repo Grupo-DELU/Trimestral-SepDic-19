@@ -13,10 +13,16 @@ using UnityEngine;
 public class ActionManager : MonoBehaviour
 {
     // Diccionario de aciones del objeto que usa como llaves su tag de accion.
+    /// <summary>
+    /// Diccionario de acciones por tag
+    /// </summary>
     protected Dictionary<string, Action> actions = new Dictionary<string, Action>();
 
     // Dado a que Unity no puede serializar diccionarios (aunque podemos hacer una hash table sencilla)
     // nos toca usar un array para meter las acciones por inspector y luego al diccionario
+    /// <summary>
+    /// Lista de acciones del agente
+    /// </summary>
     [SerializeField]
     private Action[] soActions;
 

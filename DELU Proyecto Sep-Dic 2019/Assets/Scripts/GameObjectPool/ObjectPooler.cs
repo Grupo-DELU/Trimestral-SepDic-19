@@ -9,12 +9,14 @@ public class Pooler
     public int iQuantity = 10;
     public bool bIsGrowable = false;
     public GameObject gObject;
-    [HideInInspector] public List<GameObject> lInstantiated;
+    [HideInInspector]
+    public List<GameObject> lInstantiated;
 }
 
 public class ObjectPooler : MonoBehaviour
 {
-    [SerializeField] private Pooler[] pools;
+    [SerializeField]
+    private Pooler[] pools;
 
     // Start is called before the first frame update
     void Start()

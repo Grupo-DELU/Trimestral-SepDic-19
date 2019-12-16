@@ -8,7 +8,9 @@
 /// </summary>
 public abstract class Action: ScriptableObject
 {
-    //Indetificador de la accion
+    /// <summary>
+    /// Identificador de la accion
+    /// </summary>
     public string tag = "default";
 
     /// <summary>

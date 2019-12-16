@@ -11,27 +11,49 @@ public class KamikazeEnemyManager : ActionManager
     [SerializeField]
     private bool bIsMoving = true;
 
+    /// <summary>
+    /// Indica si la nave puede updatear la posicion del jugador
+    /// </summary>
     [SerializeField]
     private bool bSeek = true;
 
-    private Transform playerT;
-    private Vector2 target;
-
+    /// <summary>
+    /// Segundos para que updatee la posicion del jugador
+    /// </summary>
     [SerializeField]
     private int timeToUpate = 10;
+    /// <summary>
+    /// Contador de tiempo para updatear
+    /// </summary>
     private float updateCounter = 0;
     /// <summary>
-    /// Distancia a la que dejara de seguir al jugador
+    /// Distancia a la que dejara de actualizar la posicion del jugador
     /// </summary>
     [SerializeField]
     private float updateDist = 5f;
 
+    /// <summary>
+    /// Rapidez maxima de la nave
+    /// </summary>
     public float fMaxSpeed = 10;
+    /// <summary>
+    /// Rapidez de la nave
+    /// </summary>
     [Range(-1f, 1f)]
     public float fSpeed = 1;
 
+    /// <summary>
+    /// Velocidad de la nave
+    /// </summary>
     public Vector2 velocity = Vector2.zero;
-    public Vector2 dir = Vector2.zero;
+    /// <summary>
+    /// Ultima direccion conocida hacia el jugador
+    /// </summary>
+    public Vector2 lastPlayerDir = Vector2.zero;
+    /// <summary>
+    /// Transform del jugador
+    /// </summary>
+    private Transform playerT;
     private Rigidbody2D rb2d;
 
 
@@ -41,16 +63,9 @@ public class KamikazeEnemyManager : ActionManager
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-    protected override void Start()
-    {
-        Debug.Log("Hola");
-        base.Start();
-    }
-
     private void OnEnable()
     {
-        target = playerT.position;
-        dir = (Vector2)playerT.position - (Vector2)transform.position;
+        lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
         bSeek = true;
     }
 
@@ -63,8 +78,7 @@ public class KamikazeEnemyManager : ActionManager
         {
             if (updateCounter >= timeToUpate)
             {
-                target = playerT.position;
-                dir = (Vector2)playerT.position - (Vector2)transform.position;
+                lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
                 //Debug.Log("Nueva posicion: " + target);
                 updateCounter = 0;
             }
@@ -78,6 +92,10 @@ public class KamikazeEnemyManager : ActionManager
         updateCounter += Time.deltaTime;
     }
 
+    /// <summary>
+    /// Cambia la velocidad de la nave
+    /// </summary>
+    /// <param name="velocity">Nueva velocidad de la nave</param>
     public void MoveWithVel(Vector2 velocity)
     {
         this.velocity = velocity;

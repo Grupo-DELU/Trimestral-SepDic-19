@@ -19,10 +19,19 @@ public class PlayerManager : ActionManager {
     De esta manera, los objetos (player y enemigos) pueden
     insteractura con sus acciones de la misma manera.
     */
+    /// <summary>
+    /// Rapidez maxima del jugador
+    /// </summary>
     public float fMaxSpeed = 10;
+    /// <summary>
+    /// Rapidez del jugador
+    /// </summary>
     [Range(-1f, 1f)]
     public float fSpeed = 1;
 
+    /// <summary>
+    /// Velocidad del jugador
+    /// </summary>
     public Vector2 velocity = Vector2.zero;
     private Rigidbody2D rb2d;
 
@@ -48,6 +57,10 @@ public class PlayerManager : ActionManager {
         }
     }
 
+    /// <summary>
+    /// Cambia la velocidad del jugador
+    /// </summary>
+    /// <param name="velocity">Nueva velocidad</param>
     public void MoveWithVel(Vector2 velocity)
     {
         this.velocity = velocity;
