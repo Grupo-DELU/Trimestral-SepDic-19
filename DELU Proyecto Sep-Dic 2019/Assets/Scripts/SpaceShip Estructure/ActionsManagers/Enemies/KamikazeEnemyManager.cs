@@ -90,7 +90,7 @@ public class KamikazeEnemyManager : ActionManager
     {
         //Si ya pasaron los frames de update posicion jugador
         //updatea la posicion
-        float distSqr = ((Vector2)transform.position - (Vector2)playerT.position).sqrMagnitude;
+        float distSqr = (transform.position.y - playerT.position.y);
         if (bSeek)
         {
             if (updateCounter >= timeToUpate)
@@ -99,7 +99,7 @@ public class KamikazeEnemyManager : ActionManager
                 //Debug.Log("Nueva posicion: " + target);
                 updateCounter = 0;
             }
-            if (distSqr < updateDist * updateDist)
+            if (distSqr < updateDist)
             {
                 bSeek = false;
                 executeAction("ChargeKamikaze");
