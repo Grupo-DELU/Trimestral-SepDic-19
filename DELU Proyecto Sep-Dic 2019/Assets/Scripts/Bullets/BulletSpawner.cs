@@ -38,9 +38,10 @@ public class BulletSpawner : MonoBehaviour {
 
     private void Start () {
         // Get ECS representation
-        bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, World.Active);
+        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
+        bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, settings);
         // Get Current ECS manager
-        worldEntityManager = World.Active.EntityManager;
+        worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
     }
 
     /// <summary>
