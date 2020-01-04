@@ -36,16 +36,28 @@ public class BulletSpawner : MonoBehaviour {
     private int testSpawn = 100;
 #endif // UNITY_EDITOR
 
+    /// <summary>
+    /// Blob asset store due to error with physics and entities
+    /// </summary>
     private BlobAssetStore blobAssetStore;
 
+    /// <summary>
+    /// World Limits for Bullets
+    /// </summary>
+    [Tooltip ("World Limits for Bullets")]
+    [SerializeField]
+    private Vector4 worldLimits = new Vector4 (-10.0f, -10.0f, 10.0f, 10.0f);
+
     private void Start () {
-        blobAssetStore = new BlobAssetStore();
+        blobAssetStore = new BlobAssetStore ();
         // Get ECS representation
-        var settings 
-            = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+        var settings = GameObjectConversionSettings.FromWorld (World.DefaultGameObjectInjectionWorld, blobAssetStore);
         bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, settings);
         // Get Current ECS manager
         worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+    
+        BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BulletMovementSystem> ();
+        bulletMovementSystem.WorldLimits = worldLimits; // Set up world limits
     }
 
     /// <summary>
@@ -71,7 +83,7 @@ public class BulletSpawner : MonoBehaviour {
 
         // Add the Bullet Movement
         worldEntityManager.AddComponentData (newBullet, new BulletMovement { speed = velocity.magnitude });
-        
+
         // Set up the Bullet Physics movement
         worldEntityManager.SetComponentData (newBullet,
             new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, angularSpeed) }
@@ -96,11 +108,22 @@ public class BulletSpawner : MonoBehaviour {
 #endif // UNITY_EDITOR
     }
 
-    private void OnDestroy() {
-        if (blobAssetStore != null)
-        {
-            blobAssetStore.Dispose();
+    private void OnDestroy () {
+        if (blobAssetStore != null) {
+            blobAssetStore.Dispose ();
             blobAssetStore = null;
         }
     }
+
+#if UNITY_EDITOR
+    private void OnValidate () {
+        if (worldEntityManager != null && World.DefaultGameObjectInjectionWorld != null) {
+            BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<BulletMovementSystem> ();
+            if (bulletMovementSystem != null) {
+                bulletMovementSystem.WorldLimits = worldLimits;
+            }
+        }
+    }
+#endif // UNITY_EDITOR
+
 }

@@ -29,6 +29,11 @@ public class BulletMovementSystem : JobComponentSystem {
     /// </summary>
     private float4 worldLimits = new float4 (-10.0f, -10.0f, 10.0f, 10.0f);
 
+    /// <summary>
+    /// World Limits
+    /// </summary>
+    public float4 WorldLimits { get { return worldLimits; } set { worldLimits = value; } }
+
     protected override void OnCreate () {
         // Barrier for destroy commands executions
         m_Barrier = World
@@ -42,8 +47,6 @@ public class BulletMovementSystem : JobComponentSystem {
         var commandBuffer = m_Barrier.CreateCommandBuffer ().ToConcurrent ();
 
         var localWorldLimits = worldLimits;
-
-        /*
 
         var destroyJobHandle = Entities.
         WithName ("BulletDestroySystem").
@@ -65,8 +68,6 @@ public class BulletMovementSystem : JobComponentSystem {
         // Execute Barrier after job
         m_Barrier.AddJobHandleForProducer (destroyJobHandle);
 
-        */
-
         var localFront = front;
 
         var jobHandle = Entities.
@@ -82,7 +83,7 @@ public class BulletMovementSystem : JobComponentSystem {
                 velocity.Angular.x = 0;
                 velocity.Angular.y = 0;
             }
-        ).Schedule (inputDependencies);
+        ).Schedule (destroyJobHandle);
 
         return jobHandle;
     }
