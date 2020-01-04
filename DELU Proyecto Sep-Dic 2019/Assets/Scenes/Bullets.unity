@@ -487,7 +487,6 @@ GameObject:
   - component: {fileID: 905926672}
   - component: {fileID: 905926671}
   - component: {fileID: 905926670}
-  - component: {fileID: 905926669}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -509,27 +508,6 @@ Transform:
   m_Father: {fileID: 231042167}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &905926669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905926667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb54ea4f67dc17342bcd49954c53502d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DrawColliders: 1
-  DrawColliderEdges: 0
-  DrawColliderAabbs: 0
-  DrawBroadphase: 0
-  DrawMassProperties: 0
-  DrawContacts: 0
-  DrawCollisionEvents: 0
-  DrawTriggerEvents: 0
-  DrawJoints: 0
 --- !u!114 &905926670
 MonoBehaviour:
   m_ObjectHideFlags: 0
