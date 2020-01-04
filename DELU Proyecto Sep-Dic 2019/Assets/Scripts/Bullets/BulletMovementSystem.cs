@@ -41,43 +41,44 @@ public class BulletMovementSystem : JobComponentSystem {
 
         var commandBuffer = m_Barrier.CreateCommandBuffer ().ToConcurrent ();
 
-        var localFront = front;
         var localWorldLimits = worldLimits;
 
-        var jobHandle = Entities
-            .WithName ("BulletMovementSystem")
-            .WithBurst (FloatMode.Default, FloatPrecision.Standard, true)
-            .WithReadOnly (localFront)
-            .WithReadOnly (localWorldLimits)
-            .ForEach (
-                (
-                    Entity enitity, int entityInQueryIndex, ref PhysicsVelocity velocity, in Translation translation, in Rotation rotation, in BulletMovement bulletMovement
-                ) => {
-                    float3 vel = math.mul (rotation.Value, localFront) * bulletMovement.speed;
-                    vel.z = 0;
-
-                    float3 angVel = velocity.Angular;
-                    angVel.x = 0;
-                    angVel.y = 0;
-
-                    velocity = new PhysicsVelocity {
-                        Linear = vel,
-                        Angular = angVel
-                    };
-
-                    // If out of bounds delete
-                    if (translation.Value.x < localWorldLimits.x ||
-                        translation.Value.y < localWorldLimits.y ||
-                        translation.Value.x > localWorldLimits.w ||
-                        translation.Value.y > localWorldLimits.z
-                    ) {
-                        commandBuffer.DestroyEntity (entityInQueryIndex, enitity);
-                    }
+        var destroyJobHandle = Entities.
+        WithName ("BulletDestroySystem").
+        WithBurst (FloatMode.Default, FloatPrecision.Standard, true).
+        WithReadOnly (localWorldLimits).
+        ForEach (
+            (Entity entity, int entityInQueryIndex, in Translation translation) => {
+                // If out of bounds delete
+                if (translation.Value.x < localWorldLimits.x ||
+                    translation.Value.y < localWorldLimits.y ||
+                    translation.Value.x > localWorldLimits.w ||
+                    translation.Value.y > localWorldLimits.z
+                ) {
+                    commandBuffer.DestroyEntity (entityInQueryIndex, entity);
                 }
-            ).Schedule (inputDependencies);
+            }
+        ).Schedule (inputDependencies);
 
         // Execute Barrier after job
-        m_Barrier.AddJobHandleForProducer (jobHandle);
+        m_Barrier.AddJobHandleForProducer (destroyJobHandle);
+
+        var localFront = front;
+
+        var jobHandle = Entities.
+        WithName ("BulletMovementSystem").
+        WithBurst (FloatMode.Default, FloatPrecision.Standard, true).
+        WithReadOnly (localFront).
+        ForEach (
+            (ref PhysicsVelocity velocity, in Rotation rotation, in BulletMovement bulletMovement) => {
+                velocity.Linear = math.mul (rotation.Value, localFront) * bulletMovement.speed;
+                velocity.Linear.z = 0;
+
+                float3 angVel = velocity.Angular;
+                velocity.Angular.x = 0;
+                velocity.Angular.y = 0;
+            }
+        ).Schedule (destroyJobHandle);
 
         return jobHandle;
     }
