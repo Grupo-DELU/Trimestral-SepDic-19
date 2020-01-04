@@ -16,6 +16,10 @@ public class ShipCollider : MonoBehaviour {
     /// </summary>
     private Entity _entity;
 
+    private Translation translation;
+
+    private Rotation rotation;
+
     /// <summary>
     /// Register this Ship Collider
     /// </summary>
@@ -24,12 +28,18 @@ public class ShipCollider : MonoBehaviour {
     public void Register (Entity entity, EntityManager manager) {
         _manager = manager;
         _entity = entity;
+        translation = new Translation { Value = transform.position };
+        rotation = new Rotation { Value = transform.rotation };
+        _manager.SetComponentData (_entity, translation);
+        _manager.SetComponentData (_entity, rotation);
     }
 
     private void Update () {
         if (_manager != null) {
-            _manager.SetComponentData (_entity, new Translation { Value = transform.position });
-            _manager.SetComponentData (_entity, new Rotation { Value = transform.rotation });
+            translation.Value = transform.position;
+            rotation.Value = transform.rotation;
+            _manager.SetComponentData (_entity, translation);
+            _manager.SetComponentData (_entity, rotation);
         }
     }
 
