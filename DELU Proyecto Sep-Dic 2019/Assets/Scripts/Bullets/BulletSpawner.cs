@@ -36,9 +36,13 @@ public class BulletSpawner : MonoBehaviour {
     private int testSpawn = 100;
 #endif // UNITY_EDITOR
 
+    private BlobAssetStore blobAssetStore;
+
     private void Start () {
+        blobAssetStore = new BlobAssetStore();
         // Get ECS representation
-        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, new BlobAssetStore());
+        var settings 
+            = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
         bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, settings);
         // Get Current ECS manager
         worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -90,5 +94,13 @@ public class BulletSpawner : MonoBehaviour {
             }
         }
 #endif // UNITY_EDITOR
+    }
+
+    private void OnDestroy() {
+        if (blobAssetStore != null)
+        {
+            blobAssetStore.Dispose();
+            blobAssetStore = null;
+        }
     }
 }

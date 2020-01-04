@@ -43,6 +43,8 @@ public class BulletMovementSystem : JobComponentSystem {
 
         var localWorldLimits = worldLimits;
 
+        /*
+
         var destroyJobHandle = Entities.
         WithName ("BulletDestroySystem").
         WithBurst (FloatMode.Default, FloatPrecision.Standard, true).
@@ -63,6 +65,8 @@ public class BulletMovementSystem : JobComponentSystem {
         // Execute Barrier after job
         m_Barrier.AddJobHandleForProducer (destroyJobHandle);
 
+        */
+
         var localFront = front;
 
         var jobHandle = Entities.
@@ -78,7 +82,7 @@ public class BulletMovementSystem : JobComponentSystem {
                 velocity.Angular.x = 0;
                 velocity.Angular.y = 0;
             }
-        ).Schedule (destroyJobHandle);
+        ).Schedule (inputDependencies);
 
         return jobHandle;
     }
