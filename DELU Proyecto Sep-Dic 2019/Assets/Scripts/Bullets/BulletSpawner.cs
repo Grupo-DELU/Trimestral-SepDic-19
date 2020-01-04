@@ -66,7 +66,8 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="position">Position to shoot the bullet</param>
     /// <param name="velocity">Bullet's Velocity</param>
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
-    public void ShootBullet (Vector2 position, Vector2 velocity, float angularSpeed) {
+    /// <param name="bulletTeamMask">Bullet Team Mask for Ship Collisions</param>
+    public void ShootBullet (Vector2 position, Vector2 velocity, float angularSpeed, int bulletTeamMask) {
         // Create new bullet instance
         Entity newBullet = worldEntityManager.Instantiate (bulletPrefabEntity);
 
@@ -88,6 +89,9 @@ public class BulletSpawner : MonoBehaviour {
         worldEntityManager.SetComponentData (newBullet,
             new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, angularSpeed) }
         );
+
+        // Add the Bullet Team Mask
+        worldEntityManager.AddComponentData (newBullet, new ShipCollisionMask { collisionMask = bulletTeamMask });
     }
 
     private void Update () {
@@ -102,7 +106,7 @@ public class BulletSpawner : MonoBehaviour {
                 vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.Normalize ();
                 vel *= UnityEngine.Random.Range (10.0f, 20.0f);
-                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI);
+                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range(0, 32));
             }
         }
 #endif // UNITY_EDITOR
