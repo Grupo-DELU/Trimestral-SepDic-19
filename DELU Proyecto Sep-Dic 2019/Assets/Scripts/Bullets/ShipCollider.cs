@@ -45,7 +45,14 @@ public class ShipCollider : MonoBehaviour {
             _manager.SetComponentData (_entity, rotation);
             collision = _manager.GetComponentData<ShipCollision> (_entity);
             if (collision.collisionMask != 0) {
-                Debug.Log (collision.collisionMask);
+
+                for (int i = 0; i < 32; i++)
+                {
+                    if ((collision.collisionMask & (1 << i)) != 0)
+                    {
+                        Debug.Log (i);
+                    }
+                }
                 collision.collisionMask = 0;
                 _manager.SetComponentData (_entity, collision);
             }

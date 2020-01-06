@@ -31,7 +31,7 @@ public struct ShipCollisionMask : IComponentData {
     /// </summary>
     public int collisionMask;
 }
-/*
+
 
 [UpdateAfter (typeof (EndFramePhysicsSystem))]
 public class ShipCollisionSystem : JobComponentSystem {
@@ -41,8 +41,8 @@ public class ShipCollisionSystem : JobComponentSystem {
     private StepPhysicsWorld stepPhysicsWorldSystem;
 
     protected override void OnCreate () {
-        physicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BuildPhysicsWorld> ();
-        stepPhysicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<StepPhysicsWorld> ();
+        physicsWorldSystem = World.GetOrCreateSystem<BuildPhysicsWorld> ();
+        stepPhysicsWorldSystem = World.GetOrCreateSystem<StepPhysicsWorld> ();
     }
 
     protected override JobHandle OnUpdate (JobHandle inputDependencies) {
@@ -57,7 +57,7 @@ public class ShipCollisionSystem : JobComponentSystem {
         }.Schedule (stepPhysicsWorldSystem.Simulation,
             ref physicsWorldSystem.PhysicsWorld, inputDependencies);
 
-        return default;
+        return jobHandle;
     }
 
     [BurstCompile]
@@ -76,22 +76,14 @@ public class ShipCollisionSystem : JobComponentSystem {
             bool bodyBHasCollision = CollisionGroup.Exists (entityB);
 
             if (bodyAHasCollision && bodyBHasCollisionMask) {
-                //ApplyCollision (entityB, entityA);
-                ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityB];
-            ShipCollision collisionComponent = CollisionGroup[entityA];
-            collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;
-            CollisionGroup[entityA] = collisionComponent;
+                ApplyCollision (entityB, entityA);
             }
 
             if (bodyAHasCollisionMask && bodyBHasCollision) {
-                //ApplyCollision (entityA, entityB);
-                ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityA];
-            ShipCollision collisionComponent = CollisionGroup[entityB];
-            collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;
-            CollisionGroup[entityB] = collisionComponent;
+                ApplyCollision (entityA, entityB);
             }
         }
-
+        
         /// <summary>
         /// Apply Collision from Entity A to B
         /// </summary>
@@ -105,4 +97,3 @@ public class ShipCollisionSystem : JobComponentSystem {
         }
     }
 }
-*/
