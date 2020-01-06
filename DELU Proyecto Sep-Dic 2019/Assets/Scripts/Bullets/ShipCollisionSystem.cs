@@ -31,75 +31,78 @@ public struct ShipCollisionMask : IComponentData {
     /// </summary>
     public int collisionMask;
 }
+/*
 
 [UpdateAfter (typeof (EndFramePhysicsSystem))]
 public class ShipCollisionSystem : JobComponentSystem {
 
     private BuildPhysicsWorld physicsWorldSystem;
 
-    private CollisionWorld collisionWorld;
+    private StepPhysicsWorld stepPhysicsWorldSystem;
 
     protected override void OnCreate () {
-        physicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld> ();
-        collisionWorld = physicsWorldSystem.PhysicsWorld.CollisionWorld;
-    }
-
-    /// <summary>
-    /// Check if something collided with a physics collider (Gets the closests collision)
-    /// This only exists because lambdas cant be unsafe
-    /// </summary>
-    /// <param name="col">Collider to test</param>
-    /// <param name="translation">Its possition</param>
-    /// <param name="rotation">Its rotation</param>
-    /// <param name="physicsWorld">Where it belongs</param>
-    /// <param name="collisionWorld">Where it belongs</param>
-    /// <returns>Entity of the collision or null</returns>
-    public unsafe static Entity Execute (in PhysicsCollider col, in Translation translation, in Rotation rotation, in PhysicsWorld physicsWorld, CollisionWorld collisionWorld) {
-        ColliderCastInput input = new ColliderCastInput () {
-            Collider = col.ColliderPtr,
-            Orientation = rotation.Value,
-            Start = translation.Value,
-            End = translation.Value
-        };
-
-        ColliderCastHit hit = new ColliderCastHit ();
-        bool haveHit = collisionWorld.CastCollider (input, out hit);
-        if (haveHit) {
-            // see hit.Position
-            // see hit.SurfaceNormal
-            Entity e = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
-            return e;
-        }
-        return Entity.Null;
+        physicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BuildPhysicsWorld> ();
+        stepPhysicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<StepPhysicsWorld> ();
     }
 
     protected override JobHandle OnUpdate (JobHandle inputDependencies) {
 
-        // Assign values to the fields on your job here, so that it has
-        // everything it needs to do its work when it runs later.
-        // For example,
-        //     job.deltaTime = UnityEngine.Time.deltaTime;
-
-        var localPhysicsWorld = physicsWorldSystem.PhysicsWorld;
-        var localCollisionWorld = collisionWorld;
-
         ComponentDataFromEntity<ShipCollisionMask> shipCollisionMaskFromEntity = GetComponentDataFromEntity<ShipCollisionMask> (true);
+        ComponentDataFromEntity<ShipCollision> shipCollisionFromEntity = GetComponentDataFromEntity<ShipCollision> ();
 
-        var jobHandle = Entities.
-        WithName ("ShipCollisionSystem").
-        WithBurst (FloatMode.Default, FloatPrecision.Standard, true).
-        ForEach (
-            (ref ShipCollision ship, in PhysicsCollider col, in Translation translation, in Rotation rotation) => {
-                Entity collided = Execute (col, translation, rotation, localPhysicsWorld, localCollisionWorld);
-                if (collided != Entity.Null) {
-                    if (shipCollisionMaskFromEntity.Exists (collided)) {
-                        ShipCollisionMask collision = shipCollisionMaskFromEntity[collided];
-                        ship.collisionMask |= collision.collisionMask;
-                    }
-                }
+        
+        var jobHandle = new TriggerEventJob () {
+            CollisionMaskGroup = GetComponentDataFromEntity<ShipCollisionMask> (true),
+                CollisionGroup = GetComponentDataFromEntity<ShipCollision> (),
+        }.Schedule (stepPhysicsWorldSystem.Simulation,
+            ref physicsWorldSystem.PhysicsWorld, inputDependencies);
+
+        return default;
+    }
+
+    [BurstCompile]
+    private struct TriggerEventJob : ITriggerEventsJob {
+        [ReadOnly] public ComponentDataFromEntity<ShipCollisionMask> CollisionMaskGroup;
+        public ComponentDataFromEntity<ShipCollision> CollisionGroup;
+
+        public void Execute (TriggerEvent triggerEvent) {
+            Entity entityA = triggerEvent.Entities.EntityA;
+            Entity entityB = triggerEvent.Entities.EntityB;
+
+            bool bodyAHasCollisionMask = CollisionMaskGroup.Exists (entityA);
+            bool bodyBHasCollisionMask = CollisionMaskGroup.Exists (entityB);
+
+            bool bodyAHasCollision = CollisionGroup.Exists (entityA);
+            bool bodyBHasCollision = CollisionGroup.Exists (entityB);
+
+            if (bodyAHasCollision && bodyBHasCollisionMask) {
+                //ApplyCollision (entityB, entityA);
+                ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityB];
+            ShipCollision collisionComponent = CollisionGroup[entityA];
+            collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;
+            CollisionGroup[entityA] = collisionComponent;
             }
-        ).Schedule (inputDependencies);
 
-        return jobHandle;
+            if (bodyAHasCollisionMask && bodyBHasCollision) {
+                //ApplyCollision (entityA, entityB);
+                ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityA];
+            ShipCollision collisionComponent = CollisionGroup[entityB];
+            collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;
+            CollisionGroup[entityB] = collisionComponent;
+            }
+        }
+
+        /// <summary>
+        /// Apply Collision from Entity A to B
+        /// </summary>
+        /// <param name="entityA">Starting Entity</param>
+        /// <param name="entityB">Receiving Entity</param>
+        public void ApplyCollision (Entity entityA, Entity entityB) {
+            ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityA];
+            ShipCollision collisionComponent = CollisionGroup[entityB];
+            collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;
+            CollisionGroup[entityB] = collisionComponent;
+        }
     }
 }
+*/

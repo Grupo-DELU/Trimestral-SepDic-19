@@ -32,7 +32,7 @@ public class ShipCollider : MonoBehaviour {
         rotation = new Rotation { Value = transform.rotation };
         _manager.SetComponentData (_entity, translation);
         _manager.SetComponentData (_entity, rotation);
-        _manager.AddComponentData (_entity, new ShipCollision { collisionMask = 0 });
+        //_manager.AddComponentData (_entity, new ShipCollision { collisionMask = 0 });
     }
 
     private void Update () {
@@ -41,12 +41,13 @@ public class ShipCollider : MonoBehaviour {
             rotation.Value = transform.rotation;
             _manager.SetComponentData (_entity, translation);
             _manager.SetComponentData (_entity, rotation);
+            /*
             ShipCollision col = _manager.GetComponentData<ShipCollision>(_entity);
             if (col.collisionMask != 0) {
                 Debug.Log(col.collisionMask);
                 col.collisionMask = 0;
                 _manager.SetComponentData<ShipCollision>(_entity, col);
-            }
+            }*/
         }
     }
 
