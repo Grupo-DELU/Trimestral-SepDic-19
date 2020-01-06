@@ -20,6 +20,8 @@ public class ShipCollider : MonoBehaviour {
 
     private Rotation rotation;
 
+    private ShipCollision collision;
+
     /// <summary>
     /// Register this Ship Collider
     /// </summary>
@@ -41,13 +43,12 @@ public class ShipCollider : MonoBehaviour {
             rotation.Value = transform.rotation;
             _manager.SetComponentData (_entity, translation);
             _manager.SetComponentData (_entity, rotation);
-            /*
-            ShipCollision col = _manager.GetComponentData<ShipCollision>(_entity);
-            if (col.collisionMask != 0) {
-                Debug.Log(col.collisionMask);
-                col.collisionMask = 0;
-                _manager.SetComponentData<ShipCollision>(_entity, col);
-            }*/
+            collision = _manager.GetComponentData<ShipCollision> (_entity);
+            if (collision.collisionMask != 0) {
+                Debug.Log (collision.collisionMask);
+                collision.collisionMask = 0;
+                _manager.SetComponentData (_entity, collision);
+            }
         }
     }
 
