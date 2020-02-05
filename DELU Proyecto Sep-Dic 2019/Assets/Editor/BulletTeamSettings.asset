@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BulletTeamSettings
   m_EditorClassIdentifier: Assembly-CSharp::BulletTeamSettings
   layerNames:
-  - Player
-  - Enemy Team 1
-  - Enemy Team 2
+  - 
+  - 
+  - 
   - 
   - 
   - 
