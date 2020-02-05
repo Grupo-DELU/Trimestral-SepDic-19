@@ -55,9 +55,20 @@ public class BulletSpawner : MonoBehaviour {
         bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, settings);
         // Get Current ECS manager
         worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-    
+
         BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BulletMovementSystem> ();
         bulletMovementSystem.WorldLimits = worldLimits; // Set up world limits
+    }
+
+    /// <summary>
+    /// Shoot a Bullet at a position with a velocity
+    /// </summary>
+    /// <param name="position">Position to shoot the bullet</param>
+    /// <param name="velocity">Bullet's Velocity</param>
+    /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
+    /// <param name="bulletTeam">Bullet Team Mask for Ship Collisions</param>
+    public void ShootBullet (Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam bulletTeam) {
+        ShootBullet (position, velocity, angularSpeed, bulletTeam.value);
     }
 
     /// <summary>
@@ -94,8 +105,8 @@ public class BulletSpawner : MonoBehaviour {
         worldEntityManager.AddComponentData (newBullet, new ShipCollisionMask { collisionMask = bulletTeamMask });
     }
 
-    private void Update () {
 #if UNITY_EDITOR
+    private void Update () {
         if (Input.GetButtonDown ("Jump")) {
             for (int i = 0; i < testSpawn; i++) {
                 Vector2 pos;
@@ -106,11 +117,11 @@ public class BulletSpawner : MonoBehaviour {
                 vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
                 vel.Normalize ();
                 vel *= UnityEngine.Random.Range (10.0f, 20.0f);
-                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range(0, 32));
+                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range (0, 32));
             }
         }
-#endif // UNITY_EDITOR
     }
+#endif // UNITY_EDITOR
 
     private void OnDestroy () {
         if (blobAssetStore != null) {

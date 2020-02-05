@@ -16,11 +16,27 @@ public class ShipCollider : MonoBehaviour {
     /// </summary>
     private Entity _entity;
 
+    /// <summary>
+    /// Current Translation
+    /// </summary>
     private Translation translation;
 
+    /// <summary>
+    /// Current Rotation
+    /// </summary>
     private Rotation rotation;
 
+    /// <summary>
+    /// Current Collision if any
+    /// </summary>
     private ShipCollision collision;
+
+    /// <summary>
+    /// Collision Mask
+    /// </summary>
+    [Tooltip("Collision Mask")]
+    [SerializeField]
+    private BulletTeam collisionMask;
 
     /// <summary>
     /// Register this Ship Collider
@@ -46,10 +62,8 @@ public class ShipCollider : MonoBehaviour {
             collision = _manager.GetComponentData<ShipCollision> (_entity);
             if (collision.collisionMask != 0) {
 
-                for (int i = 0; i < 32; i++)
-                {
-                    if ((collision.collisionMask & (1 << i)) != 0)
-                    {
+                for (int i = 0; i < 32; i++) {
+                    if ((collision.collisionMask & (1 << i)) != 0) {
                         Debug.Log (i);
                     }
                 }
