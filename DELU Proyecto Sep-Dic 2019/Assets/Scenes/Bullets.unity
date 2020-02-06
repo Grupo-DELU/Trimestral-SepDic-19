@@ -218,6 +218,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     value: -1
+  onCollision:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &779448819
 GameObject:
   m_ObjectHideFlags: 0
