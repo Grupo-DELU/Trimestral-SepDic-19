@@ -9,7 +9,7 @@ public class CurveEnemyManager : ActionManager
     /// Curva/patron a seguir
     /// </summary>
     [SerializeField]
-    private CurveScriptObject path;
+    private CurveScriptObject path = null;
 
     /// <summary>
     /// Indica si la nave se esta moviendo

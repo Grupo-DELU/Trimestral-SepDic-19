@@ -16,7 +16,7 @@ public class KamikazeEnemyManager : ActionManager
     /// </summary>
     [SerializeField]
     private bool bSeek = true;
-    private bool bCharging = false;
+    //private bool bCharging = false;
     public bool IsLaunched { get { return bLaunched; } }
     private bool bLaunched = false;
 
@@ -82,7 +82,7 @@ public class KamikazeEnemyManager : ActionManager
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
         bSeek = true;
         bIsMoving = true;
-        bCharging = false;
+        //bCharging = false;
         bLaunched = false;
     }
 
@@ -135,11 +135,11 @@ public class KamikazeEnemyManager : ActionManager
     /// <returns></returns>
     private IEnumerator Charge()
     {
-        bCharging = true;
+        //bCharging = true;
         bIsMoving = false;
         bLaunched = false;
         yield return new WaitForSeconds(fChargeTime);      
-        bCharging = false;
+        //bCharging = false;
         bIsMoving = true;
         bLaunched = true;
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;

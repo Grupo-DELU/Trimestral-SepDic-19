@@ -13,8 +13,8 @@ public class SpawningSystem : MonoBehaviour
     /// <remarks>
     /// Van en el orden del enumerador, 0 es left, 1 es upper_left...
     /// </remarks>
-    [SerializeField] private Transform[] tSpawnPoints;
-    [SerializeField] private float fSpawnRadius;
+    [SerializeField] private Transform[] tSpawnPoints = null;
+    [SerializeField] private float fSpawnRadius = 1;
     private void Awake()
     {
         #region Singleton

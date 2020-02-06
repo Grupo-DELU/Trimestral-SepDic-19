@@ -8,6 +8,6 @@ public class NormalEnemyShootAction : Action
     {
         //Como diferenciaria que tipo de enemigo (movimiento) para recuperar el manager?
         //o que todos tengan uno, idk
-        manager = manager;
+        //manager = manager;
     }
 }
