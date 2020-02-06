@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 2a5d2237dc3114e4e92789c4b935ac51, type: 3}
   m_Name: BulletTeamSettings
-  m_EditorClassIdentifier: Assembly-CSharp::BulletTeamSettings
+  m_EditorClassIdentifier: 
   layerNames:
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy Team 1
+  - Enemy Team 2
+  - A
   - 
   - 
   - 

@@ -90,6 +90,7 @@ public class BulletTeamSettings : ScriptableObject {
                 // activateHandler is called when the user clicks on the Settings item in the Settings window.
                 activateHandler = (searchContext, rootElement) => {
                     var settings = BulletTeamSettings.GetSerializedSettings ();
+                    settings.Update();
 
                     // rootElement is a VisualElement. If you add any children to it, the OnGUI function
                     // isn't called because the SettingsProvider uses the UIElements drawing framework.
@@ -116,10 +117,11 @@ public class BulletTeamSettings : ScriptableObject {
                             label = string.Format ("Layer {0}", i),
                             value = property.stringValue
                         };
-                        prop.RegisterCallback<ChangeEvent<string>> ((evt) => { property.stringValue = prop.value; settings.ApplyModifiedProperties (); });
+                        prop.BindProperty(property);
                         prop.AddToClassList ("property-value");
                         properties.Add (prop);
                     }
+                    settings.ApplyModifiedProperties();
                 },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
