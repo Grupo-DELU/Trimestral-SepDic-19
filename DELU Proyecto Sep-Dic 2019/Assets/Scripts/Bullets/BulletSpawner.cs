@@ -12,7 +12,7 @@ public class BulletSpawner : MonoBehaviour {
     /// <summary>
     /// Bullet Prefab to use
     /// </summary>
-    [Tooltip ("Bullet Prefab to use")]
+    [Tooltip("Bullet Prefab to use")]
     [SerializeField]
     private GameObject bulletPrefab = null;
 
@@ -27,11 +27,11 @@ public class BulletSpawner : MonoBehaviour {
     private EntityManager worldEntityManager;
 
 #if UNITY_EDITOR
-    [Header ("Debug")]
+    [Header("Debug")]
     /// <summary>
     /// Stress Test Amount to Spawn per Press
     /// </summary>
-    [Tooltip ("Stress Test Amount to Spawn per Press")]
+    [Tooltip("Stress Test Amount to Spawn per Press")]
     [SerializeField]
     private int testSpawn = 100;
 #endif // UNITY_EDITOR
@@ -44,19 +44,19 @@ public class BulletSpawner : MonoBehaviour {
     /// <summary>
     /// World Limits for Bullets
     /// </summary>
-    [Tooltip ("World Limits for Bullets")]
+    [Tooltip("World Limits for Bullets")]
     [SerializeField]
-    private Vector4 worldLimits = new Vector4 (-10.0f, -10.0f, 10.0f, 10.0f);
+    private Vector4 worldLimits = new Vector4(-10.0f, -10.0f, 10.0f, 10.0f);
 
-    private void Start () {
-        blobAssetStore = new BlobAssetStore ();
+    private void Start() {
+        blobAssetStore = new BlobAssetStore();
         // Get ECS representation
-        var settings = GameObjectConversionSettings.FromWorld (World.DefaultGameObjectInjectionWorld, blobAssetStore);
-        bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy (bulletPrefab, settings);
+        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+        bulletPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
         // Get Current ECS manager
         worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BulletMovementSystem> ();
+        BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BulletMovementSystem>();
         bulletMovementSystem.WorldLimits = worldLimits; // Set up world limits
     }
 
@@ -67,8 +67,8 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="velocity">Bullet's Velocity</param>
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
     /// <param name="bulletTeam">Bullet Team Mask for Ship Collisions</param>
-    public void ShootBullet (Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam bulletTeam) {
-        ShootBullet (position, velocity, angularSpeed, bulletTeam.value);
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam bulletTeam) {
+        ShootBullet(position, velocity, angularSpeed, bulletTeam.value);
     }
 
     /// <summary>
@@ -78,62 +78,62 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="velocity">Bullet's Velocity</param>
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
     /// <param name="bulletTeamMask">Bullet Team Mask for Ship Collisions</param>
-    public void ShootBullet (Vector2 position, Vector2 velocity, float angularSpeed, int bulletTeamMask) {
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, int bulletTeamMask) {
         // Create new bullet instance
-        Entity newBullet = worldEntityManager.Instantiate (bulletPrefabEntity);
+        Entity newBullet = worldEntityManager.Instantiate(bulletPrefabEntity);
 
         // Convert to 3D
-        Vector3 bulletVelocity = new Vector3 (velocity.x, velocity.y, 0.0f);
+        Vector3 bulletVelocity = new Vector3(velocity.x, velocity.y, 0.0f);
 
         // Add the Position component
-        float3 bulletPos = new float3 (position.x, position.y, 0.0f);
-        worldEntityManager.SetComponentData (newBullet, new Translation { Value = bulletPos });
+        float3 bulletPos = new float3(position.x, position.y, 0.0f);
+        worldEntityManager.SetComponentData(newBullet, new Translation { Value = bulletPos });
 
         // Add the rotation component
-        quaternion bulletRot = Quaternion.LookRotation (Vector3.forward, bulletVelocity);
-        worldEntityManager.SetComponentData (newBullet, new Rotation { Value = bulletRot });
+        quaternion bulletRot = Quaternion.LookRotation(Vector3.forward, bulletVelocity);
+        worldEntityManager.SetComponentData(newBullet, new Rotation { Value = bulletRot });
 
         // Add the Bullet Movement
-        worldEntityManager.AddComponentData (newBullet, new BulletMovement { speed = velocity.magnitude });
+        worldEntityManager.AddComponentData(newBullet, new BulletMovement { speed = velocity.magnitude });
 
         // Set up the Bullet Physics movement
-        worldEntityManager.SetComponentData (newBullet,
-            new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3 (0.0f, 0.0f, angularSpeed) }
+        worldEntityManager.SetComponentData(newBullet,
+            new PhysicsVelocity { Linear = bulletVelocity, Angular = new Vector3(0.0f, 0.0f, angularSpeed) }
         );
 
         // Add the Bullet Team Mask
-        worldEntityManager.AddComponentData (newBullet, new ShipCollisionMask { collisionMask = bulletTeamMask });
+        worldEntityManager.AddComponentData(newBullet, new ShipCollisionMask { collisionMask = bulletTeamMask });
     }
 
 #if UNITY_EDITOR
-    private void Update () {
-        if (Input.GetButtonDown ("Jump")) {
+    private void Update() {
+        if (Input.GetButtonDown("Jump")) {
             for (int i = 0; i < testSpawn; i++) {
                 Vector2 pos;
-                pos.x = UnityEngine.Random.Range (-4.0f, 4.0f);
-                pos.y = UnityEngine.Random.Range (-4.0f, 4.0f);
+                pos.x = UnityEngine.Random.Range(-4.0f, 4.0f);
+                pos.y = UnityEngine.Random.Range(-4.0f, 4.0f);
                 Vector2 vel;
-                vel.x = UnityEngine.Random.Range (-1.0f, 1.0f);
-                vel.y = UnityEngine.Random.Range (-1.0f, 1.0f);
-                vel.Normalize ();
-                vel *= UnityEngine.Random.Range (10.0f, 20.0f);
-                ShootBullet (pos, vel, UnityEngine.Random.Range (0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range (0, 32));
+                vel.x = UnityEngine.Random.Range(-1.0f, 1.0f);
+                vel.y = UnityEngine.Random.Range(-1.0f, 1.0f);
+                vel.Normalize();
+                vel *= UnityEngine.Random.Range(10.0f, 20.0f);
+                ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range(0, 32));
             }
         }
     }
 #endif // UNITY_EDITOR
 
-    private void OnDestroy () {
+    private void OnDestroy() {
         if (blobAssetStore != null) {
-            blobAssetStore.Dispose ();
+            blobAssetStore.Dispose();
             blobAssetStore = null;
         }
     }
 
 #if UNITY_EDITOR
-    private void OnValidate () {
+    private void OnValidate() {
         if (worldEntityManager != null && World.DefaultGameObjectInjectionWorld != null) {
-            BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<BulletMovementSystem> ();
+            BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<BulletMovementSystem>();
             if (bulletMovementSystem != null) {
                 bulletMovementSystem.WorldLimits = worldLimits;
             }

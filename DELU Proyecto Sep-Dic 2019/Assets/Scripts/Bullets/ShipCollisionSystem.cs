@@ -32,29 +32,27 @@ public struct ShipCollisionMask : IComponentData {
     public int collisionMask;
 }
 
-
-[UpdateAfter (typeof (EndFramePhysicsSystem))]
+[UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class ShipCollisionSystem : JobComponentSystem {
 
     private BuildPhysicsWorld physicsWorldSystem;
 
     private StepPhysicsWorld stepPhysicsWorldSystem;
 
-    protected override void OnCreate () {
-        physicsWorldSystem = World.GetOrCreateSystem<BuildPhysicsWorld> ();
-        stepPhysicsWorldSystem = World.GetOrCreateSystem<StepPhysicsWorld> ();
+    protected override void OnCreate() {
+        physicsWorldSystem = World.GetOrCreateSystem<BuildPhysicsWorld>();
+        stepPhysicsWorldSystem = World.GetOrCreateSystem<StepPhysicsWorld>();
     }
 
-    protected override JobHandle OnUpdate (JobHandle inputDependencies) {
+    protected override JobHandle OnUpdate(JobHandle inputDependencies) {
 
-        ComponentDataFromEntity<ShipCollisionMask> shipCollisionMaskFromEntity = GetComponentDataFromEntity<ShipCollisionMask> (true);
-        ComponentDataFromEntity<ShipCollision> shipCollisionFromEntity = GetComponentDataFromEntity<ShipCollision> ();
+        ComponentDataFromEntity<ShipCollisionMask> shipCollisionMaskFromEntity = GetComponentDataFromEntity<ShipCollisionMask>(true);
+        ComponentDataFromEntity<ShipCollision> shipCollisionFromEntity = GetComponentDataFromEntity<ShipCollision>();
 
-        
-        var jobHandle = new TriggerEventJob () {
-            CollisionMaskGroup = GetComponentDataFromEntity<ShipCollisionMask> (true),
-                CollisionGroup = GetComponentDataFromEntity<ShipCollision> (),
-        }.Schedule (stepPhysicsWorldSystem.Simulation,
+        var jobHandle = new TriggerEventJob() {
+            CollisionMaskGroup = GetComponentDataFromEntity<ShipCollisionMask>(true),
+                CollisionGroup = GetComponentDataFromEntity<ShipCollision>(),
+        }.Schedule(stepPhysicsWorldSystem.Simulation,
             ref physicsWorldSystem.PhysicsWorld, inputDependencies);
 
         return jobHandle;
@@ -65,31 +63,31 @@ public class ShipCollisionSystem : JobComponentSystem {
         [ReadOnly] public ComponentDataFromEntity<ShipCollisionMask> CollisionMaskGroup;
         public ComponentDataFromEntity<ShipCollision> CollisionGroup;
 
-        public void Execute (TriggerEvent triggerEvent) {
+        public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.Entities.EntityA;
             Entity entityB = triggerEvent.Entities.EntityB;
 
-            bool bodyAHasCollisionMask = CollisionMaskGroup.Exists (entityA);
-            bool bodyBHasCollisionMask = CollisionMaskGroup.Exists (entityB);
+            bool bodyAHasCollisionMask = CollisionMaskGroup.Exists(entityA);
+            bool bodyBHasCollisionMask = CollisionMaskGroup.Exists(entityB);
 
-            bool bodyAHasCollision = CollisionGroup.Exists (entityA);
-            bool bodyBHasCollision = CollisionGroup.Exists (entityB);
+            bool bodyAHasCollision = CollisionGroup.Exists(entityA);
+            bool bodyBHasCollision = CollisionGroup.Exists(entityB);
 
             if (bodyAHasCollision && bodyBHasCollisionMask) {
-                ApplyCollision (entityB, entityA);
+                ApplyCollision(entityB, entityA);
             }
 
             if (bodyAHasCollisionMask && bodyBHasCollision) {
-                ApplyCollision (entityA, entityB);
+                ApplyCollision(entityA, entityB);
             }
         }
-        
+
         /// <summary>
         /// Apply Collision from Entity A to B
         /// </summary>
         /// <param name="entityA">Starting Entity</param>
         /// <param name="entityB">Receiving Entity</param>
-        public void ApplyCollision (Entity entityA, Entity entityB) {
+        public void ApplyCollision(Entity entityA, Entity entityB) {
             ShipCollisionMask collisionMaskComponent = CollisionMaskGroup[entityA];
             ShipCollision collisionComponent = CollisionGroup[entityB];
             collisionComponent.collisionMask |= collisionMaskComponent.collisionMask;

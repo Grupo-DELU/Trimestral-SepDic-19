@@ -23,11 +23,10 @@ public class BulletTeam {
 #if UNITY_EDITOR
 
 // BulletTeamDrawerUIE
-[CustomPropertyDrawer (typeof (BulletTeam))]
+[CustomPropertyDrawer(typeof(BulletTeam))]
 public class BulletTeamDrawerUIE : PropertyDrawer {
     // Draw the property inside the given rect
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         // Using BeginProperty / EndProperty on the parent property means that
         // prefab override logic works on the entire property.
         EditorGUI.BeginProperty(position, label, property);
@@ -40,7 +39,7 @@ public class BulletTeamDrawerUIE : PropertyDrawer {
         // Draw fields - passs GUIContent.none to each so they are drawn without labels
         prop.intValue = EditorGUI.MaskField(
             position,
-            prop.intValue, 
+            prop.intValue,
             BulletTeamSettings.GetOrCreateSettings().LayerNames);
 
         EditorGUI.EndProperty();
@@ -66,66 +65,66 @@ public class BulletTeamSettings : ScriptableObject {
 
     public const string k_MyCustomSettingsPath = "Assets/Editor/BulletTeamSettings.asset";
 
-    internal static BulletTeamSettings GetOrCreateSettings () {
-        var settings = AssetDatabase.LoadAssetAtPath<BulletTeamSettings> (k_MyCustomSettingsPath);
+    internal static BulletTeamSettings GetOrCreateSettings() {
+        var settings = AssetDatabase.LoadAssetAtPath<BulletTeamSettings>(k_MyCustomSettingsPath);
         if (settings == null) {
-            settings = ScriptableObject.CreateInstance<BulletTeamSettings> ();
+            settings = ScriptableObject.CreateInstance<BulletTeamSettings>();
             settings.LayerNames = new string[32];
-            AssetDatabase.CreateAsset (settings, k_MyCustomSettingsPath);
-            AssetDatabase.SaveAssets ();
+            AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
+            AssetDatabase.SaveAssets();
         }
         return settings;
     }
 
-    internal static SerializedObject GetSerializedSettings () {
-        return new SerializedObject (GetOrCreateSettings ());
+    internal static SerializedObject GetSerializedSettings() {
+        return new SerializedObject(GetOrCreateSettings());
     }
 
     [SettingsProvider]
-    public static SettingsProvider CreateBulletTeamSettingsProvider () {
+    public static SettingsProvider CreateBulletTeamSettingsProvider() {
         // First parameter is the path in the Settings window.
         // Second parameter is the scope of this setting: it only appears in the Settings window for the Project scope.
-        var provider = new SettingsProvider ("Project/BulletTeamSettings", SettingsScope.Project) {
+        var provider = new SettingsProvider("Project/BulletTeamSettings", SettingsScope.Project) {
             label = "Bullet Team Layers",
                 // activateHandler is called when the user clicks on the Settings item in the Settings window.
                 activateHandler = (searchContext, rootElement) => {
-                    var settings = BulletTeamSettings.GetSerializedSettings ();
+                    var settings = BulletTeamSettings.GetSerializedSettings();
                     settings.Update();
 
                     // rootElement is a VisualElement. If you add any children to it, the OnGUI function
                     // isn't called because the SettingsProvider uses the UIElements drawing framework.
                     //rootElement.styleSheets.Add (AssetDatabase.LoadAssetAtPath<StyleSheet> ("Assets/Editor/settings_ui.uss"));
-                    var title = new Label () {
+                    var title = new Label() {
                         text = "Bullet Team Layers"
                     };
-                    title.AddToClassList ("title");
-                    rootElement.Add (title);
+                    title.AddToClassList("title");
+                    rootElement.Add(title);
 
-                    var properties = new ScrollView () {
+                    var properties = new ScrollView() {
                         style = {
                         flexDirection = FlexDirection.Column
                         }
                     };
-                    properties.AddToClassList ("property-list");
-                    rootElement.Add (properties);
+                    properties.AddToClassList("property-list");
+                    rootElement.Add(properties);
 
-                    SerializedProperty layerNamesProp = settings.FindProperty ("layerNames");
+                    SerializedProperty layerNamesProp = settings.FindProperty("layerNames");
 
                     for (int i = 0; i < layerNamesProp.arraySize; i++) {
-                        SerializedProperty property = layerNamesProp.GetArrayElementAtIndex (i);
-                        TextField prop = new TextField () {
-                            label = string.Format ("Layer {0}", i),
+                        SerializedProperty property = layerNamesProp.GetArrayElementAtIndex(i);
+                        TextField prop = new TextField() {
+                            label = string.Format("Layer {0}", i),
                             value = property.stringValue
                         };
                         prop.BindProperty(property);
-                        prop.AddToClassList ("property-value");
-                        properties.Add (prop);
+                        prop.AddToClassList("property-value");
+                        properties.Add(prop);
                     }
                     settings.ApplyModifiedProperties();
                 },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
-                keywords = new HashSet<string> (new [] { "Bullet Team Layers" })
+                keywords = new HashSet<string>(new [] { "Bullet Team Layers" })
         };
 
         return provider;
