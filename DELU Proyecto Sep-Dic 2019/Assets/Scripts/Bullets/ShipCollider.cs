@@ -37,12 +37,19 @@ public class ShipCollider : MonoBehaviour {
     /// </summary>
     [Tooltip("Collision Mask")]
     [SerializeField]
-    private BulletTeam collisionMask;
+    private BulletTeam collisionMask = new BulletTeam();
 
     [System.Serializable]
-    public class IntEvent : UnityEvent<int> {
+    public class IntEvent : UnityEvent<int, int> {
 
     }
+
+    /// <summary>
+    /// On Collision Event (Bullet Collision Mask, Collider Collision Mask)
+    /// </summary>
+    [Tooltip("On Collision Event (Bullet Collision Mask, Collider Collision Mask)")]
+    [SerializeField]
+    public IntEvent onCollision;
 
     /// <summary>
     /// Register this Ship Collider
@@ -68,11 +75,11 @@ public class ShipCollider : MonoBehaviour {
             collision = _manager.GetComponentData<ShipCollision>(_entity);
             if (collision.collisionMask != 0) {
 
-                for (int i = 0; i < 32; i++) {
-                    if ((collision.collisionMask & (1 << i)) != 0) {
-                        Debug.Log(i);
-                    }
+                // Test if we care about this collision
+                if ((collision.collisionMask & collisionMask.value) != 0) {
+                    onCollision.Invoke(collision.collisionMask, collisionMask.value);
                 }
+
                 collision.collisionMask = 0;
                 _manager.SetComponentData(_entity, collision);
             }
