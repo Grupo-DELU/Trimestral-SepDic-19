@@ -16,7 +16,7 @@ public class Pooler
 public class ObjectPooler : MonoBehaviour
 {
     [SerializeField]
-    private Pooler[] pools;
+    private Pooler[] pools = null;
 
     // Start is called before the first frame update
     void Start()

@@ -15,16 +15,18 @@ public class WaveSystem : MonoBehaviour
     /// <summary>
     /// Indica si se esta en descanso de ronda
     /// </summary>
-    private bool bIsResting = false;
+    //private bool bIsResting = false;
 
     /// <summary>
     /// Grafo de las waves
     /// </summary>
-    [SerializeField] private WavesGraph wavesGraph;
+    [SerializeField]
+    private WavesGraph wavesGraph = null;
     /// <summary>
     /// Nodo de la wave actual
     /// </summary>
-    [SerializeField] private WaveNode currentNode;
+    [SerializeField]
+    private WaveNode currentNode = null;
 
     //esta deberia de ir en el manager de la wave
     public WavesEvents onFinishWave = new WavesEvents();
@@ -166,9 +168,9 @@ public class WaveSystem : MonoBehaviour
     /// <returns>Corutina</returns>
     public IEnumerator RoundResting(float time)
     {
-        bIsResting = true;
+        //bIsResting = true;
         yield return new WaitForSeconds(time);
-        bIsResting = false;
+        //bIsResting = false;
         NextWave();
     }
 }
