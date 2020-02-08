@@ -33,11 +33,19 @@ public class ShipCollider : MonoBehaviour {
     private ShipCollision collision;
 
     /// <summary>
-    /// Collision Mask
+    /// Collides With Collision Mask
     /// </summary>
-    [Tooltip("Collision Mask")]
+    [Tooltip("Collides With Collision Mask")]
     [SerializeField]
-    private BulletTeam collisionMask = new BulletTeam();
+    private BulletTeam collidesWith = new BulletTeam();
+
+    /// <summary>
+    /// Belongs To Collision Mask
+    /// </summary>
+    [Tooltip("Belongs To Collision Mask")]
+    [SerializeField]
+    private BulletTeam belongsTo = new BulletTeam();
+    
 
     [System.Serializable]
     public class IntEvent : UnityEvent<int, int> {
@@ -64,6 +72,7 @@ public class ShipCollider : MonoBehaviour {
         _manager.SetComponentData(_entity, translation);
         _manager.SetComponentData(_entity, rotation);
         _manager.AddComponentData(_entity, new ShipCollision { collisionMask = 0 });
+        _manager.AddComponentData(_entity, new ShipCollisionMask { belongsTo = belongsTo.value, collidesWith = collidesWith.value });
     }
 
     private void Update() {
@@ -75,10 +84,8 @@ public class ShipCollider : MonoBehaviour {
             collision = _manager.GetComponentData<ShipCollision>(_entity);
             if (collision.collisionMask != 0) {
 
-                // Test if we care about this collision
-                if ((collision.collisionMask & collisionMask.value) != 0) {
-                    onCollision.Invoke(collision.collisionMask, collisionMask.value);
-                }
+                onCollision.Invoke(collision.collisionMask, collidesWith.value);
+                Debug.Log(collision.collisionMask);
 
                 collision.collisionMask = 0;
                 _manager.SetComponentData(_entity, collision);

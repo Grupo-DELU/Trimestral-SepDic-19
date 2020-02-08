@@ -51,7 +51,6 @@ public class BulletMovementSystem : JobComponentSystem {
         var destroyJobHandle = Entities.
         WithName("BulletDestroySystem").
         WithBurst(FloatMode.Default, FloatPrecision.Standard, true).
-        WithReadOnly(localWorldLimits).
         ForEach(
             (Entity entity, int entityInQueryIndex, in Translation translation) => {
                 // If out of bounds delete
@@ -73,7 +72,6 @@ public class BulletMovementSystem : JobComponentSystem {
         var jobHandle = Entities.
         WithName("BulletMovementSystem").
         WithBurst(FloatMode.Default, FloatPrecision.Standard, true).
-        WithReadOnly(localFront).
         ForEach(
             (ref PhysicsVelocity velocity, in Rotation rotation, in BulletMovement bulletMovement) => {
                 velocity.Linear = math.mul(rotation.Value, localFront) * bulletMovement.speed;

@@ -66,9 +66,10 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="position">Position to shoot the bullet</param>
     /// <param name="velocity">Bullet's Velocity</param>
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
-    /// <param name="bulletTeam">Bullet Team Mask for Ship Collisions</param>
-    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam bulletTeam) {
-        ShootBullet(position, velocity, angularSpeed, bulletTeam.value);
+    /// <param name="belongsToTeamMask">Which Team the Bullet Belongs</param>
+    /// <param name="collidesWithTeamMask">Which Team the Bullet Will Collide and be Destroyed</param>
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam belongsToTeamMask, BulletTeam collidesWithTeamMask) {
+        ShootBullet(position, velocity, angularSpeed, belongsToTeamMask.value, collidesWithTeamMask.value);
     }
 
     /// <summary>
@@ -77,8 +78,9 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="position">Position to shoot the bullet</param>
     /// <param name="velocity">Bullet's Velocity</param>
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
-    /// <param name="bulletTeamMask">Bullet Team Mask for Ship Collisions</param>
-    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, int bulletTeamMask) {
+    /// <param name="belongsToTeamMask">Which Team the Bullet Belongs</param>
+    /// <param name="collidesWithTeamMask">Which Team the Bullet Will Collide and be Destroyed</param>
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, int belongsToTeamMask, int collidesWithTeamMask) {
         // Create new bullet instance
         Entity newBullet = worldEntityManager.Instantiate(bulletPrefabEntity);
 
@@ -102,7 +104,7 @@ public class BulletSpawner : MonoBehaviour {
         );
 
         // Add the Bullet Team Mask
-        worldEntityManager.AddComponentData(newBullet, new ShipCollisionMask { collisionMask = bulletTeamMask });
+        worldEntityManager.AddComponentData(newBullet, new ShipCollisionMask { belongsTo = belongsToTeamMask, collidesWith = collidesWithTeamMask });
     }
 
 #if UNITY_EDITOR
@@ -117,7 +119,7 @@ public class BulletSpawner : MonoBehaviour {
                 vel.y = UnityEngine.Random.Range(-1.0f, 1.0f);
                 vel.Normalize();
                 vel *= UnityEngine.Random.Range(10.0f, 20.0f);
-                ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range(0, 32));
+                ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, 1 << UnityEngine.Random.Range(0, 32), 1);
             }
         }
     }
