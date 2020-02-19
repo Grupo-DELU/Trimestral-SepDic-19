@@ -72,6 +72,10 @@ public class HealthManager : MonoBehaviour
     private void Start()
     {
         iHP = iMaxHP;
+       if (TryGetComponent(out ShipCollider coll))
+        {
+            coll.onCollision.AddListener((a, b) => RemoveLife(1));
+        }
     }
 
     private void Update()

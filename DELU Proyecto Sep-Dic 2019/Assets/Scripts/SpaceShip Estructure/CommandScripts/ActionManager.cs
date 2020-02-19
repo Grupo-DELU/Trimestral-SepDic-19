@@ -24,12 +24,12 @@ public class ActionManager : MonoBehaviour
     /// Lista de acciones del agente
     /// </summary>
     [SerializeField]
-    private Action[] soActions = null;
+    private Action[] actionsObjects = null;
 
     // En clase base para que todos los hijos lo ejecuten
     protected virtual void Start()
     {
-        loadActions(soActions);
+        loadActions(actionsObjects);
     }
 
     /// <summary>
