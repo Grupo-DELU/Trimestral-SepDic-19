@@ -15,8 +15,8 @@ MonoBehaviour:
   layerNames:
   - Player
   - Enemy Team 1
-  - Enemy Team 2
-  - 
+  - Player Bullet
+  - Enemy Bullet
   - 
   - 
   - 

@@ -69,6 +69,15 @@ public class HealthManager : MonoBehaviour
     /// </summary>
     private Coroutine cInmortalityRoutine;
 
+    private void Awake()
+    {
+        // En caso del jugador, liga la inmortalidad al roll
+        if (TryGetComponent(out PlayerMovement pm))
+        {
+            pm.onPlayerRoll.AddListener(ActivateInmortality);
+            pm.onPlayerStopRoll.AddListener(CancelInmortality);
+        }
+    }
     private void Start()
     {
         iHP = iMaxHP;
@@ -134,6 +143,16 @@ public class HealthManager : MonoBehaviour
         iHP = iMaxHP;
         onRevive.Invoke(0, iMaxHP);
     }
+    
+    public void ActivateInmortality()
+    {
+        bInmortal = true;
+    }
+
+    public void CancelInmortality()
+    {
+        bInmortal = false;
+    }
 
     /// <summary>
     /// Llama la corutina de inmortalidad
@@ -148,10 +167,11 @@ public class HealthManager : MonoBehaviour
     /// <summary>
     /// Cancela la inmortalidad
     /// </summary>
-    public void CancelInmortality()
+    public void CancelInmortalityRoutine()
     {
         if (cInmortalityRoutine == null) return;
         StopCoroutine(cInmortalityRoutine);
+        bInmortal = false;
     }
     
     /// <summary>

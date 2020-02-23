@@ -9,6 +9,7 @@ using UnityEngine;
 /// Bullet Spawner System
 /// </summary>
 public class BulletSpawner : MonoBehaviour {
+
     /// <summary>
     /// Bullet Prefab to use
     /// </summary>
@@ -34,6 +35,21 @@ public class BulletSpawner : MonoBehaviour {
     [Tooltip("Stress Test Amount to Spawn per Press")]
     [SerializeField]
     private int testSpawn = 100;
+    /// <summary>
+    /// Indicates if the Stress Test is enabled
+    /// </summary>
+    [Tooltip("If the Stress Test is enabled")]
+    [SerializeField]
+    private bool testEnabled = true;
+
+    [Tooltip("Bullet stress test team mask")]
+    [SerializeField]
+    private BulletTeam bulletTeamMask = null;
+
+    [Tooltip("Bullet stress test collision mask")]
+    [SerializeField]
+    private BulletTeam bulletCollisionMask = null;
+
 #endif // UNITY_EDITOR
 
     /// <summary>
@@ -109,6 +125,7 @@ public class BulletSpawner : MonoBehaviour {
 
 #if UNITY_EDITOR
     private void Update() {
+        if (!testEnabled) return;
         if (Input.GetButtonDown("Jump")) {
             for (int i = 0; i < testSpawn; i++) {
                 Vector2 pos;
@@ -120,7 +137,8 @@ public class BulletSpawner : MonoBehaviour {
                 vel.Normalize();
                 vel *= UnityEngine.Random.Range(10.0f, 20.0f);
                 //Debug.Log(1 << UnityEngine.Random.Range(0, 32));
-                ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, 2, 1);
+                //ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, 2, 1);
+                ShootBullet(pos, vel, UnityEngine.Random.Range(0.0f, 0.5f) * Mathf.PI, bulletTeamMask, bulletCollisionMask);
             }
         }
     }

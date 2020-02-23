@@ -14,11 +14,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : ActionManager {
 
-    /*
-    Este script se basa en una plantilla (Action Manager).
-    De esta manera, los objetos (player y enemigos) pueden
-    insteractura con sus acciones de la misma manera.
-    */
+    private BulletSpawner shooter;
+
     /// <summary>
     /// Rapidez maxima del jugador
     /// </summary>
@@ -53,7 +50,7 @@ public class PlayerManager : ActionManager {
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //executeAction(ActionTags.PlayerAttack);
+            executeAction("PlayerAttack");
         }
     }
 
