@@ -2,11 +2,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShipMovementEvents : UnityEvent { };
-
 // Para la inmunidad del roll
 [RequireComponent(typeof(HealthManager), typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
+public class ShipMovement : MonoBehaviour
 {
     /// <summary>
     /// Indica si el sistema de movimiento esta activo
@@ -72,11 +70,11 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// LLamado cuando el jugador empieza un roll
     /// </summary>
-    public ShipMovementEvents onPlayerRoll = new ShipMovementEvents();
+    public ShipMovementEvents onRoll = new ShipMovementEvents();
     /// <summary>
     /// Llamado cuando el jugador deja de rollear
     /// </summary>
-    public ShipMovementEvents onPlayerStopRoll = new ShipMovementEvents();
+    public ShipMovementEvents onStopRoll = new ShipMovementEvents();
     /// <summary>
     /// Llamado cuando el jugador puede volver a rollear (para indicadores de roll activado)
     /// </summary>
@@ -87,34 +85,16 @@ public class PlayerMovement : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void Move(Vector2 direction)
     {
-        if (!bIsActive) return;
-        if (bCanMove)
-        {
-            if (!bIsMoving)
-            {
-                vMoveDir.x = Input.GetAxisRaw("Horizontal");
-                vMoveDir.y = Input.GetAxisRaw("Vertical");
-                bIsMoving = true;
-            }
-            if (!bIsRolling && bCanRoll)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    StartRoll();
-                    onPlayerRoll.Invoke();
-                }
-            }
-        }
+        vMoveDir = direction.normalized;
+        bIsMoving = true;
     }
-
 
     private void FixedUpdate()
     {
-        if (bIsMoving)
+        if (!bIsActive) return;
+        if (bIsMoving && bCanMove)
         {
             rb2d.MovePosition((Vector2)transform.position + vMoveDir.normalized * fMovementSpeed * Time.fixedDeltaTime);
             bIsMoving = false;
@@ -126,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void StartRoll()
     {
+        if (!bCanRoll || bIsRolling) return;
         if (cRollRoutine != null) StopCoroutine(cRollRoutine);
         cRollRoutine = StartCoroutine(Roll());
     }
@@ -135,11 +116,12 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private IEnumerator Roll()
     {
+        onRoll.Invoke();
         bIsRolling = true;
         yield return new WaitForSeconds(fRollTime);
         bIsRolling = false;
 
-        onPlayerStopRoll.Invoke();
+        onStopRoll.Invoke();
         StartRollCD();
     }
 

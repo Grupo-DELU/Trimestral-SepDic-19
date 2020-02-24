@@ -82,7 +82,6 @@ public class ShipCollider : MonoBehaviour {
             _manager.SetComponentData(_entity, translation);
             _manager.SetComponentData(_entity, rotation);
             collision = _manager.GetComponentData<ShipCollision>(_entity);
-            Debug.Log(collision.collisionMask);
             if (collision.collisionMask != 0) {
                 
                 // Inform Event

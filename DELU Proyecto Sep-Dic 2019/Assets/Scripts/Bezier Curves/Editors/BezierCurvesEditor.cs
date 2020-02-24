@@ -180,7 +180,7 @@ public class BezierCurvesEditor : Editor
             for (int i = 0; i < curve.NumPoints; i++)
             {
                 Handles.color = Color.black;
-                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector2.zero, Handles.SphereHandleCap);
+                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector3.one * .5f, Handles.SphereHandleCap);
                 if (newPos != curve.points[i])
                 {
                     Undo.RecordObject(creator, "Move Position");
@@ -212,7 +212,7 @@ public class BezierCurvesEditor : Editor
             for (int i = 0; i < curve.NumPoints; i++)
             {
                 Handles.color = Color.black;
-                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector2.zero, Handles.SphereHandleCap);
+                Vector2 newPos = Handles.FreeMoveHandle(curve.points[i], Quaternion.identity, .5f, Vector3.one * .5f, Handles.SphereHandleCap);
                 if (newPos != curve.points[i])
                 {
                     Undo.RecordObject(creator, "Move Position");
