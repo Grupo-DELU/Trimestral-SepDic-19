@@ -16,7 +16,8 @@ public class HealthManager : MonoBehaviour
     /// <summary>
     /// Vida actual
     /// </summary>
-    [SerializeField] private int iHP;
+    [SerializeField]
+    private int iHP;
     public int MaxHP
     {
         get { return iMaxHP; }
@@ -24,12 +25,20 @@ public class HealthManager : MonoBehaviour
     /// <summary>
     /// Vida maxima
     /// </summary>
-    [SerializeField] private int iMaxHP = 10;
+    [SerializeField]
+    private int iMaxHP = 10;
     /// <summary>
     /// Estado de invencibilidad activado
     /// </summary>
-    [SerializeField] private bool bInmortal = false;
-    [SerializeField] private bool bDebug = false;
+    [SerializeField]
+    private bool bInmortal = false;
+
+    /// <summary>
+    /// Tiempo de proteccion de la nave al revivir
+    /// </summary>
+    /// <remarks> Si es 0 no tiene</remarks>
+    [SerializeField]
+    private float fReviveProtTime = 1f;
 
     /// <summary>
     /// Evento de cambio de vida
@@ -63,6 +72,11 @@ public class HealthManager : MonoBehaviour
     /// Evento de resucitacion
     /// </summary>
     public HPEvents onRevive = new HPEvents();
+
+#if UNITY_EDITOR
+    [SerializeField]
+    private bool bDebug = false;
+#endif
 
     /// <summary>
     /// Corutina de inmortalidad
@@ -106,10 +120,7 @@ public class HealthManager : MonoBehaviour
             iHP = iMaxHP;
             onFullLife.Invoke(oldHP, iHP);
         }
-        else
-        {
-            iHP = iHP + toAdd;
-        }
+        else iHP = iHP + toAdd;
         onLifeGain.Invoke(oldHP, iHP);
         if (oldHP != iHP) onLifeChange.Invoke(oldHP, iHP);
     }
@@ -127,10 +138,7 @@ public class HealthManager : MonoBehaviour
             iHP = 0;
             onDepletedLife.Invoke(oldHP, iHP);
         }
-        else
-        {
-            iHP = iHP - toRemove;
-        }
+        else iHP = iHP - toRemove;
         onLifeLoss.Invoke(oldHP, iHP);
         if (oldHP != iHP) onLifeChange.Invoke(oldHP, iHP);
     }
@@ -141,12 +149,14 @@ public class HealthManager : MonoBehaviour
     public void Revive()
     {
         iHP = iMaxHP;
+        ActivateInmortality(fReviveProtTime);
         onRevive.Invoke(0, iMaxHP);
     }
     
     public void ActivateInmortality()
     {
         bInmortal = true;
+        onActivateInm.Invoke(iHP, iHP);
     }
 
     public void CancelInmortality()
@@ -160,6 +170,7 @@ public class HealthManager : MonoBehaviour
     /// <param name="time">Duracion inmortalidad</param>
     public void ActivateInmortality(float time)
     {
+        if (time <= 0) return;
         if (cInmortalityRoutine != null) StopCoroutine(cInmortalityRoutine);
         cInmortalityRoutine = StartCoroutine(TimerInmortality(time));
     }

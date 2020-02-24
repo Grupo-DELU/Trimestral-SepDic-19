@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (!bIsRolling && bCanRoll)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
                     StartRoll();
                     onPlayerRoll.Invoke();
