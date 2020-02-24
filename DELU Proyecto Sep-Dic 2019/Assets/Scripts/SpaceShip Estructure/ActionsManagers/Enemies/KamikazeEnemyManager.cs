@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class KamikazeEnemyManager : ActionManager
+public class KamikazeEnemyManager : EnemyShipManager
 {
     /// <summary>
     /// Indica si la nave se esta moviendo
@@ -46,35 +45,20 @@ public class KamikazeEnemyManager : ActionManager
     private float updateDist = 5f;
 
     /// <summary>
-    /// Rapidez maxima de la nave
-    /// </summary>
-    public float fMaxSpeed = 10;
-    /// <summary>
-    /// Rapidez de la nave
-    /// </summary>
-    [Range(-1f, 1f)]
-    public float fSpeed = 1;
-
-    /// <summary>
-    /// Velocidad de la nave
-    /// </summary>
-    public Vector2 velocity = Vector2.zero;
-    /// <summary>
     /// Ultima direccion conocida hacia el jugador
     /// </summary>
-    public Vector2 lastPlayerDir = Vector2.zero;
+    private Vector2 lastPlayerDir = Vector2.zero;
     /// <summary>
     /// Transform del jugador
     /// </summary>
     private Transform playerT;
-    private Rigidbody2D rb2d;
 
     private Coroutine chargeRoutine = null;
 
-    private void Awake()
+    override protected void Awake()
     {
+        base.Awake();
         playerT = GameObject.FindGameObjectWithTag("Player").transform;
-        rb2d = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -86,11 +70,12 @@ public class KamikazeEnemyManager : ActionManager
         bLaunched = false;
     }
 
-    private void Update()
+    override protected void Update()
     {
         //Si ya pasaron los frames de update posicion jugador
         //updatea la posicion
         float distSqr = (transform.position.y - playerT.position.y);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.forward, lastPlayerDir), 3f);
         if (bSeek)
         {
             if (updateCounter >= timeToUpate)
@@ -101,8 +86,8 @@ public class KamikazeEnemyManager : ActionManager
             }
             if (distSqr < updateDist)
             {
-                bSeek = false;
-                executeAction("ChargeKamikaze");
+                //bSeek = false;
+                //executeAction("ChargeKamikaze");
             }
             updateCounter += Time.deltaTime;
         }
@@ -110,14 +95,6 @@ public class KamikazeEnemyManager : ActionManager
         if (bIsMoving) executeAction("KamikazeMove");
     }
 
-    /// <summary>
-    /// Cambia la velocidad de la nave
-    /// </summary>
-    /// <param name="velocity">Nueva velocidad de la nave</param>
-    public void MoveWithVel(Vector2 velocity)
-    {
-        this.velocity = velocity;
-    }
 
     /// <summary>
     /// Empieza la corutina de carga de la nave
@@ -147,12 +124,8 @@ public class KamikazeEnemyManager : ActionManager
         //executeAction("LaunchKamikaze");
     }
 
-    private void FixedUpdate()
+    public Vector2 GetLastPlayerDir()
     {
-        if (velocity != Vector2.zero)
-        {
-            rb2d.MovePosition((Vector2)transform.position + velocity);
-            velocity = Vector2.zero;
-        }
+        return lastPlayerDir;
     }
 }

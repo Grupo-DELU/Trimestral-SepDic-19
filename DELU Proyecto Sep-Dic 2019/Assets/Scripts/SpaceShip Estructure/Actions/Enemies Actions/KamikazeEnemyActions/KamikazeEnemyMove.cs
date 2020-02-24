@@ -11,20 +11,7 @@ public class KamikazeEnemyMove : Action
     public override void doAction(ActionManager manager)
     {
         KamikazeEnemyManager km = manager as KamikazeEnemyManager;
-        km.MoveWithVel(GetVelocity(km));
+        km.movementSyst.Move(km.GetLastPlayerDir().normalized);
     }
 
-    public Vector2 GetDirection(KamikazeEnemyManager manager)
-    {
-        return manager.lastPlayerDir.normalized;
-    }
-
-    public Vector2 GetVelocity(KamikazeEnemyManager manager)
-    {
-        if (!manager.IsLaunched)
-        {
-            return GetDirection(manager) * manager.fMaxSpeed * manager.fSpeed * Time.fixedDeltaTime;
-        }
-        return GetDirection(manager) * manager.LaunchSpeed * manager.fSpeed * Time.fixedDeltaTime;
-    }
 }
