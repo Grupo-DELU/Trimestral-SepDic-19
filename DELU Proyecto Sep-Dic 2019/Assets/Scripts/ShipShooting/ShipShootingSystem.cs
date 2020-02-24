@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BulletSpawner))]
-public class PlayerShootingSystem : MonoBehaviour
+public class ShipShootingSystem : MonoBehaviour
 {
+    /// <summary>
+    /// Indica si el sistema de disparo esta activo
+    /// </summary>
+    [SerializeField]
+    private bool bIsActive = true;
     /// <summary>
     /// A que equipo pertenece esta bala
     /// </summary>
@@ -20,7 +25,7 @@ public class PlayerShootingSystem : MonoBehaviour
     /// Indica si la nave puede disparar
     /// </summary>
     [SerializeField]
-    private bool bReloading = false;
+    protected bool bReloading = false;
     /// <summary>
     /// Numero de balas de la nave por disparo
     /// </summary>
@@ -52,15 +57,8 @@ public class PlayerShootingSystem : MonoBehaviour
         bulletShooter = GetComponent<BulletSpawner>();
         if (spawnPos == null)
         {
-            Debug.LogError("No hay transformada de origen de disparo en la nave!", gameObject);
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Space) && !bReloading)
-        {
-            Shoot();
+            Debug.LogError("No hay transformada de origen de disparo en la nave! Desactivando...", gameObject);
+            bIsActive = false;
         }
     }
 
@@ -70,16 +68,13 @@ public class PlayerShootingSystem : MonoBehaviour
     /// </summary>
     public void Shoot()
     {
-        // FailSafe check
-        if (bReloading) return;
-        bulletShooter.ShootBullet((Vector2)spawnPos.position, spawnPos.up * fBulletSpeed, 0, bulletTeamMask, bulletCollMask);
-        for (int i = 0; i < (iShotNumber - 1)/2; i++)
+        if (bReloading || !bIsActive) return;
+        float sep = 180f / (float)(iShotNumber + 1);
+        //bulletShooter.ShootBullet((Vector2)spawnPos.position, spawnPos.up * fBulletSpeed, 0, bulletTeamMask, bulletCollMask);
+        for (int i = 1; i <= iShotNumber; i++)
         {
-            float sep = (180 / iShotNumber) * (i + 1);
-            Vector3 dir1 = (Vector2)spawnPos.right * Mathf.Cos(sep * Mathf.Deg2Rad) + (Vector2)spawnPos.up * Mathf.Sin(sep * Mathf.Deg2Rad);
-            Vector3 dir2 = -(Vector2)spawnPos.right * Mathf.Cos(sep * Mathf.Deg2Rad) + (Vector2)spawnPos.up * Mathf.Sin(sep * Mathf.Deg2Rad);
+            Vector3 dir1 = (Vector2)spawnPos.right * Mathf.Cos(sep * i * Mathf.Deg2Rad) + (Vector2)spawnPos.up * Mathf.Sin(sep * i * Mathf.Deg2Rad);
             bulletShooter.ShootBullet((Vector2)spawnPos.position, dir1 * fBulletSpeed, 0, bulletTeamMask, bulletCollMask);
-            bulletShooter.ShootBullet((Vector2)spawnPos.position, dir2 * fBulletSpeed, 0, bulletTeamMask, bulletCollMask);
         }
         StartCoroutine(FireRate());
     }
