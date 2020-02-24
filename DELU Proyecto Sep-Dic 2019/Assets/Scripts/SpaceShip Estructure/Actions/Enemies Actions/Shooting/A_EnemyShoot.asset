@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad3d7cb57f357646a28153de8184290, type: 3}
-  m_Name: A_EnemyFollowCurve
+  m_Script: {fileID: 11500000, guid: 4e2172148b5ddcd44aaea56db91f93af, type: 3}
+  m_Name: A_EnemyShoot
   m_EditorClassIdentifier: 
-  tag: Move
+  tag: Shoot

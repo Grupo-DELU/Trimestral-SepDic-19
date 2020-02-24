@@ -10,27 +10,7 @@ public class EnemyFollowCurveAction : Action
 {
     public override void doAction(ActionManager manager)
     {
-        CurveEnemyManager cm = manager as CurveEnemyManager;
-        cm.MoveWithVel(GetVelocity(cm));
+        EnemyShipManager cm = manager as EnemyShipManager;
+        (cm.movementSyst as CurveEnemyMovement).MoveInCurve();
     }
-
-    private Vector2 GetDirection(CurveEnemyManager manager)
-    {
-        Vector2 targ = (manager.Target - (Vector2)manager.transform.position);
-        //chequear esto en realidad
-        float dist = targ.magnitude;
-        //treshold modificar
-        if (dist < 0.5f)
-        {
-            manager.NextPoint();
-            return targ;
-        }
-        return (manager.Target - (Vector2)manager.transform.position).normalized;
-    }
-
-    private Vector2 GetVelocity(CurveEnemyManager manager)
-    {
-        return GetDirection(manager) * manager.fSpeed * manager.fMaxSpeed;
-    }
-
 }
