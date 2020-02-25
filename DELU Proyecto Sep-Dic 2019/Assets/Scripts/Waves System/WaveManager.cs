@@ -43,6 +43,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 #endif
+
     /// <summary>
     /// Le agrega al contador la cantidad de enemigos del nodo
     /// </summary>

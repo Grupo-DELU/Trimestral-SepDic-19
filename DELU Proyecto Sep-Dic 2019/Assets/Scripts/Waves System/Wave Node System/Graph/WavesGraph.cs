@@ -9,11 +9,8 @@ public class WavesGraph : NodeGraph
     public WaveNode initialWave;
     public WaveNode currentNode;
 
-    public void Start()
+    public void RestartWave()
     {
-        //Tengo que quitar esto
-        Debug.Log("Puta");
-        //jajajajaja 
         currentNode = initialWave;
         //if (initialWave == null) Debug.LogError("LA WAVE INICIAL ES NULA!");
         //if (currentNode == null) Debug.LogError("EL NODO ACTUAL ES NULO!");

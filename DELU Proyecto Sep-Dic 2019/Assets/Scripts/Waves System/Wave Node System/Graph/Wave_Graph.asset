@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wave
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -216, y: 72}
+  position: {x: -216, y: 56}
   ports:
     keys:
     - enemies
@@ -56,7 +56,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  name: a
   firstWave: 1
   lastWave: 0
   roundRestingTime: 10
@@ -110,7 +109,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  name: c
   firstWave: 0
   lastWave: 0
   roundRestingTime: 2
@@ -144,7 +142,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  enemyType: 0
   quantity: 4
   delay:
   - 1
@@ -166,7 +163,7 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 504, y: -296}
+  position: {x: 504, y: -360}
   ports:
     keys:
     - input
@@ -183,7 +180,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  enemyType: 0
   quantity: 2
   delay:
   - 1
@@ -203,7 +199,7 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 504, y: -56}
+  position: {x: 504, y: -136}
   ports:
     keys:
     - input
@@ -220,7 +216,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  enemyType: 0
   quantity: 1
   delay:
   - 1
@@ -278,7 +273,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  enemyType: 1
   quantity: 2
   delay:
   - 1
@@ -298,7 +292,7 @@ MonoBehaviour:
   m_Name: Wave
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 248, y: 56}
+  position: {x: 232, y: 56}
   ports:
     keys:
     - enemies
@@ -344,7 +338,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  name: b
   firstWave: 0
   lastWave: 0
   roundRestingTime: 4

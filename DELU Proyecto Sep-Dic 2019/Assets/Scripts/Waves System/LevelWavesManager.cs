@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using XNode;
 
-public class WavesEvents : UnityEvent{}
+public class WavesEvents : UnityEvent { }
 /// <summary>
 /// Wave System se encarga de llamar a las waves y navegar entre ellas,
 /// no se encarga del spawneo ni de nada de eso. 
@@ -48,16 +48,28 @@ public class LevelWavesManager : MonoBehaviour
         Manager = this;
         #endregion
     }
+
+
     public void Start()
     {
         //Empieza a estar pendiente de cuando matas a todos los enemigos
         WaveManager.Manager.onNoMoreEnemies.AddListener(StartRest);
+    }
 
-        wavesGraph.Start();
+    /// <summary>
+    /// Inicia el sistema de waves del nivel
+    /// </summary>
+    public void StartLevelWaves()
+    {
+        wavesGraph.RestartWave();
         currentNode = wavesGraph.currentNode;
         StartWave(currentNode);
     }
 
+    /// <summary>
+    /// Inicia una wave de un nodo
+    /// </summary>
+    /// <param name="node">Nodo con informacion de la wave</param>
     public void StartWave(WaveNode node)
     {
         Debug.Log("Empezando la wave!");
@@ -110,7 +122,7 @@ public class LevelWavesManager : MonoBehaviour
     /// </summary>
     /// <param name="node">Nodo a chequear</param>
     /// <returns>Si tiene o no enemigos</returns>
-    public  bool WaveHaveEnemies(WaveNode node)
+    public bool WaveHaveEnemies(WaveNode node)
     {
         if (node.GetOutputPort("enemies").IsConnected)
         {
@@ -145,7 +157,7 @@ public class LevelWavesManager : MonoBehaviour
         if (!WaveHaveEnemies(node)) return null;
         List<NodePort> connections = node.GetOutputPort("enemies").GetConnections();
         List<EnemyNode> enemies = new List<EnemyNode>();
-        foreach(NodePort port in connections)
+        foreach (NodePort port in connections)
         {
             enemies.Add(port.node as EnemyNode);
         }
