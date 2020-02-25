@@ -373,7 +373,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 374649084283679441}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -400,7 +400,7 @@ MonoBehaviour:
   iMaxHP: 10
   bInmortal: 0
   fReviveProtTime: 1
-  bDebug: 0
+  bDebug: 1
 --- !u!114 &8572688063315232412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,9 +504,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collidesWith:
-    value: 2
+    value: 10
   belongsTo:
-    value: 4
+    value: 1
   onCollision:
     m_PersistentCalls:
       m_Calls: []

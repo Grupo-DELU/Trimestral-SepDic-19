@@ -264,6 +264,7 @@ MonoBehaviour:
   iHP: 0
   iMaxHP: 10
   bInmortal: 0
+  fReviveProtTime: 1
   bDebug: 0
 --- !u!23 &337888689
 MeshRenderer:
@@ -366,7 +367,7 @@ MonoBehaviour:
   bulletCollMask:
     value: 2
   bReloading: 0
-  iShotNumber: 501
+  iShotNumber: 701
   fFireRate: 0.15
   fBulletSpeed: 5
   spawnPos: {fileID: 1527446838}
@@ -853,6 +854,7 @@ MonoBehaviour:
   iHP: 0
   iMaxHP: 4
   bInmortal: 0
+  fReviveProtTime: 1
   bDebug: 0
 --- !u!114 &1919321016
 MonoBehaviour:

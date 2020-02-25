@@ -15,11 +15,8 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// </summary>
     [SerializeField]
     private bool bSeek = true;
-    //private bool bCharging = false;
-    public bool IsLaunched { get { return bLaunched; } }
-    private bool bLaunched = false;
 
-    public float LaunchSpeed { get { return fLaunchSpeed; } }
+
     [SerializeField]
     private float fLaunchSpeed = 10f;
 
@@ -66,8 +63,7 @@ public class KamikazeEnemyManager : EnemyShipManager
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
         bSeek = true;
         bIsMoving = true;
-        //bCharging = false;
-        bLaunched = false;
+        // Setear la velocidad inicial
     }
 
     override protected void Update()
@@ -75,19 +71,19 @@ public class KamikazeEnemyManager : EnemyShipManager
         //Si ya pasaron los frames de update posicion jugador
         //updatea la posicion
         float distSqr = (transform.position.y - playerT.position.y);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.forward, lastPlayerDir), 3f);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.forward, lastPlayerDir), 2f);
         if (bSeek)
         {
             if (updateCounter >= timeToUpate)
             {
                 lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
-                //Debug.Log("Nueva posicion: " + target);
                 updateCounter = 0;
             }
             if (distSqr < updateDist)
             {
-                //bSeek = false;
-                //executeAction("ChargeKamikaze");
+                bSeek = false;
+                executeAction("ChargeKamikaze");
+                StartCharge();
             }
             updateCounter += Time.deltaTime;
         }
@@ -109,23 +105,23 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// Carga la nave unos segundos antes de actualziar de nuevo 
     /// la posicion del jugador e ir hacia el
     /// </summary>
-    /// <returns></returns>
     private IEnumerator Charge()
     {
-        //bCharging = true;
         bIsMoving = false;
-        bLaunched = false;
         yield return new WaitForSeconds(fChargeTime);      
-        //bCharging = false;
         bIsMoving = true;
-        bLaunched = true;
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
 
-        //executeAction("LaunchKamikaze");
+        executeAction("LaunchKamikaze");
     }
 
     public Vector2 GetLastPlayerDir()
     {
         return lastPlayerDir;
+    }
+
+    public float GetLaunchSpeed()
+    {
+        return fLaunchSpeed;
     }
 }

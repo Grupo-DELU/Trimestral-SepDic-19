@@ -86,10 +86,18 @@ public class HealthManager : MonoBehaviour
     private void Awake()
     {
         // En caso del jugador, liga la inmortalidad al roll
+        // TODO
+        // [] El sist de movimiento debe de ser el mismo para todas las naves, la cosa es que pense eso despues asi que arreglar
+        // [X] Todas las naves deberian de tener roll asociado a la invencibilidad
         if (TryGetComponent(out PlayerMovement pm))
         {
             pm.onPlayerRoll.AddListener(ActivateInmortality);
             pm.onPlayerStopRoll.AddListener(CancelInmortality);
+        }
+        else if (TryGetComponent(out ShipMovement sm))
+        {
+            sm.onRoll.AddListener(ActivateInmortality);
+            sm.onStopRoll.AddListener(CancelInmortality);
         }
     }
     private void Start()
@@ -101,6 +109,7 @@ public class HealthManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (CompareTag("Player") && bDebug && Input.GetKeyDown(KeyCode.T))
@@ -108,6 +117,8 @@ public class HealthManager : MonoBehaviour
             RemoveLife(100000000);
         }
     }
+#endif
+
     /// <summary>
     /// Agrega vida a la nave
     /// </summary>

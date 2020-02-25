@@ -145,4 +145,14 @@ public class ShipMovement : MonoBehaviour
         bCanRoll = true;
         onCanRollAgain.Invoke();
     }
+
+    public void SetSpeed(float newSpeed)
+    {
+        fMovementSpeed = newSpeed;
+    }
+
+    public float GetSpeed()
+    {
+        return fMovementSpeed;
+    }
 }

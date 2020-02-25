@@ -12,7 +12,7 @@ using UnityEngine.UIElements.Experimental;
 /// <summary>
 /// Bullet Team for Collision Detection
 /// </summary>
-[Serializable]
+[System.Serializable]
 public class BulletTeam {
     /// <summary>
     /// Layers affected by bullet in a Collision

@@ -135,6 +135,7 @@ public class Curve
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(BezierCurves))]
 public class BezierCurvesEditor : Editor
 {
@@ -356,3 +357,4 @@ public class BezierCurvesEditor : Editor
         }
     }
 }
+#endif
