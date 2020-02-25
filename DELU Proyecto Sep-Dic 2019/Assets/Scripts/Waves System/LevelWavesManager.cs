@@ -9,9 +9,9 @@ public class WavesEvents : UnityEvent{}
 /// Wave System se encarga de llamar a las waves y navegar entre ellas,
 /// no se encarga del spawneo ni de nada de eso. 
 /// </summary>
-public class WaveSystem : MonoBehaviour
+public class LevelWavesManager : MonoBehaviour
 {
-    public static WaveSystem Manager { get; private set; }
+    public static LevelWavesManager Manager { get; private set; }
     /// <summary>
     /// Indica si se esta en descanso de ronda
     /// </summary>

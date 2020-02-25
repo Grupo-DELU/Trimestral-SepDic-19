@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// WaveManager se encarga del spawneo de las naves de una wave
+/// </summary>
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Manager { get; private set; }
@@ -11,11 +14,13 @@ public class WaveManager : MonoBehaviour
     /// </summary>
     private int iEnemyCount;
     /// <summary>
-    /// Se llama
+    /// Se llama cuando no quedan mas enemigos en la wave
     /// </summary>
     public WavesEvents onNoMoreEnemies = new WavesEvents();
 
+#if UNITY_EDITOR
     public bool debug = true;
+#endif
 
     private void Awake()
     {
@@ -28,6 +33,7 @@ public class WaveManager : MonoBehaviour
         #endregion
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (debug && Input.GetKeyDown(KeyCode.D))
@@ -36,6 +42,7 @@ public class WaveManager : MonoBehaviour
             Debug.Log("Ahora hay: " + iEnemyCount + " enemigos.");
         }
     }
+#endif
     /// <summary>
     /// Le agrega al contador la cantidad de enemigos del nodo
     /// </summary>
