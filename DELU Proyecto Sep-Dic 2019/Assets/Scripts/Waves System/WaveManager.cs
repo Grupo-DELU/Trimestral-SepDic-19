@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 /// <summary>
 /// WaveManager se encarga del spawneo de las naves de una wave
@@ -58,34 +56,21 @@ public class WaveManager : MonoBehaviour
     /// del contador al evento de muerte
     /// </summary>
     /// <param name="enemies">Nodo de enemigos a spawnear</param>
-    /// <returns>Corutina</returns>
     public IEnumerator SpawnEnemies(EnemyNode enemies)
     {
         Debug.Log("Spawneando enemigos!");
         AddNodeCount(enemies);
-        for(int i = 0; i < enemies.quantity; i++)
+        for (int i = 0; i < enemies.quantity; i++)
         {
             yield return new WaitForSeconds(enemies.delay[i]);
             GameObject enemy = SpawningSystem.Manager.SpawnEnemyFromNode(enemies);
-            //enemy.GetComponent<HealthManager>().onDepletedLife.AddListener(ReduceEnemyCount);
+            //enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ReduceEnemyCount());
         }
     }
 
     /// <summary>
-    /// Reduce el contador de enemigos y chequea si no hay mas
+    /// Reduce el contador de enemigos y chequea si no quedan mas
     /// </summary>
-    /// <param name="oldHp">Useless</param>
-    /// <param name="newHp">Vida del enemigo muerto</param>
-    void ReduceEnemyCount(int oldHp, int newHp)
-    {
-        if (newHp > 0) return;
-        iEnemyCount = iEnemyCount - 1;
-        if (iEnemyCount <= 0)
-        {
-            onNoMoreEnemies.Invoke();
-        }
-    }
-
     void ReduceEnemyCount()
     {
         iEnemyCount = iEnemyCount - 1;

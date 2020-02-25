@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+
 public enum GameStates { Starting, Playing, Paused, LevelOver, GameOver }
 public class GameStateEvents : UnityEvent { }
 
@@ -48,7 +49,6 @@ public class GameStateManager : MonoBehaviour
         if (LevelWavesManager.Manager == null) Debug.LogError("No hay Manager de waves para el GameStateManager!", gameObject);
         else LevelWavesManager.Manager.onAllWavesCompleted.AddListener(FinishLevel);
     }
-
 
     private void Update()
     {

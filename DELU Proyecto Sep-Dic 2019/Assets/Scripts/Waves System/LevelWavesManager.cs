@@ -4,7 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using XNode;
 
+/// <summary>
+/// Eventos relacionados al sistema de waves del nivel o de las waves individuales
+/// </summary>
 public class WavesEvents : UnityEvent { }
+
 /// <summary>
 /// Wave System se encarga de llamar a las waves y navegar entre ellas,
 /// no se encarga del spawneo ni de nada de eso. 
