@@ -6,6 +6,12 @@ using UnityEngine;
 public class EnemyShipManager : ActionManager
 {
     /// <summary>
+    /// Indica si la AI esta activa
+    /// </summary>
+    [SerializeField]
+    protected bool bIsActive = true;
+
+    /// <summary>
     /// Sistema de movimiento de la nave
     /// </summary>
     [HideInInspector]
@@ -31,8 +37,18 @@ public class EnemyShipManager : ActionManager
     /// </summary>
     virtual protected void Update()
     {
+        if (!bIsActive) return;
         executeAction("Shoot");
         executeAction("Move");
         //Debug.Log("hola, estoy vacio por dentro :) (por ahora xd)");
+    }
+
+    /// <summary>
+    /// Settea la AI como activa o inactiva
+    /// </summary>
+    /// <param name="status">Nuevo status de la AI</param>
+    public void SetAIStatus(bool status)
+    {
+        bIsActive = status;
     }
 }

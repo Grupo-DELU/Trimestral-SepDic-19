@@ -142,14 +142,15 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  quantity: 4
+  quantity: 2
   delay:
   - 1
   - 1
   - 1
   - 1
   spawningPos: 00000000
-  bases: {fileID: 0}
+  enemyType: 0
+  bases: {fileID: 11400000, guid: bf0bdf461c32bb54a9cbb3dd873964fa, type: 2}
 --- !u!114 &-3747281007735863848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,8 +185,9 @@ MonoBehaviour:
   delay:
   - 1
   - 1
-  spawningPos: 0000000001000000
-  bases: {fileID: 0}
+  spawningPos: 0000000000000000
+  enemyType: 1
+  bases: {fileID: 11400000, guid: 0118289a200ef434dbbc8566de674467, type: 2}
 --- !u!114 &-3602950204732540829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,8 +221,9 @@ MonoBehaviour:
   quantity: 1
   delay:
   - 1
-  spawningPos: 0000000001000000
-  bases: {fileID: 0}
+  spawningPos: 0100000001000000
+  enemyType: 1
+  bases: {fileID: 11400000, guid: 0118289a200ef434dbbc8566de674467, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,8 +280,9 @@ MonoBehaviour:
   delay:
   - 1
   - 1
-  spawningPos: 01000000
-  bases: {fileID: 0}
+  spawningPos: 02000000
+  enemyType: 0
+  bases: {fileID: 11400000, guid: 763e48424086cb44db47f2c82dc04ae0, type: 2}
 --- !u!114 &6935374105655986680
 MonoBehaviour:
   m_ObjectHideFlags: 0

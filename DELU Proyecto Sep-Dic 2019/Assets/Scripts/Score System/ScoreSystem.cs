@@ -17,9 +17,16 @@ public class ScoreSystem : MonoBehaviour
     /// </summary>
     private int iHighScore;
     /// <summary>
+    /// Modificador de Score del jugador
+    /// </summary>
+    [SerializeField]
+    private float fScoreModifier = 1f;
+
+    /// <summary>
     /// Se llama cuando el score cambia
     /// </summary>
     public ScoreEvents onScoreChange = new ScoreEvents();
+
 
     private void Awake()
     {
@@ -33,14 +40,15 @@ public class ScoreSystem : MonoBehaviour
         #endregion
     }
 
+
     /// <summary>
     /// Suma/Agrega score
     /// </summary>
     /// <param name="toAdd">Score a agregar</param>
     /// <param name="modifier">Modificador de score</param>
-    private void AddScore(int toAdd, float modifier = 1f)
+    public void AddScore(int toAdd)
     {
-        iScore += Mathf.FloorToInt(toAdd * modifier);
+        iScore += Mathf.FloorToInt(toAdd * fScoreModifier);
         onScoreChange.Invoke(iScore);
     }
 }

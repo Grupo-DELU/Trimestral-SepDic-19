@@ -220,12 +220,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curve:
     points:
-    - {x: 0, y: 0}
-    - {x: 0, y: 1}
-    - {x: 1, y: -1}
-    - {x: 1, y: 0}
-    - {x: 1, y: 1}
-    - {x: 0, y: -1}
+    - {x: 0.97884464, y: 14.225512}
+    - {x: -5.3130517, y: 14.198364}
+    - {x: 6.5434504, y: 5.098337}
+    - {x: 0.15129995, y: 5.294652}
+    - {x: -6.3133836, y: 5.490967}
+    - {x: 7.1982064, y: 14.252659}
     isClosed: 1
 --- !u!114 &551981899
 MonoBehaviour:
@@ -276,8 +276,7 @@ PrefabInstance:
         type: 3}
       propertyPath: path
       value: 
-      objectReference: {fileID: 11400000, guid: 631682784d2793f44961f5226c984cbc,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4760188376097575362, guid: d9198d3939d641d4697bd3a4017f271a,
         type: 3}
       propertyPath: fMovementSpeed

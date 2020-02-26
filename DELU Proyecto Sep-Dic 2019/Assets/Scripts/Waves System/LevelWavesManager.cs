@@ -40,14 +40,21 @@ public class LevelWavesManager : MonoBehaviour
     /// <summary>
     /// Corutina de descanso de wave
     /// </summary>
-    private Coroutine cWaveRestRoutine;
+    private Coroutine cWaveRestRoutine = null;
+
+
+#if UNITY_EDITOR
+    public bool bDebug = true;
+#endif
+
 
     private void Awake()
     {
         #region Singleton
         if (Manager != null && Manager != this)
         {
-            Debug.LogError("Hay dos sistemas de wave!");
+            Debug.LogError("Hay dos sistemas de wave! Intentado identificar/eliminar el otro...", Manager.gameObject);
+            Destroy(Manager.gameObject);
         }
         Manager = this;
         #endregion
@@ -57,8 +64,21 @@ public class LevelWavesManager : MonoBehaviour
     public void Start()
     {
         //Empieza a estar pendiente de cuando matas a todos los enemigos
-        WaveManager.Manager.onNoMoreEnemies.AddListener(StartRest);
+        if (WaveManager.Manager == null) Debug.LogError("No hay Manager de Waves individual, esto va a explotar", gameObject);
+        else WaveManager.Manager.onNoMoreEnemies.AddListener(StartRest);
     }
+
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+      if (bDebug && Input.GetKeyDown(KeyCode.Space) && currentNode == null)
+        {
+            StartLevelWaves();
+        }  
+    }
+#endif
+
 
     /// <summary>
     /// Inicia el sistema de waves del nivel
@@ -69,6 +89,7 @@ public class LevelWavesManager : MonoBehaviour
         currentNode = wavesGraph.currentNode;
         StartWave(currentNode);
     }
+
 
     /// <summary>
     /// Inicia una wave de un nodo
@@ -83,6 +104,7 @@ public class LevelWavesManager : MonoBehaviour
             StartCoroutine(WaveManager.Manager.SpawnEnemies(enemy));
         }
     }
+
 
     /// <summary>
     /// Accede a la siguiente wave del grafo, si no hay, activa evento de que terminaron
@@ -103,6 +125,7 @@ public class LevelWavesManager : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// Chequea si hay una wave siguiente
     /// </summary>
@@ -120,6 +143,7 @@ public class LevelWavesManager : MonoBehaviour
         }
         return false;
     }
+
 
     /// <summary>
     /// Chequea si la wave tiene enemigos ???????????????????????????????????????????????
@@ -139,6 +163,7 @@ public class LevelWavesManager : MonoBehaviour
         return false;
     }
 
+
     /// <summary>
     /// Retorna la siguiente wave
     /// </summary>
@@ -150,6 +175,7 @@ public class LevelWavesManager : MonoBehaviour
         NodePort output = currentNode.GetOutputPort("nextWave");
         return output.Connection.node as WaveNode;
     }
+
 
     /// <summary>
     /// Nodos de enemigos de la wave
@@ -168,6 +194,7 @@ public class LevelWavesManager : MonoBehaviour
         return enemies;
     }
 
+
     /// <summary>
     /// Inicia el descanso entre rondas
     /// </summary>
@@ -177,6 +204,7 @@ public class LevelWavesManager : MonoBehaviour
         cWaveRestRoutine = StartCoroutine(RoundResting(currentNode.roundRestingTime));
     }
 
+
     /// <summary>
     /// Activa el descanso de waves
     /// </summary>
@@ -184,9 +212,7 @@ public class LevelWavesManager : MonoBehaviour
     /// <returns>Corutina</returns>
     public IEnumerator RoundResting(float time)
     {
-        //bIsResting = true;
         yield return new WaitForSeconds(time);
-        //bIsResting = false;
         NextWave();
     }
 }

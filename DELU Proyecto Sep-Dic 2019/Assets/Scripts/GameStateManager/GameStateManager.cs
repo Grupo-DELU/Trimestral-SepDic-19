@@ -30,6 +30,7 @@ public class GameStateManager : MonoBehaviour
     [SerializeField]
     public GameStateEvents onLevelOver = new GameStateEvents();
 
+
     private void Awake()
     {
         #region Singleton
@@ -42,20 +43,27 @@ public class GameStateManager : MonoBehaviour
         #endregion
     }
 
+
     private void Start()
     {
         StartCoroutine(StartGame());
 
+        // Asociamos el fin del nivel al fin de waves
         if (LevelWavesManager.Manager == null) Debug.LogError("No hay Manager de waves para el GameStateManager!", gameObject);
         else LevelWavesManager.Manager.onAllWavesCompleted.AddListener(FinishLevel);
+
+        // Asociamos el GameOver al agotamiento de vidas del jugador
+        if (PlayerFinder.Player == null) Debug.LogError("No hay jugado para el GameStateManager!");
+        else PlayerFinder.Player.GetComponent<LivesSystem>().onLivesDepleted.AddListener((a) => GameOver());
     }
+
 
     private void Update()
     {
         if (state == GameStates.Playing && Input.GetKeyDown(KeyCode.Escape)) PauseGame();
         else if (state == GameStates.Playing && Input.GetKeyDown(KeyCode.Escape)) ResumeGame();
-
     }
+
 
     /// <summary>
     /// Setea el estado del juego como en pausa y manda la senal asociada a pausar
@@ -66,6 +74,7 @@ public class GameStateManager : MonoBehaviour
         onPause.Invoke();
     }
 
+
     /// <summary>
     /// Setea el estado del juego como en juego y manda la senal asociada a continuar
     /// </summary>
@@ -74,6 +83,7 @@ public class GameStateManager : MonoBehaviour
         state = GameStates.Playing;
         onResume.Invoke();
     }
+
 
     /// <summary>
     /// Setea el estado del juego como nivel completado y manda la senal asociada a fin de nivel
@@ -84,6 +94,7 @@ public class GameStateManager : MonoBehaviour
         onLevelOver.Invoke();
     }
 
+
     /// <summary>
     /// Setea el estado del juego como perdido y manda la senal asociada a gameover
     /// </summary>
@@ -92,6 +103,7 @@ public class GameStateManager : MonoBehaviour
         state = GameStates.GameOver;
         onGameOver.Invoke();
     }
+
 
     /// <summary>
     /// Empieza el sistema de waves tras un delay y manda la senal asociada a inicio de juego
@@ -104,6 +116,7 @@ public class GameStateManager : MonoBehaviour
         // Empieza el sistema de waves (quizas deberia estar como listener del manager de juegos!)
         LevelWavesManager.Manager.StartLevelWaves();
     }
+
 
     /// <summary>
     /// Devuelve el estado actual del juego

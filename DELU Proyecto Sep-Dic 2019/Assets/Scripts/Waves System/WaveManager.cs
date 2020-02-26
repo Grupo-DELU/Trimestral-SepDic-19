@@ -20,6 +20,7 @@ public class WaveManager : MonoBehaviour
     public bool debug = true;
 #endif
 
+
     private void Awake()
     {
         #region Singleton
@@ -31,16 +32,18 @@ public class WaveManager : MonoBehaviour
         #endregion
     }
 
+
 #if UNITY_EDITOR
     private void Update()
     {
-        if (debug && Input.GetKeyDown(KeyCode.D))
+        if (debug && Input.GetKeyDown(KeyCode.PageDown))
         {
             ReduceEnemyCount();
             Debug.Log("Ahora hay: " + iEnemyCount + " enemigos.");
         }
     }
 #endif
+
 
     /// <summary>
     /// Le agrega al contador la cantidad de enemigos del nodo
@@ -50,6 +53,7 @@ public class WaveManager : MonoBehaviour
     {
         iEnemyCount = iEnemyCount + enemies.quantity;
     }
+
 
     /// <summary>
     /// Se encarga de spawnear los enemigos de un nodo y suscribir el reductor
@@ -67,6 +71,7 @@ public class WaveManager : MonoBehaviour
             //enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ReduceEnemyCount());
         }
     }
+
 
     /// <summary>
     /// Reduce el contador de enemigos y chequea si no quedan mas

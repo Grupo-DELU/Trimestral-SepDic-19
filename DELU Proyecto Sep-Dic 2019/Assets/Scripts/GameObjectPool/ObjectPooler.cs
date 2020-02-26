@@ -18,6 +18,7 @@ public class ObjectPooler : MonoBehaviour
     [SerializeField]
     private Pooler[] pools = null;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,13 +34,6 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GetFromPool(pools[0].sName);
-        }    
-    }
 
     public GameObject GetFromPool(string poolName)
     {

@@ -24,13 +24,13 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// Tiempo de carga final
     /// </summary>
     [SerializeField]
-    private float fChargeTime = 2;
+    private readonly float fChargeTime = 2;
 
     /// <summary>
     /// Segundos para que updatee la posicion del jugador
     /// </summary>
     [SerializeField]
-    private int timeToUpate = 10;
+    private readonly int timeToUpate = 10;
     /// <summary>
     /// Contador de tiempo para updatear
     /// </summary>
@@ -39,7 +39,7 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// Distancia a la que dejara de actualizar la posicion del jugador
     /// </summary>
     [SerializeField]
-    private float updateDist = 5f;
+    private readonly float updateDist = 5f;
 
     /// <summary>
     /// Ultima direccion conocida hacia el jugador
@@ -52,22 +52,17 @@ public class KamikazeEnemyManager : EnemyShipManager
 
     private Coroutine chargeRoutine = null;
 
+
     override protected void Awake()
     {
         base.Awake();
         playerT = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void OnEnable()
-    {
-        lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
-        bSeek = true;
-        bIsMoving = true;
-        // Setear la velocidad inicial
-    }
 
     override protected void Update()
     {
+        if (!bIsActive) return;
         //Si ya pasaron los frames de update posicion jugador
         //updatea la posicion
         float distSqr = (transform.position.y - playerT.position.y);
@@ -87,7 +82,6 @@ public class KamikazeEnemyManager : EnemyShipManager
             }
             updateCounter += Time.deltaTime;
         }
-  
         if (bIsMoving) executeAction("KamikazeMove");
     }
 
@@ -100,6 +94,7 @@ public class KamikazeEnemyManager : EnemyShipManager
         if (chargeRoutine != null) StopCoroutine(chargeRoutine);
         chargeRoutine = StartCoroutine(Charge());
     }
+
 
     /// <summary>
     /// Carga la nave unos segundos antes de actualziar de nuevo 
@@ -115,10 +110,22 @@ public class KamikazeEnemyManager : EnemyShipManager
         executeAction("LaunchKamikaze");
     }
 
+    /// <summary>
+    /// Resetea la AI kamikaze
+    /// </summary>
+    public void ResetKamikaze()
+    {
+        lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
+        bSeek = true;
+        bIsMoving = true;
+    }
+
+
     public Vector2 GetLastPlayerDir()
     {
         return lastPlayerDir;
     }
+
 
     public float GetLaunchSpeed()
     {

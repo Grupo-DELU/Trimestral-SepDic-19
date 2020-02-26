@@ -44,10 +44,7 @@ public class CurveEnemyMovement : ShipMovement
     /// <returns>Direccion al punto objetivo de la nave</returns>
     public Vector2 CalculatePointDir()
     {
-        if (path == null)
-        {
-            Debug.LogError("No hay curva para que la nave se mueva!", gameObject);
-        }
+        if (path == null) Debug.LogError("No hay curva para que la nave se mueva!", gameObject);
         return (vTargetPoint - (Vector2)transform.position).normalized;
     }
 
@@ -57,14 +54,41 @@ public class CurveEnemyMovement : ShipMovement
     /// </summary>
     public void MoveInCurve()
     {
-        if (path == null)
-        {
-            Debug.LogError("No hay curva para que la nave se mueva!", gameObject);
-        }
-        if (fStoppingDist * fStoppingDist >= Vector2.SqrMagnitude(vTargetPoint - (Vector2)transform.position))
-        {
-            NextPoint();
-        }
+        if (path == null) Debug.LogError("No hay curva para que la nave se mueva!", gameObject);
+        if (fStoppingDist * fStoppingDist >= Vector2.SqrMagnitude(vTargetPoint - (Vector2)transform.position)) NextPoint();
         Move(CalculatePointDir());
+    }
+
+
+    /// <summary>
+    /// Calcula el punto mas cercano de la nave a una curva
+    /// </summary>
+    /// <param name="curve">Curva a calcular el punto mas cercano</param>
+    /// <returns>Indice del punto mas cercano en el ScriptableObject</returns>
+    public int CalculateNearestPoint(CurveScriptObject curve)
+    {
+        float min = Vector2.SqrMagnitude((Vector2)transform.position - curve.points[0]);
+        int minInd = 0;
+        for (int i = 1; i < curve.points.Length; i++)
+        {
+            float aux = Vector2.SqrMagnitude((Vector2)transform.position - curve.points[i]);
+            if (aux < min)
+            {
+                min = aux;
+                minInd = i;
+            }
+        }
+        return minInd;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="curve"></param>
+    public void SetCurve(CurveScriptObject curve)
+    {
+        path = curve;
+        iTargetIndex = CalculateNearestPoint(curve);
     }
 }

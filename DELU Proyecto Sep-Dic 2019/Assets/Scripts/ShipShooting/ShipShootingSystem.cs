@@ -52,6 +52,7 @@ public class ShipShootingSystem : MonoBehaviour
     /// </summary>
     private BulletSpawner bulletShooter = null;
 
+
     private void Awake()
     {
         bulletShooter = GetComponent<BulletSpawner>();
@@ -61,6 +62,7 @@ public class ShipShootingSystem : MonoBehaviour
             bIsActive = false;
         }
     }
+
 
     /// <summary>
     /// Dispara la cantidad de balas especificadas eniShotNumber en la transformada 
@@ -79,6 +81,7 @@ public class ShipShootingSystem : MonoBehaviour
         StartCoroutine(FireRate());
     }
 
+
     /// <summary>
     /// Corutina que desactiva y activa el disparo dependiendo delfFireRate
     /// </summary>
@@ -87,5 +90,29 @@ public class ShipShootingSystem : MonoBehaviour
         bReloading = true;
         yield return new WaitForSeconds(fFireRate);
         bReloading = false;
+    }
+
+
+    public void SetSystemOnOff(bool toSet)
+    {
+        bIsActive = true;
+    }
+
+
+    public void SetFireRate(float newRate)
+    {
+        fFireRate = newRate;
+    }
+
+
+    public void SetShotNumber(int newShots)
+    {
+        iShotNumber = newShots;
+    }
+
+
+    public void SetBulletSpeed(float newSpeed)
+    {
+        fBulletSpeed = newSpeed;
     }
 }

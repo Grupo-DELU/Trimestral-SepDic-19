@@ -190,9 +190,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7217477742482183954}
-  - component: {fileID: 6170679057781845626}
-  - component: {fileID: 7424696354709258955}
-  - component: {fileID: 8342987261214321163}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -214,66 +211,6 @@ Transform:
   m_Father: {fileID: 9100183926234304367}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6170679057781845626
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5280843365080118603}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7424696354709258955
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5280843365080118603}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!135 &8342987261214321163
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5280843365080118603}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9100183926234304339
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9100183926234304367}
   - component: {fileID: 9100183926234304338}
+  - component: {fileID: 9190829910299887727}
   - component: {fileID: 8986489083813861845}
   - component: {fileID: 7833215712181964990}
   - component: {fileID: 5506896121446041506}
@@ -294,11 +232,11 @@ GameObject:
   - component: {fileID: 1919321016}
   m_Layer: 0
   m_Name: CurveEnemy
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9100183926234304367
 Transform:
   m_ObjectHideFlags: 0
@@ -336,6 +274,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!70 &9190829910299887727
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100183926234304339}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!23 &8986489083813861845
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -396,7 +350,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsObjects:
+  - {fileID: 11400000, guid: 6ea96a3a2b7f5414381d05594e97016c, type: 2}
   - {fileID: 11400000, guid: c0a867788221ce94c9d2050e46e0e535, type: 2}
+  bIsActive: 1
   movementSyst: {fileID: 0}
   shootingSyst: {fileID: 0}
 --- !u!114 &4760188376097575362
@@ -436,7 +392,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3722629331774641419, guid: 95853df865797b941a2074de4f133fe1,
     type: 3}
   testSpawn: 100
-  testEnabled: 1
+  testEnabled: 0
   bulletTeamMask:
     value: 0
   bulletCollisionMask:
@@ -456,9 +412,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bIsActive: 1
   bulletTeamMask:
-    value: 0
+    value: 2
   bulletCollMask:
-    value: 0
+    value: 1
   bReloading: 0
   iShotNumber: 1
   fFireRate: 0.15

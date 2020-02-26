@@ -190,9 +190,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7118951939998422969}
-  - component: {fileID: 5998969795722620625}
-  - component: {fileID: 7055989604344267360}
-  - component: {fileID: 8442567460914637472}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -214,66 +211,6 @@ Transform:
   m_Father: {fileID: 8694306587624673220}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5998969795722620625
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5740800732857857504}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7055989604344267360
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5740800732857857504}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!135 &8442567460914637472
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5740800732857857504}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8694306587624673272
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,18 +220,20 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8694306587624673220}
-  - component: {fileID: 8694306587624673273}
-  - component: {fileID: 8814763707037505918}
   - component: {fileID: 7662616269736251413}
+  - component: {fileID: 8814763707037505918}
+  - component: {fileID: 8694306587624673273}
+  - component: {fileID: 8185594911871728583}
   - component: {fileID: 8694306587624673254}
   - component: {fileID: 8694306587624673255}
   - component: {fileID: 1281299192493757862}
   - component: {fileID: 1733073964995975171}
   - component: {fileID: 496021402621166364}
   - component: {fileID: 496021402621166355}
+  - component: {fileID: 5153624404157176027}
   m_Layer: 0
   m_Name: Kamikazee Enemy
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -315,27 +254,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!50 &8694306587624673273
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!33 &7662616269736251413
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8694306587624673272}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8814763707037505918
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -375,14 +301,43 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &7662616269736251413
-MeshFilter:
+--- !u!50 &8694306587624673273
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8694306587624673272}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!70 &8185594911871728583
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694306587624673272}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!114 &8694306587624673254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,14 +354,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
   - {fileID: 11400000, guid: 68ad93c9f07ae734cb6666691f70dcfe, type: 2}
   - {fileID: 11400000, guid: c6fac33096748e5459780fcd05e9c28e, type: 2}
+  bIsActive: 1
   movementSyst: {fileID: 0}
   shootingSyst: {fileID: 0}
   bIsMoving: 1
   bSeek: 1
   fLaunchSpeed: 15
-  fChargeTime: 2
-  timeToUpate: 5
-  updateDist: 5
 --- !u!114 &8694306587624673255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,7 +375,7 @@ MonoBehaviour:
   bIsActive: 1
   bCanMove: 1
   bIsMoving: 0
-  fMovementSpeed: 0
+  fMovementSpeed: 1
   bIsRolling: 0
   bCanRoll: 1
   fRollCD: 5
@@ -462,9 +415,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bIsActive: 1
   bulletTeamMask:
-    value: 0
+    value: 2
   bulletCollMask:
-    value: 0
+    value: 1
   bReloading: 0
   iShotNumber: 0
   fFireRate: 0.15
@@ -506,3 +459,17 @@ MonoBehaviour:
   onCollision:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5153624404157176027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694306587624673272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8fd94abf8173634b93f8351e6c0ceb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bInstakill: 1
+  iCrashDamage: 1
