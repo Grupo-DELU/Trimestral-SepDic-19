@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class QuadTree
 {
     /// <summary>
-    /// Area minima que tiene que tener un nodo/cuadrado del quad tree
+    /// Area minima que tiene que tener un nodo/cuadrado del quad tree para subdividirse
     /// </summary>
     public float minArea;
+
     /// <summary>
-    /// Cantidad maxima de puntos que puede tener un nodo/cuadrado del quad tree
+    /// Cantidad maxima de puntos que puede tener un nodo/cuadrado del quad tree antes de subdividirse
     /// </summary>
-    /// <remarks>
-    /// Si se supera esta cantidad, el nodo/cuadrado es dividido
-    /// </remarks>
     public int maxPoints;
 
+    public int minPoints;
+
+    /// <summary>
+    /// Nodo raiz del QuadTree
+    /// </summary>
     public Quadrant root;
 
     public void BuildQuadTree(Vector2 cornerTL, Vector2 cornerBR, List<Vector2> points)
@@ -27,14 +31,16 @@ public class QuadTree
     public void SubdivideQuadrant(Quadrant parent)
     {
         // Primero chequeamos si en el cuadrante la cantidad de puntos cumple el threshold de puntos
-        if (parent.pointsInside.Count > maxPoints) return;
+        if (parent.pointsInside.Count < maxPoints) return;
+        if (parent.pointsInside.Count < minPoints) return;
 
         // Ahora se chequea si los subcuadrantes van a tener el area minima
-        float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 4);
-        float height = (Mathf.Abs(parent.cornerTL.y - parent.cornerBR.y) / 4);
+        float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 2);
+        float height = (Mathf.Abs(parent.cornerTL.y - parent.cornerBR.y) / 2);
         // widht/height es lo mismo xd gafedad mia
         if (width * height < minArea) return;
-        
+
+        Debug.Log("Subdividiendo cuadrante...");
 
         // Hacemos la subdivision de la esquina superior-izquierda
         parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * height, parent.pointsInside);
@@ -53,13 +59,15 @@ public class QuadTree
         SubdivideQuadrant(parent.childBR);
     }
 
-    public QuadTree(int maxPoints, float minArea)
+    public QuadTree(int maxPoints, int minPoints, float minArea)
     {
         this.maxPoints = maxPoints;
+        this.minPoints = minPoints;
         this.minArea = minArea;
     }
 }
 
+[System.Serializable]
 public class Quadrant
 {
     // Puntos dentro del cuadrante
@@ -98,17 +106,6 @@ public class Quadrant
         childBR = null;
     }
 
-    public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR)
-    {
-        this.parent = parent;
-        this.cornerTL = cornerTL;
-        this.cornerBR = cornerBR;
-
-        childTL = null;
-        childTR = null;
-        childBL = null;
-        childBR = null;
-    }
 
     public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR, List<Vector2> pointsInside)
     {
