@@ -9,7 +9,15 @@ public class QuadTreeVisualizer : MonoBehaviour
     public Vector2 cornerTL = -Vector2.right + Vector2.up;
     public Vector2 cornerBL = Vector2.right - Vector2.up;
 
+    public Vector2 pointToLook = Vector2.zero;
+    private Vector2 best = Vector2.one * int.MaxValue;
+
     public List<Transform> points;
+
+    private void Start()
+    {
+        foreach (Transform t in points) t.gameObject.SetActive(false);    
+    }
 
     private void Update()
     {
@@ -17,8 +25,15 @@ public class QuadTreeVisualizer : MonoBehaviour
         {
             List<Vector2> qp = new List<Vector2>();
             foreach (Transform point in points) qp.Add(point.position);
-            quadTree = new QuadTree(1, 3, 1);
+            quadTree = new QuadTree(3, 1, 1);
             quadTree.BuildQuadTree(cornerTL, cornerBL, qp);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            double start = Time.time;
+            best = quadTree.GetNearestPoint(pointToLook, Vector2.one * int.MaxValue, quadTree.root);
+            Debug.Log(best);
+            Debug.Log("Tiempo: " + (Time.time - start).ToString("f10"));
         }
     }
 
@@ -30,6 +45,14 @@ public class QuadTreeVisualizer : MonoBehaviour
         if (quadTree == null) return;
         if (quadTree.root == null) return;
 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(pointToLook, 0.1f);
+        if (best != Vector2.one * int.MaxValue)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(best, 0.2f);
+        }
+
         RecursiveDraw(quadTree.root);
 
         void RecursiveDraw(Quadrant root)
@@ -37,8 +60,11 @@ public class QuadTreeVisualizer : MonoBehaviour
             float width = Mathf.Abs(root.cornerTL.x - root.cornerBR.x);
 
             Gizmos.color = Color.red;
-            if (quadTree.root != root) foreach (Vector2 point in root.pointsInside) Gizmos.DrawSphere(point, 0.2f);
-
+            if (root.childTL == null && root.childTR == null &&
+                root.childBL == null & root.childBR == null)
+            {
+                foreach (Vector2 point in root.pointsInside) Gizmos.DrawSphere(point, 0.1f);
+            }
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(root.cornerTL, root.cornerTL + Vector2.right * width);
             Gizmos.DrawLine(root.cornerTL, root.cornerTL - Vector2.up * width);
