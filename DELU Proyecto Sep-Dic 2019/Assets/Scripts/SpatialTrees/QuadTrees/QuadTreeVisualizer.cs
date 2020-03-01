@@ -12,28 +12,27 @@ public class QuadTreeVisualizer : MonoBehaviour
     public Vector2 pointToLook = Vector2.zero;
     private Vector2 best = Vector2.one * int.MaxValue;
 
-    public List<Transform> points;
-
-    private void Start()
-    {
-        foreach (Transform t in points) t.gameObject.SetActive(false);    
-    }
+    public float randomPoints = 10000;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
             List<Vector2> qp = new List<Vector2>();
-            foreach (Transform point in points) qp.Add(point.position);
+            for (int i = 0; i < randomPoints; i++)
+            {
+                Vector2 rndm = Vector2.right * Random.Range(cornerTL.x, cornerBL.x) + Vector2.up * Random.Range(cornerBL.y, cornerTL.y);
+                qp.Add(rndm);
+            }
             quadTree = new QuadTree(3, 1, 1);
             quadTree.BuildQuadTree(cornerTL, cornerBL, qp);
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
-            double start = Time.time;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             best = quadTree.GetNearestPoint(pointToLook, Vector2.one * int.MaxValue, quadTree.root);
-            Debug.Log(best);
-            Debug.Log("Tiempo: " + (Time.time - start).ToString("f10"));
+            watch.Stop();
+            Debug.Log(watch.ElapsedMilliseconds);
         }
     }
 
@@ -42,8 +41,15 @@ public class QuadTreeVisualizer : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Primero dibujamos los puntos
-        if (quadTree == null) return;
-        if (quadTree.root == null) return;
+        if (quadTree == null || quadTree.root == null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(cornerTL, cornerTL + Vector2.right * cornerBL.x);
+            Gizmos.DrawLine(cornerTL, cornerTL - Vector2.up * cornerBL.y);
+            Gizmos.DrawLine(cornerBL, cornerBL + Vector2.up * cornerTL.y);
+            Gizmos.DrawLine(cornerBL, cornerBL - Vector2.right * cornerTL.x);
+            return;
+        }
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(pointToLook, 0.1f);

@@ -36,27 +36,27 @@ public class QuadTree
         if (parent.pointsInside.Count < maxPoints || parent.pointsInside.Count < minPoints) return;
 
         // Ahora se chequea si los subcuadrantes van a tener el area minima
+        // Creo que voy a quitar esta condicion
         float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 2);
-        float height = (Mathf.Abs(parent.cornerTL.y - parent.cornerBR.y) / 2);
         // widht/height es lo mismo xd gafedad mia
         //if (width * height < minArea) return;
 
         //Debug.Log("Subdividiendo cuadrante...");
 
         // Hacemos la subdivision de la esquina superior-izquierda
-        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * height, parent.pointsInside);
+        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * width, parent.pointsInside);
         SubdivideQuadrant(parent.childTL);
 
         // Hacemos la subdivision de la esquina superior-derecha
-        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * height, parent.pointsInside);
+        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * width, parent.pointsInside);
         SubdivideQuadrant(parent.childTR);
 
         // Hacemos la subdivision de la esquina inferior-izquierda
-        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * height, parent.cornerBR - Vector2.right * width, parent.pointsInside);
+        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * width, parent.cornerBR - Vector2.right * width, parent.pointsInside);
         SubdivideQuadrant(parent.childBL);
 
         // Hacemos la subdivision de la esquina inferior-derecha
-        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * height + Vector2.right * width, parent.cornerBR, parent.pointsInside);
+        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * width + Vector2.right * width, parent.cornerBR, parent.pointsInside);
         SubdivideQuadrant(parent.childBR);
     }
 
@@ -72,8 +72,8 @@ public class QuadTree
         if (root.IsInside(point))
         {
             // Chequea si es un cuadrante hoja
-            // Solo es necesario chequear un hijo ya que todos los cuadrantes deberian
-            // de tener 4 hijos no nulos
+            // Solo es necesario chequear un hijo ya que todos los cuadrantes que
+            // no son minimos deberian de tener 4 hijos no nulos
             if (root.childBL == null) return root;
             else
             {
@@ -212,6 +212,7 @@ public class Quadrant
     public bool IsWorthChecking(Vector2 point, Vector2 min)
     {
         if (pointsInside.Count == 0) return false;
+        if (IsInside(point)) return true;
         Vector2 best;
         float minMag = Vector2.SqrMagnitude(point - min);
         // Evaluamos la dist con el mejor punto horizontal posible
