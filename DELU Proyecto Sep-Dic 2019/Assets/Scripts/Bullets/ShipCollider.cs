@@ -93,6 +93,12 @@ public class ShipCollider : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        
+        if (!_manager.IsCreated)
+        {
+            _manager = null;
+        }
+
         if (_manager != null && _manager.Exists(_entity)) {
             _manager.DestroyEntity(_entity);
         }

@@ -50,8 +50,8 @@ public class ShipCollisionSystem : JobComponentSystem {
     EndSimulationEntityCommandBufferSystem m_Barrier;
 
     protected override void OnCreate() {
-        physicsWorldSystem = World.GetOrCreateSystem<BuildPhysicsWorld>();
-        stepPhysicsWorldSystem = World.GetOrCreateSystem<StepPhysicsWorld>();
+        physicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BuildPhysicsWorld>();
+        stepPhysicsWorldSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<StepPhysicsWorld>();
         m_Barrier = World
             .DefaultGameObjectInjectionWorld
             .GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
