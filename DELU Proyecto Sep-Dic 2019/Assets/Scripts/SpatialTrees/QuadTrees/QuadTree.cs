@@ -1,10 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuadTree
+public class Quadrant
 {
+    // Puntos dentro del cuadrante
+    public List<Vector2> pointsInside;
+
+    // Esquinas delimitadoras del cuadrante
+    public Vector2 cornerTL;
+    public Vector2 cornerBR;
+
+    // Padre/supercuadrante del cuadrante
+    public Quadrant parent;
+
+    // Hijos/subcuadrantes del cuadrante
+    public Quadrant childTL;
+    public Quadrant childTR;
+    public Quadrant childBL;
+    public Quadrant childBR;
+
     /// <summary>
     /// Area minima que tiene que tener un nodo/cuadrado del quad tree para subdividirse
     /// </summary>
@@ -15,49 +30,42 @@ public class QuadTree
     /// </summary>
     public int maxPoints;
 
-    public int minPoints;
-
-    /// <summary>
-    /// Nodo raiz del QuadTree
-    /// </summary>
-    public Quadrant root;
-
-
-    public void BuildQuadTree(Vector2 cornerTL, Vector2 cornerBR, List<Vector2> points)
+    public void BuildQuadTree(List<Vector2> points)
     {
-        root = new Quadrant(null, cornerTL, cornerBR, points);
-        SubdivideQuadrant(root);
+        SubdivideQuadrant(this, true);
     }
 
 
-    public void SubdivideQuadrant(Quadrant parent)
+    public void SubdivideQuadrant(Quadrant parent, bool toTree = true)
     {
-        // Primero chequeamos si en el cuadrante la cantidad de puntos cumple el threshold de puntos
-        if (parent.pointsInside.Count < maxPoints || parent.pointsInside.Count < minPoints) return;
+        // Primero chequeamos si en el cuadrante la cantidad de puntos cumple el threshold de puntos y el threshold de area
+        if (parent.pointsInside.Count < maxPoints) return;
 
         // Ahora se chequea si los subcuadrantes van a tener el area minima
-        // Creo que voy a quitar esta condicion
         float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 2);
-        // widht/height es lo mismo xd gafedad mia
-        //if (width * height < minArea) return;
+        if (width * width < minArea) return;
 
         //Debug.Log("Subdividiendo cuadrante...");
 
         // Hacemos la subdivision de la esquina superior-izquierda
-        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * width, parent.pointsInside);
-        SubdivideQuadrant(parent.childTL);
+        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * width, parent.pointsInside, maxPoints, minArea);
 
         // Hacemos la subdivision de la esquina superior-derecha
-        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * width, parent.pointsInside);
-        SubdivideQuadrant(parent.childTR);
+        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * width, parent.pointsInside, maxPoints, minArea);
 
         // Hacemos la subdivision de la esquina inferior-izquierda
-        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * width, parent.cornerBR - Vector2.right * width, parent.pointsInside);
-        SubdivideQuadrant(parent.childBL);
+        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * width, parent.cornerBR - Vector2.right * width, parent.pointsInside, maxPoints, minArea);
 
         // Hacemos la subdivision de la esquina inferior-derecha
-        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * width + Vector2.right * width, parent.cornerBR, parent.pointsInside);
-        SubdivideQuadrant(parent.childBR);
+        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * width + Vector2.right * width, parent.cornerBR, parent.pointsInside, maxPoints, minArea);
+
+        if (toTree)
+        {
+            SubdivideQuadrant(parent.childTL);
+            SubdivideQuadrant(parent.childTR);
+            SubdivideQuadrant(parent.childBL);
+            SubdivideQuadrant(parent.childBR);
+        }
     }
 
 
@@ -89,7 +97,7 @@ public class QuadTree
         else return null;
     }
 
-    
+
     /// <summary>
     /// Busca el punto mas cercano del quadtree a un punto arbitrario
     /// </summary>
@@ -101,10 +109,10 @@ public class QuadTree
     public Vector2 GetNearestPoint(Vector2 point, Vector2 best, Quadrant root)
     {
         if (root == null) return best;
-        // EL IS WORTH CHECKING NO ES FUNCIONAL AUN POR LO QUE EXPLORA TODOS LOS HIJOS
+
         //if (!root.IsWorthChecking(point, best)) return best;
 
-        if (root.pointsInside.Count <= maxPoints)
+        if (root.pointsInside.Count <= maxPoints || Mathf.Pow(Mathf.Abs(root.cornerTL.x - root.cornerBR.x)/2, 2) < minArea)
         {
             float min = Vector2.SqrMagnitude(point - best);
             foreach (Vector2 rPoint in root.pointsInside)
@@ -126,35 +134,6 @@ public class QuadTree
         best = GetNearestPoint(point, best, root.childTR);
         return best;
     }
-
-
-    public QuadTree(int maxPoints, int minPoints, float minArea)
-    {
-        this.maxPoints = maxPoints;
-        this.minPoints = minPoints;
-        this.minArea = minArea;
-    }
-}
-
-[System.Serializable]
-public class Quadrant
-{
-    // Puntos dentro del cuadrante
-    public List<Vector2> pointsInside;
-
-    // Esquinas delimitadoras del cuadrante
-    public Vector2 cornerTL;
-    public Vector2 cornerBR;
-
-    // Padre/supercuadrante del cuadrante
-    public Quadrant parent;
-
-    // Hijos/subcuadrantes del cuadrante
-    public Quadrant childTL;
-    public Quadrant childTR;
-    public Quadrant childBL;
-    public Quadrant childBR;
-
 
     public void CalculatePointsInside(List<Vector2> points)
     {
@@ -286,8 +265,10 @@ public class Quadrant
     }
 
 
-    public Quadrant()
+    public Quadrant(int maxPoints, float minArea)
     {
+        this.maxPoints = maxPoints;
+        this.minArea = minArea;
         pointsInside = new List<Vector2>();
         parent = null;
         childTL = null;
@@ -297,8 +278,11 @@ public class Quadrant
     }
 
 
-    public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR, List<Vector2> pointsInside)
+    public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR, List<Vector2> pointsInside, int maxPoints, float minArea)
     {
+        this.maxPoints = maxPoints;
+        this.minArea = minArea;
+
         this.parent = parent;
         this.cornerTL = cornerTL;
         this.cornerBR = cornerBR;

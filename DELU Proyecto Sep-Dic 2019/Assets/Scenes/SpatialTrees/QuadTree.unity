@@ -158,9 +158,10 @@ MonoBehaviour:
       pointsInside: []
       cornerTL: {x: 0, y: 0}
       cornerBR: {x: 0, y: 0}
-  cornerTL: {x: -50, y: 50}
-  cornerBL: {x: 50, y: -50}
-  pointToLook: {x: -2.56, y: 0.34}
+  cornerTL: {x: -100, y: 100}
+  cornerBL: {x: 100, y: -100}
+  pointToLook: {x: -8.23, y: -11.17}
+  randomPoints: 100
 --- !u!4 &360006544
 Transform:
   m_ObjectHideFlags: 0
