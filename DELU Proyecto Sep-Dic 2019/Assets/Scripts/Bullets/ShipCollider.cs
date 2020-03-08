@@ -45,8 +45,10 @@ public class ShipCollider : MonoBehaviour {
     [Tooltip("Belongs To Collision Mask")]
     [SerializeField]
     private BulletTeam belongsTo = new BulletTeam();
-    
 
+    /// <summary>
+    /// Unity Event to send two ints 
+    /// </summary>
     [System.Serializable]
     public class IntEvent : UnityEvent<int, int> {
 
@@ -58,6 +60,28 @@ public class ShipCollider : MonoBehaviour {
     [Tooltip("On Collision Event (Bullet Collision Mask, Collider Collision Mask)")]
     [SerializeField]
     public IntEvent onCollision;
+
+    /// <summary>
+    /// Ship Event for other systems to use
+    /// </summary>
+    [System.Serializable]
+    public class ShipEvent : UnityEvent<ShipCollider> {
+
+    }
+
+    /// <summary>
+    /// Event Called when the setup is complete
+    /// </summary>
+    [Tooltip("Event Called when the setup is complete")]
+    [SerializeField]
+    public ShipEvent onSetupComplete;
+
+    /// <summary>
+    /// Event Called just before the ship collider is destroyed
+    /// </summary>
+    [Tooltip("Event Called just before the ship collider is destroyed")]
+    [SerializeField]
+    public ShipEvent onSetupDestroy;
 
     /// <summary>
     /// Register this Ship Collider
@@ -73,6 +97,7 @@ public class ShipCollider : MonoBehaviour {
         _manager.SetComponentData(_entity, rotation);
         _manager.AddComponentData(_entity, new ShipCollision { collisionMask = 0 });
         _manager.AddComponentData(_entity, new ShipCollisionMask { belongsTo = belongsTo.value, collidesWith = collidesWith.value });
+        onSetupComplete.Invoke(this);
     }
 
     private void Update() {
@@ -83,7 +108,7 @@ public class ShipCollider : MonoBehaviour {
             _manager.SetComponentData(_entity, rotation);
             collision = _manager.GetComponentData<ShipCollision>(_entity);
             if (collision.collisionMask != 0) {
-                
+
                 // Inform Event
                 onCollision.Invoke(collision.collisionMask, collidesWith.value);
                 collision.collisionMask = 0;
@@ -93,9 +118,8 @@ public class ShipCollider : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        
-        if (!_manager.IsCreated)
-        {
+        onSetupDestroy.Invoke(this);
+        if (!_manager.IsCreated) {
             _manager = null;
         }
 
