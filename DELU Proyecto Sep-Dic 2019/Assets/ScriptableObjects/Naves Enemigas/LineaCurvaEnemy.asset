@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   damage: 1
-  bulletNum: 5
-  reloadime: 0.5
+  bulletNum: 1
+  reloadime: 10
   bulletSpeed: 6
   points: 100
   movementSpeed: 5

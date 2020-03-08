@@ -28,9 +28,6 @@ MonoBehaviour:
       - fieldName: input
         node: {fileID: -4205672360927209761}
         reroutePoints: []
-      - fieldName: input
-        node: {fileID: 6174075588812077355}
-        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -142,7 +139,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  quantity: 2
+  quantity: 1
   delay:
   - 1
   - 1
@@ -237,7 +234,6 @@ MonoBehaviour:
   m_Name: Wave_Graph
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 6174075588812077355}
   - {fileID: -4205672360927209761}
   - {fileID: -8766921057460271464}
   - {fileID: 6935374105655986680}
@@ -246,43 +242,6 @@ MonoBehaviour:
   - {fileID: -3602950204732540829}
   initialWave: {fileID: -8766921057460271464}
   currentNode: {fileID: 6935374105655986680}
---- !u!114 &6174075588812077355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74eba27c36ce5de40a1db79f81905955, type: 3}
-  m_Name: Enemy
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 40, y: -136}
-  ports:
-    keys:
-    - input
-    values:
-    - _fieldName: input
-      _node: {fileID: 6174075588812077355}
-      _typeQualifiedName: Nothing, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enemies
-        node: {fileID: -8766921057460271464}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  quantity: 2
-  delay:
-  - 1
-  - 1
-  spawningPos: 02000000
-  enemyType: 0
-  bases: {fileID: 11400000, guid: 763e48424086cb44db47f2c82dc04ae0, type: 2}
 --- !u!114 &6935374105655986680
 MonoBehaviour:
   m_ObjectHideFlags: 0

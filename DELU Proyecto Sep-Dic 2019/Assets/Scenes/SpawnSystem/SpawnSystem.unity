@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &346561526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,8 +155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipPool: {fileID: 1937848184}
-  debugEnemy: {fileID: 0}
-  debugKamikaze: {fileID: 0}
   tSpawnPoints:
   - {fileID: 861467686}
   - {fileID: 1751060970}
@@ -356,7 +354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861467685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.07, y: 10.04, z: 0}
+  m_LocalPosition: {x: -4.9, y: 1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -601,14 +599,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - sName: Kamikaze
-    iQuantity: 10
-    bIsGrowable: 1
-    gObject: {fileID: 8694306587624673272, guid: 4ad813b3d04222746a763065721f95c5,
-      type: 3}
-    lInstantiated: []
   - sName: Curve
-    iQuantity: 10
+    iQuantity: 1
     bIsGrowable: 1
     gObject: {fileID: 9100183926234304339, guid: d9198d3939d641d4697bd3a4017f271a,
       type: 3}
@@ -634,6 +626,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 374649083942863840, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: m_Material.m_BelongsTo.m_Value.Array.data[22]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679432, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: belongsTo.value
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679432, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: collidesWith.value
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679434, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: iShotNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679434, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: bulletCollMask.value
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679434, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: bReloading
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 374649084283679434, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
+        type: 3}
+      propertyPath: bulletTeamMask.value
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 374649084283679436, guid: b6c2942adb37e1b4781a2523dc1ce8eb,
         type: 3}
       propertyPath: m_LocalPosition.x

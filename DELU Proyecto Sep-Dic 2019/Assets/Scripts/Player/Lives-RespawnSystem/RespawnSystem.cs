@@ -27,7 +27,7 @@ public class RespawnSystem : MonoBehaviour
 
     private void Start()
     {
-        lm.onLiveLoss.AddListener((a) => RespawnShip());
+        //lm.onLiveLoss.AddListener((a) => RespawnShip());
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class RespawnSystem : MonoBehaviour
     /// </summary>
     public void RespawnShip()
     {
-        if (lm.LivesDepleted()) return;
+        //if (lm.LivesDepleted()) return;
         transform.position = respawnPoint.position;
         hm.Revive();
     }
