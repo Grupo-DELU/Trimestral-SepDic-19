@@ -63,6 +63,11 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
         public Vector2 Center { get; private set; }
 
         /// <summary>
+        /// Parent of this Node, if any
+        /// </summary>
+        public DataQuadTreeNode<T> Parent { get; private set; }
+
+        /// <summary>
         /// Top Left Quadrant Node
         /// </summary>
         public DataQuadTreeNode<T> TopLeftNode { get; set; }
@@ -93,10 +98,11 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
         /// <param name="tree">Tree in which this node resides</param>
         /// <param name="minBound">Minimum Bound</param>
         /// <param name="maxBound">Maximum Bound</param>
-        public DataQuadTreeNode(DataQuadTree<T> tree, Vector2 minBound, Vector2 maxBound) {
+        public DataQuadTreeNode(DataQuadTree<T> tree, DataQuadTreeNode<T> parent, Vector2 minBound, Vector2 maxBound) {
             MinBound = minBound;
             MaxBound = maxBound;
             Center = (MinBound / 2.0f) + (MaxBound / 2.0f); // for precision
+            Parent = parent;
             Tree = tree;
             DataPoints = new List<DataQuadTreeNodeData>(Tree.MaxNodeSize);
             TopLeftNode = null;
@@ -126,6 +132,14 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
         }
 
         /// <summary>
+        /// If this node is empty
+        /// </summary>
+        /// <returns>If this node is empty</returns>
+        public bool IsEmpty() {
+            return DataPoints == null || DataPoints.Count == 0;
+        }
+
+        /// <summary>
         /// If the point is inside the node
         /// </summary>
         /// <param name="point">Point to test</param>
@@ -146,7 +160,7 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
             if (DataPoints != null) {
                 // If we still have capacity
                 // TODO: Add min area support
-                if (DataPoints.Capacity != Tree.MaxNodeSize) {
+                if (DataPoints.Count != Tree.MaxNodeSize) {
                     data.Node = this;
                     DataPoints.Add(data);
                     return data;
@@ -154,16 +168,16 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
                 // If we are full
                 else {
                     TopLeftNode = new DataQuadTreeNode<T>(
-                        Tree, new Vector2(MinBound.x, Center.y), new Vector2(Center.x, MaxBound.y)
+                        Tree, this, new Vector2(MinBound.x, Center.y), new Vector2(Center.x, MaxBound.y)
                     );
                     TopRightNode = new DataQuadTreeNode<T>(
-                        Tree, Center, MaxBound
+                        Tree, this, Center, MaxBound
                     );
                     BottomLeftNode = new DataQuadTreeNode<T>(
-                        Tree, MinBound, Center
+                        Tree, this, MinBound, Center
                     );
                     BottomRightNode = new DataQuadTreeNode<T>(
-                        Tree, new Vector2(Center.x, MinBound.y), new Vector2(MaxBound.x, Center.y)
+                        Tree, this, new Vector2(Center.x, MinBound.y), new Vector2(MaxBound.x, Center.y)
                     );
 
                     for (int i = 0; i < DataPoints.Count; i++) {
@@ -209,6 +223,52 @@ namespace DELU_Proyecto_Sep_Dic_2019.Assets.Scripts.SpatialTrees.QuadTrees {
                     return BottomLeftNode.Insert(data);
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if all the node children are empty to make this node available again
+        /// </summary>
+        private void FixForEmptyChildren() {
+            if (TopRightNode != null &&
+                TopRightNode.IsEmpty() &&
+                TopLeftNode.IsEmpty() &&
+                BottomRightNode.IsEmpty() &&
+                BottomLeftNode.IsEmpty()) {
+                DataPoints = new List<DataQuadTreeNodeData>(Tree.MaxNodeSize);
+                Parent.FixForEmptyChildren();
+            }
+        }
+
+        /// <summary>
+        /// Delete Data from this node.
+        /// Remove the first instance of the Data
+        /// </summary>
+        /// <param name="data">Data to Remove</param>
+        /// <returns>if data is successfully removed; otherwise, false</returns>
+        public bool DeleteData(DataQuadTreeNodeData data) {
+            if (DataPoints != null && DataPoints.Remove(data)) {
+                if (IsEmpty() && Parent != null) {
+                    Parent.FixForEmptyChildren();
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Delete Data from this node.
+        /// Remove all the instances of the Data
+        /// </summary>
+        /// <param name="data">Data to Remove</param>
+        /// <returns>if data is successfully removed; otherwise, false</returns>
+        public bool DeleteDataAll(DataQuadTreeNodeData data) {
+            if (DataPoints != null && DataPoints.RemoveAll(storedData => storedData == data) != 0) {
+                if (IsEmpty() && Parent != null) {
+                    Parent.FixForEmptyChildren();
+                }
+                return true;
+            }
+            return false;
         }
     }
 
