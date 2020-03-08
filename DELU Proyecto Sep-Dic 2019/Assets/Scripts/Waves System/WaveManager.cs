@@ -68,7 +68,7 @@ public class WaveManager : MonoBehaviour
         {
             yield return new WaitForSeconds(enemies.delay[i]);
             GameObject enemy = SpawningSystem.Manager.SpawnEnemyFromNode(enemies);
-            //enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ReduceEnemyCount());
+            enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ReduceEnemyCount());
         }
     }
 

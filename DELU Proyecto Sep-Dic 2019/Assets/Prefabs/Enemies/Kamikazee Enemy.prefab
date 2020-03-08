@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496021402740544457}
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: 0.8159447, y: 4.8901553, z: 13.085353}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8694306587624673220}
@@ -231,6 +231,9 @@ GameObject:
   - component: {fileID: 496021402621166364}
   - component: {fileID: 496021402621166355}
   - component: {fileID: 5153624404157176027}
+  - component: {fileID: 8903705103976744639}
+  - component: {fileID: 4059413263939597381}
+  - component: {fileID: 6939276608730040775}
   m_Layer: 0
   m_Name: Kamikazee Enemy
   m_TagString: Ship
@@ -473,3 +476,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bInstakill: 1
   iCrashDamage: 1
+--- !u!114 &8903705103976744639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694306587624673272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8066424d843ac2e4da2089db1fd33e56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4059413263939597381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694306587624673272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f5776afd3e6a6479f7d37f47cd9df6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iMaxLives: 3
+  iLives: 3
+--- !u!114 &6939276608730040775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694306587624673272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8c38fc8fdd6674d9a0e59fba738713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 0}

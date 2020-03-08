@@ -8,11 +8,14 @@ public class QuadTreeVisualizer : MonoBehaviour
 
     public Vector2 cornerTL = -Vector2.right + Vector2.up;
     public Vector2 cornerBL = Vector2.right - Vector2.up;
+    public int maxPoints = 3;
+    public float minArea = 16;
 
     public Vector2 pointToLook = Vector2.zero;
     private Vector2 best = Vector2.one * int.MaxValue;
 
     public float randomPoints = 10000;
+
 
     private void Update()
     {
@@ -25,26 +28,30 @@ public class QuadTreeVisualizer : MonoBehaviour
                 qp.Add(rndm);
             }
             Debug.Log("Buildeando arbol...");
-            rootQuad = new Quadrant(null, cornerTL, cornerBL, qp, 3, 16);
+            rootQuad = new Quadrant(null, cornerTL, cornerBL, qp, maxPoints, minArea);
             rootQuad.BuildQuadTree(qp);
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            rootQuad.CompressTree();
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             best = rootQuad.GetNearestPoint(pointToLook, Vector2.one * int.MaxValue, rootQuad);
             watch.Stop();
-            Debug.Log(watch.ElapsedTicks/);
+            Debug.Log(watch.ElapsedTicks);
             Debug.Log(best);
-            foreach (Vector2 p in rootQuad.pointsInside)
-            {
-                if (Vector2.SqrMagnitude(p - pointToLook) < Vector2.SqrMagnitude(best - pointToLook))
-                {
-                    if (p != best)
-                    {
-                        Debug.Log("MAL");
-                    }
-                }
-            }
+            //foreach (Vector2 p in rootQuad.pointsInside)
+            //{
+            //    if (Vector2.SqrMagnitude(p - pointToLook) < Vector2.SqrMagnitude(best - pointToLook))
+            //    {
+            //        if (p != best)
+            //        {
+            //            Debug.Log("MAL");
+            //        }
+            //    }
+            //}
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
