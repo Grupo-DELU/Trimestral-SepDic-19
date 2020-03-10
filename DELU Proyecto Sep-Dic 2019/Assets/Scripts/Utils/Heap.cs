@@ -60,7 +60,7 @@ namespace Utils.Collections
         /// <param name="lhs">Left Operand</param>
         /// <param name="rhs">Right Operand</param>
         /// <returns>If the Left Operand Dominates the Right Operand under the current Comparer</returns>
-        protected abstract bool Dominates(T lhs, T rhs);
+        protected abstract bool Dominates(in T lhs, in T rhs);
 
         /// <summary>
         /// Create a new a Heap using the Default Comparer for type T
@@ -133,7 +133,7 @@ namespace Utils.Collections
         /// Add a new item to the Heap
         /// </summary>
         /// <param name="item">Item to add</param>
-        public void Add(T item)
+        public void Add(in T item)
         {
             if (Count == Capacity)
             {
@@ -414,7 +414,7 @@ namespace Utils.Collections
         /// <param name="lhs">Left Operand</param>
         /// <param name="rhs">Right Operand</param>
         /// <returns>If the Left Operand is bigger than the Right Operand under the current Comparer</returns>
-        protected override bool Dominates(T lhs, T rhs)
+        protected override bool Dominates(in T lhs, in T rhs)
         {
             return Comparer.Compare(lhs, rhs) >= 0;
         }
@@ -464,7 +464,7 @@ namespace Utils.Collections
         /// <param name="lhs">Left Operand</param>
         /// <param name="rhs">Right Operand</param>
         /// <returns>If the Left Operand is less than the Right Operand under the current Comparer</returns>
-        protected override bool Dominates(T lhs, T rhs)
+        protected override bool Dominates(in T lhs, in T rhs)
         {
             return Comparer.Compare(lhs, rhs) <= 0;
         }
