@@ -160,16 +160,16 @@ namespace Utils.Collections
         }
 
         /// <summary>
-        /// Get the Dominating Node
+        /// Get the Reference to Dominating Node
         /// </summary>
         /// <returns>Dominating Node</returns>
-        public T GetTop()
+        public ref T GetTop()
         {
             if (Count == 0)
             {
                 throw new InvalidOperationException("Heap is empty");
             }
-            return _heap[0];
+            return ref _heap[0];
         }
 
         /// <summary>
@@ -340,6 +340,10 @@ namespace Utils.Collections
             Count = 0;
         }
 
+        /// <summary>
+        /// Use External Storage for Heap
+        /// </summary>
+        /// <param name="newHeap">New Storage to use</param>
         public void UseExternalStorage(in T[] newHeap)
         {
             UsingExternalStorage = true;

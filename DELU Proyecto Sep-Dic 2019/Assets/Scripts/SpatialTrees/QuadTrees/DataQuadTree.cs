@@ -547,17 +547,17 @@ namespace Utils.SpatialTrees.QuadTrees
         }
 
         /// <summary>
-        /// Calculates the k nearest neighbors to a point
+        /// Calculates the k nearest neighbors to a point. If the storage is smaller than k, then it'll only use the full storage and no more
         /// </summary>
         /// <param name="point">Point to Calculate Nearest Neighbor</param>
         /// <param name="k">How many neighbors to search for</param>
         /// <param name="storage">Storage to use, to avoid allocations</param>
         /// <returns>Number of neighbors found, may be 0</returns>
-        public int KNearestNeighbor(in Vector2 point, in int k, in DistanceToDataPoint[] storage)
+        public int KNearestNeighbor(in Vector2 point, int k, in DistanceToDataPoint[] storage)
         {
             if (storage.Length < k)
             {
-                throw new InvalidOperationException($"Not Enough Storage: {storage.Length} < {k}");
+                k = storage.Length;
             }
 
             MaxHeap<DistanceToDataPoint> nearestDataPoints = new MaxHeap<DistanceToDataPoint>(ClosestToDataPoint.Default);
@@ -588,7 +588,7 @@ namespace Utils.SpatialTrees.QuadTrees
             while (!closestNodeHeap.IsEmpty())
             {
                 DistanceToNode currentNode = closestNodeHeap.ExtractDominating();
-                if (nearestDataPoints.GetTop().SqrClosestDistance < currentNode.SqrClosestDistance)
+                if (nearestDataPoints.Count == k && nearestDataPoints.GetTop().SqrClosestDistance < currentNode.SqrClosestDistance)
                 {
                     // Is further away than current best
                     continue;
@@ -600,25 +600,25 @@ namespace Utils.SpatialTrees.QuadTrees
                 {
                     // Not a leaf
                     possibleNode = new DistanceToNode(node.TopLeftNode, point);
-                    if (possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
+                    if (nearestDataPoints.Count < k || possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
                     {
                         closestNodeHeap.Add(possibleNode);
                     }
 
                     possibleNode = new DistanceToNode(node.TopRightNode, point);
-                    if (possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
+                    if (nearestDataPoints.Count < k || possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
                     {
                         closestNodeHeap.Add(possibleNode);
                     }
 
                     possibleNode = new DistanceToNode(node.BottomLeftNode, point);
-                    if (possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
+                    if (nearestDataPoints.Count < k || possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
                     {
                         closestNodeHeap.Add(possibleNode);
                     }
 
                     possibleNode = new DistanceToNode(node.BottomRightNode, point);
-                    if (possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
+                    if (nearestDataPoints.Count < k || possibleNode.SqrClosestDistance < nearestDataPoints.GetTop().SqrClosestDistance)
                     {
                         closestNodeHeap.Add(possibleNode);
                     }
