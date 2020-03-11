@@ -69,6 +69,8 @@ namespace Tests
         private static readonly Vector2 kMaxBound = new Vector2(1000, 1000);
         private static readonly Vector2 kTarget = Vector2.zero;
         private TestQuadTree mTestQuadTree;
+        private readonly double kNanoSecondsPerTick = (1000L * 1000L * 1000L) / (double)System.Diagnostics.Stopwatch.Frequency;
+        private readonly double kMiliSecondsPerTick = (1000L) / (double)System.Diagnostics.Stopwatch.Frequency;
 
         [SetUp]
         public void SetUp()
@@ -93,7 +95,7 @@ namespace Tests
                 data.SqrClosestDistance <= mSortedPoints[0].SqrDistance,
                 $"Point is further than the closest distance: {mSortedPoints[0].SqrDistance} (Closest) < {data.SqrClosestDistance} (Obtained)"
                 );
-            Debug.Log($"Data Quadtree Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedMilliseconds} ms) for a Tree with {kNumberOfTestPoints} points");
+            Debug.Log($"Data Quadtree Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedTicks * kNanoSecondsPerTick} ns | {watch.ElapsedTicks * kMiliSecondsPerTick} ms) for a Tree with {kNumberOfTestPoints} points");
         }
 
         // Timing Test for K Nearest Neighbor
@@ -118,7 +120,7 @@ namespace Tests
                 $"Point is further than the kth-closest distance: {mSortedPoints[k].SqrDistance} (kth-closest) < {storage[i].SqrClosestDistance} (Obtained)"
                 );
             }
-            Debug.Log($"Data Quadtree K={k} Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedMilliseconds} ms) for a Tree with {kNumberOfTestPoints} points");
+            Debug.Log($"Data Quadtree K={k} Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedTicks * kNanoSecondsPerTick} ns | {watch.ElapsedTicks * kMiliSecondsPerTick} ms) for a Tree with {kNumberOfTestPoints} points");
         }
 
         // Timing Test for K Nearest Neighbor Using 10% of the points
