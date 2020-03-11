@@ -457,6 +457,28 @@ namespace Utils.SpatialTrees.QuadTrees
         private MinHeap<DistanceToNode> closestNodeHeap = null;
 
         /// <summary>
+        /// Init Closese Node Heap if necesary
+        /// </summary>
+        /// <param name="node">Initial node to search</param>
+        /// <param name="point">Point to search for</param>
+        private void InitClosestNodeHeap(in DataQuadTreeNode<T> node, in Vector2 point)
+        {
+            if (closestNodeHeap == null)
+            {
+                closestNodeHeap = new MinHeap<DistanceToNode>(new ClosestToNode())
+                {
+                    new DistanceToNode(node, point)
+                };
+                closestNodeHeap.SetCapacity(kInitialCapacityOfClosestNodeHeap, true);
+            }
+            else
+            {
+                closestNodeHeap.Clear();
+                closestNodeHeap.Add(new DistanceToNode(node, point));
+            }
+        }
+
+        /// <summary>
         /// Calculates the nearest neighbor to a point
         /// </summary>
         /// <param name="point">Point to Calculate Nearest Neighbor</param>
@@ -465,19 +487,7 @@ namespace Utils.SpatialTrees.QuadTrees
         {
             DistanceToDataPoint nearestDataPoint = kMaxDistanceToDataPoint;
 
-            if (closestNodeHeap == null)
-            {
-                MinHeap<DistanceToNode> closestNodeHeap = new MinHeap<DistanceToNode>(ClosestToNode.Default)
-                {
-                    new DistanceToNode(Root, point)
-                };
-                closestNodeHeap.SetCapacity(kInitialCapacityOfClosestNodeHeap, true);
-            }
-            else
-            {
-                closestNodeHeap.Clear();
-                closestNodeHeap.Add(new DistanceToNode(Root, point));
-            }
+            InitClosestNodeHeap(Root, point);
 
             // Temps
             DataQuadTreeNode<T> node;
@@ -559,23 +569,11 @@ namespace Utils.SpatialTrees.QuadTrees
                 k = storage.Length;
             }
 
-            MaxHeap<DistanceToDataPoint> nearestDataPoints = new MaxHeap<DistanceToDataPoint>(ClosestToDataPoint.Default);
+            MaxHeap<DistanceToDataPoint> nearestDataPoints = new MaxHeap<DistanceToDataPoint>(new ClosestToDataPoint());
             nearestDataPoints.UseExternalStorage(storage);
             nearestDataPoints.Add(kMaxDistanceToDataPoint);
 
-            if (closestNodeHeap == null)
-            {
-                MinHeap<DistanceToNode> closestNodeHeap = new MinHeap<DistanceToNode>(ClosestToNode.Default)
-                {
-                    new DistanceToNode(Root, point)
-                };
-                closestNodeHeap.SetCapacity(kInitialCapacityOfClosestNodeHeap, true);
-            }
-            else
-            {
-                closestNodeHeap.Clear();
-                closestNodeHeap.Add(new DistanceToNode(Root, point));
-            }
+            InitClosestNodeHeap(Root, point);
 
             // Temps
             DataQuadTreeNode<T> node;
