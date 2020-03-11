@@ -120,5 +120,30 @@ namespace Tests
             }
             Debug.Log($"Data Quadtree K={k} Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedMilliseconds} ms) for a Tree with {kNumberOfTestPoints} points");
         }
+
+        // Timing Test for K Nearest Neighbor Using 10% of the points
+        [Test]
+        public void QuadTreesKNearestNeighbor10Percent()
+        {
+            int k = (int)(kNumberOfTestPoints / 10.0f);
+            TestQuadTree.DistanceToDataPoint[] storage = new TestQuadTree.DistanceToDataPoint[k];
+
+            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            int found = mTestQuadTree.KNearestNeighbor(kTarget, k, storage);
+            watch.Stop();
+
+            Assert.IsTrue(
+                found == k,
+                $"K Nearest Neighbor failed to find {k} neighbors even though the tree has {kNumberOfTestPoints} points"
+            );
+            for (int i = 0; i < found; i++)
+            {
+                Assert.IsTrue(
+                storage[i].SqrClosestDistance <= mSortedPoints[k].SqrDistance,
+                $"Point is further than the kth-closest distance: {mSortedPoints[k].SqrDistance} (kth-closest) < {storage[i].SqrClosestDistance} (Obtained)"
+                );
+            }
+            Debug.Log($"Data Quadtree K={k} Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedMilliseconds} ms) for a Tree with {kNumberOfTestPoints} points");
+        }
     }
 }
