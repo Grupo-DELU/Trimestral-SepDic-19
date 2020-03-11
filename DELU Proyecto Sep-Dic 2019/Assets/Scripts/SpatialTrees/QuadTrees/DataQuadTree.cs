@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Utils.Collections;
-using System;
 
 namespace Utils.SpatialTrees.QuadTrees
 {
