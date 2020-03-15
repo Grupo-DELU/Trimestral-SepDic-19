@@ -126,7 +126,6 @@ namespace Tests
             Vector2 cornerTL = Vector2.right * kMinBound.x + Vector2.up * kMaxBound.y;
             Vector2 cornetBR = Vector2.right * kMaxBound.x + Vector2.up * kMinBound.y;
             SetUpData(out mPoints, out mSortedPoints, kNumberOfTestPoints, kMinBound, kMaxBound, kTarget);
-            mTestQuadTree = new TestQuadTree(kMinBound, kMaxBound);
             pQuadrant = new Quadrant(null, cornerTL, cornetBR, 8, 0);
             mTestQuadTree = new TestQuadTree(kMinBound, kMaxBound, kMaxNodeSize, (kMaxBound - kMinBound).magnitude * kMinNodeAreaPercent);
             for (int i = 0; i < kNumberOfTestPoints; i++)
