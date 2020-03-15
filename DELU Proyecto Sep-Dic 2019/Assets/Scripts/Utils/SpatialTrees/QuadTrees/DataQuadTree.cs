@@ -68,6 +68,11 @@ namespace Utils.SpatialTrees.QuadTrees
         public Vector2 Center { get; private set; }
 
         /// <summary>
+        /// Area of this node
+        /// </summary>
+        public float Area { get; private set; }
+
+        /// <summary>
         /// Parent of this Node, if any
         /// </summary>
         public DataQuadTreeNode<T> Parent { get; private set; }
@@ -108,6 +113,7 @@ namespace Utils.SpatialTrees.QuadTrees
             MinBound = minBound;
             MaxBound = maxBound;
             Center = (MinBound / 2.0f) + (MaxBound / 2.0f); // for precision
+            Area = (MaxBound.x - MinBound.x) * (MaxBound.y - MinBound.y);
             Parent = parent;
             Tree = tree;
             DataPoints = new List<DataQuadTreeNodeData>(Tree.MaxNodeSize);
@@ -170,9 +176,8 @@ namespace Utils.SpatialTrees.QuadTrees
             /// If we are a leaf
             if (DataPoints != null)
             {
-                // If we still have capacity
-                // TODO: Add min area support
-                if (DataPoints.Count != Tree.MaxNodeSize)
+                // If we still have capacity or we are too small
+                if (DataPoints.Count != Tree.MaxNodeSize || Area <= Tree.MinNodeArea)
                 {
                     data.Node = this;
                     DataPoints.Add(data);
@@ -318,7 +323,17 @@ namespace Utils.SpatialTrees.QuadTrees
         /// <summary>
         /// Standard Max node Size
         /// </summary>
-        const int kMaxNodeSizeStandard = 8;
+        public const int kMaxNodeSizeStandard = 8;
+
+        /// <summary>
+        /// Min Node Area to avoid too small areas
+        /// </summary>
+        public float MinNodeArea { get; private set; }
+
+        /// <summary>
+        /// Standard Min Node Area
+        /// </summary>
+        public const float kMinNodeAreaStandard = 0.001f;
 
         /// <summary>
         /// Root of the tree
@@ -331,9 +346,14 @@ namespace Utils.SpatialTrees.QuadTrees
         /// <param name="minBound">Minimum Bound</param>
         /// <param name="maxBound">Maximum Bound</param>
         /// <param name="maxNodeSize">Max amount of data in a sigle node</param>
-        public DataQuadTree(in Vector2 minBound, in Vector2 maxBound, int maxNodeSize = kMaxNodeSizeStandard)
+        /// <param name="minNodeArea">Min Node Area to avoid too small areas</param>
+        public DataQuadTree(
+            in Vector2 minBound, in Vector2 maxBound,
+            int maxNodeSize = kMaxNodeSizeStandard,
+            float minNodeArea = kMinNodeAreaStandard)
         {
             MaxNodeSize = maxNodeSize;
+            MinNodeArea = minNodeArea;
             Root = new DataQuadTreeNode<T>(this, null, minBound, maxBound);
         }
 
