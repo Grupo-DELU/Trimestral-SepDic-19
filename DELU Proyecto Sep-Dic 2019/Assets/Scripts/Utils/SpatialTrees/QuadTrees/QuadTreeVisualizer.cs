@@ -15,20 +15,21 @@ public class QuadTreeVisualizer : MonoBehaviour
     private Vector2 best = Vector2.one * int.MaxValue;
 
     public float randomPoints = 10000;
+    private List<Vector2> qp;
 
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            List<Vector2> qp = new List<Vector2>();
+            qp = new List<Vector2>();
             for (int i = 0; i < randomPoints; i++)
             {
                 Vector2 rndm = Vector2.right * Random.Range(cornerTL.x, cornerBL.x) + Vector2.up * Random.Range(cornerBL.y, cornerTL.y);
                 qp.Add(rndm);
             }
             Debug.Log("Buildeando arbol...");
-            rootQuad = new Quadrant(null, cornerTL, cornerBL, qp, maxPoints, minArea);
+            rootQuad = new Quadrant(null, cornerTL, cornerBL, maxPoints, minArea);
             rootQuad.BuildQuadTree(qp);
         }
         else if (Input.GetKeyDown(KeyCode.C))
@@ -42,29 +43,36 @@ public class QuadTreeVisualizer : MonoBehaviour
             watch.Stop();
             Debug.Log(watch.ElapsedTicks);
             Debug.Log(best);
-            //foreach (Vector2 p in rootQuad.pointsInside)
-            //{
-            //    if (Vector2.SqrMagnitude(p - pointToLook) < Vector2.SqrMagnitude(best - pointToLook))
-            //    {
-            //        if (p != best)
-            //        {
-            //            Debug.Log("MAL");
-            //        }
-            //    }
-            //}
+            foreach (Vector2 p in qp)
+            {
+                if (Vector2.SqrMagnitude(p - pointToLook) < Vector2.SqrMagnitude(best - pointToLook))
+                {
+                    if (p != best)
+                    {
+                        if ((p - pointToLook).sqrMagnitude < (best - pointToLook).sqrMagnitude)
+                        {
+                            Debug.Log(p);
+                            Debug.Log(best);
+                            Debug.Log((p - pointToLook).sqrMagnitude);
+                            Debug.Log((best - pointToLook).sqrMagnitude);
+                            Debug.Log("MAL");
+                        }
+                    }
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
             List<float> times = new List<float>();
             for (int j = 0; j < 1000; j++)
             {
-                List<Vector2> qp = new List<Vector2>();
+                qp = new List<Vector2>();
                 for (int i = 0; i < randomPoints; i++)
                 {
                     Vector2 rndm = Vector2.right * Random.Range(cornerTL.x, cornerBL.x) + Vector2.up * Random.Range(cornerBL.y, cornerTL.y);
                     qp.Add(rndm);
                 }
-                rootQuad = new Quadrant(null, cornerTL, cornerBL, qp, 3, 16);
+                rootQuad = new Quadrant(null, cornerTL, cornerBL, 3, 16);
                 rootQuad.BuildQuadTree(qp);
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 best = rootQuad.GetNearestPoint(pointToLook, Vector2.one * int.MaxValue, rootQuad);

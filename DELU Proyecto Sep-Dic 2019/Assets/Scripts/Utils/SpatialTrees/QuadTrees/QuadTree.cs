@@ -87,20 +87,28 @@ public class Quadrant
     public void SubdivideQuadrant(Quadrant parent)
     {
         // Primero chequeamos si en el cuadrante la cantidad de puntos cumple el threshold de puntos y el threshold de area
-        if (parent.pointsInside != null)
-        {
-            if (parent.pointsInside.Count < maxPoints) return;
-        }
+        //if (parent.pointsInside != null)
+        //{
+        //    if (parent.pointsInside.Count < maxPoints)
+        //    {
+        //        Debug.Log("F: " + (parent.childTL != null));
+        //        return;
+        //    }
+        //}
         // Ahora se chequea si los subcuadrantes van a tener el area minima
         float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 2);
-        if (width * width < minArea) return;
+        //if (width * width < minArea)
+        //{
+        //    Debug.Log("F: " + (parent.childTL != null));
+        //    return;
+        //}
 
 
         // Hacemos la subdivision del cuadrante empezando por la esquina superior izquierda en sentido Z
-        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * width, parent.pointsInside, maxPoints, minArea);
-        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * width, parent.pointsInside, maxPoints, minArea);
-        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * width, parent.cornerBR - Vector2.right * width, parent.pointsInside, maxPoints, minArea);
-        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * width + Vector2.right * width, parent.cornerBR, parent.pointsInside, maxPoints, minArea);
+        parent.childTL = new Quadrant(parent, parent.cornerTL, parent.cornerTL + Vector2.right * width - Vector2.up * width, maxPoints, minArea);
+        parent.childTR = new Quadrant(parent, parent.cornerTL + Vector2.right * width, parent.cornerBR + Vector2.up * width, maxPoints, minArea);
+        parent.childBL = new Quadrant(parent, parent.cornerTL - Vector2.up * width, parent.cornerBR - Vector2.right * width, maxPoints, minArea);
+        parent.childBR = new Quadrant(parent, parent.cornerTL - Vector2.up * width + Vector2.right * width, parent.cornerBR, maxPoints, minArea);
     }
 
 
@@ -142,6 +150,7 @@ public class Quadrant
                 if (childTL == null) pointsInside.Add(point);
                 else
                 {
+                    foreach (Vector2 ppoint in pointsInside) InsertInChild(ppoint);
                     InsertInChild(point);
                     pointsInside = null;
                 }
@@ -156,10 +165,27 @@ public class Quadrant
 
     public void InsertInChild(Vector2 point)
     {
-        if (childBL.IsInside(point)) childBL.InsertPoint(point);
-        if (childBR.IsInside(point)) childBR.InsertPoint(point);
-        if (childTL.IsInside(point)) childTL.InsertPoint(point);
-        if (childTR.IsInside(point)) childTR.InsertPoint(point);
+        if (childBL.IsInside(point))
+        {
+            childBL.InsertPoint(point);
+            return;
+        }
+        else if (childBR.IsInside(point))
+        {
+            childBR.InsertPoint(point);
+            return;
+        }
+        else if (childTL.IsInside(point))
+        {
+            childTL.InsertPoint(point);
+            return;
+        }
+        else if (childTR.IsInside(point))
+        {
+            childTR.InsertPoint(point);
+            return;
+        }
+        //Debug.Log("aja f aca maricon");
     }
 
     /// <summary>
@@ -179,8 +205,8 @@ public class Quadrant
         // Solo chequea esto si es un nodo hoja
         if (root.pointsInside != null)
         {
-            if (root.pointsInside.Count <= maxPoints || Mathf.Pow(Mathf.Abs(root.cornerTL.x - root.cornerBR.x) / 2, 2) < minArea)
-            {
+            //if (root.pointsInside.Count <= maxPoints || Mathf.Pow(Mathf.Abs(root.cornerTL.x - root.cornerBR.x) / 2, 2) < minArea)
+            //{
                 float min = Vector2.SqrMagnitude(point - best);
                 foreach (Vector2 rPoint in root.pointsInside)
                 {
@@ -191,7 +217,7 @@ public class Quadrant
                         min = dist;
                     }
                 }
-            }
+            //}
         }
         // aca puede ir un else
         // Buscar como encontrar el hijo mas probable
@@ -235,7 +261,7 @@ public class Quadrant
     }
 
 
-    public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR, List<Vector2> pointsInside, int maxPoints, float minArea)
+    public Quadrant(Quadrant parent, Vector2 cornerTL, Vector2 cornerBR, int maxPoints, float minArea)
     {
         this.maxPoints = maxPoints;
         this.minArea = minArea;

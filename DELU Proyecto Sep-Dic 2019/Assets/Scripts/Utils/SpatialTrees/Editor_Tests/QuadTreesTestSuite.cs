@@ -62,24 +62,51 @@ namespace Tests
             Debug.Log($"Data Quadtree Insertion Took {watch.ElapsedMilliseconds} ms for {numberOfTestPoints} points ({(double)watch.ElapsedMilliseconds / numberOfTestPoints} ms per point)");
         }
 
+        // Timing Test for Insertion
+        [Test]
+        public void QuadTreesInsertionTimePedro()
+        {
+            Vector2[] points;
+            DistanceToPoint[] sortedPoints;
+            int numberOfTestPoints = 10000;
+            Vector2 minBound = new Vector2(-1000, -1000);
+            Vector2 maxBound = new Vector2(1000, 1000);
+            Vector2 target = Vector2.zero;
+            SetUpData(out points, out sortedPoints, numberOfTestPoints, minBound, maxBound, target);
+
+            Quadrant testQuadTree = new Quadrant(null, minBound, maxBound, 8, 0);
+            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            for (int i = 0; i < numberOfTestPoints; i++)
+            {
+                testQuadTree.InsertPoint(points[i]);
+            }
+            watch.Stop();
+            Debug.Log($"Pedro Quadtree Insertion Took {watch.ElapsedMilliseconds} ms for {numberOfTestPoints} points ({(double)watch.ElapsedMilliseconds / numberOfTestPoints} ms per point)");
+        }
+
         private Vector2[] mPoints;
         private DistanceToPoint[] mSortedPoints;
-        private const int kNumberOfTestPoints = 10000;
+        private const int kNumberOfTestPoints = 1000000;
         private static readonly Vector2 kMinBound = new Vector2(-1000, -1000);
         private static readonly Vector2 kMaxBound = new Vector2(1000, 1000);
         private static readonly Vector2 kTarget = Vector2.zero;
         private TestQuadTree mTestQuadTree;
+        private Quadrant pQuadrant;
         private readonly double kNanoSecondsPerTick = (1000L * 1000L * 1000L) / (double)System.Diagnostics.Stopwatch.Frequency;
         private readonly double kMiliSecondsPerTick = (1000L) / (double)System.Diagnostics.Stopwatch.Frequency;
 
         [SetUp]
         public void SetUp()
         {
+            Vector2 cornerTL = Vector2.right * kMinBound.x + Vector2.up * kMaxBound.y;
+            Vector2 cornetBR = Vector2.right * kMaxBound.x + Vector2.up * kMinBound.y;
             SetUpData(out mPoints, out mSortedPoints, kNumberOfTestPoints, kMinBound, kMaxBound, kTarget);
             mTestQuadTree = new TestQuadTree(kMinBound, kMaxBound);
+            pQuadrant = new Quadrant(null, cornerTL, cornetBR, 8, 0);
             for (int i = 0; i < kNumberOfTestPoints; i++)
             {
                 mTestQuadTree.Insert(mPoints[i], i);
+                pQuadrant.InsertPoint(mPoints[i]);
             }
         }
 
@@ -121,6 +148,20 @@ namespace Tests
                 );
             }
             Debug.Log($"Data Quadtree K={k} Nearest Neighbor Took {watch.ElapsedTicks} Ticks ({watch.ElapsedTicks * kNanoSecondsPerTick} ns | {watch.ElapsedTicks * kMiliSecondsPerTick} ms) for a Tree with {kNumberOfTestPoints} points");
+        }
+
+        [Test]
+        public void QuadTreesNearestNeighborPedro()
+        {
+            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            Vector2 res = pQuadrant.GetNearestPoint(kTarget, Vector2.one * int.MaxValue, pQuadrant);
+            watch.Stop();
+            float sqrDist = (res - kTarget).sqrMagnitude;
+            Assert.IsTrue(
+                sqrDist <= mSortedPoints[0].SqrDistance,
+                $"Point is further than the closest distance: {mSortedPoints[0].SqrDistance} (Closest) < {sqrDist} (Obtained)"
+                );
+            Debug.Log($"Data Quadtree Nearest Neighbor Pedro Took {watch.ElapsedTicks} Ticks ({watch.ElapsedTicks * kNanoSecondsPerTick} ns | {watch.ElapsedTicks * kMiliSecondsPerTick} ms) for a Tree with {kNumberOfTestPoints} points");
         }
 
         // Timing Test for K Nearest Neighbor Using 10% of the points
