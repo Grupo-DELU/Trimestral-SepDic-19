@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,7 +10,8 @@ using UnityEngine;
 /// </summary>
 /// 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerManager : ActionManager {
+public class PlayerManager : ActionManager
+{
 
     private BulletSpawner shooter;
 

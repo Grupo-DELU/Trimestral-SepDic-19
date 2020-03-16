@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Class PlayerMovementAction
@@ -21,7 +19,7 @@ public class PlayerMovementAction : Action
     {
         PlayerManager pm = manager as PlayerManager;
         pm.MoveWithVel(GetVelocity(pm));
-        if(GetVelocity(pm) != Vector2.zero) Debug.Log("Velocidad: " + GetVelocity(manager));
+        if (GetVelocity(pm) != Vector2.zero) Debug.Log("Velocidad: " + GetVelocity(manager));
     }
 
     private Vector2 GetDirection()

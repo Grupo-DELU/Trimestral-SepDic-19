@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class CurvePreviewer : MonoBehaviour
@@ -12,7 +10,7 @@ public class CurvePreviewer : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (curve == null) return;
-        foreach(Vector2 point in curve.points)
+        foreach (Vector2 point in curve.points)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(point, size);

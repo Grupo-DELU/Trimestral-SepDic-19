@@ -1,14 +1,14 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
-using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 
 /// <summary>
 /// Bullet Spawner System
 /// </summary>
-public class BulletSpawner : MonoBehaviour {
+public class BulletSpawner : MonoBehaviour
+{
 
     /// <summary>
     /// Bullet Prefab to use
@@ -64,7 +64,8 @@ public class BulletSpawner : MonoBehaviour {
     [SerializeField]
     private Vector4 worldLimits = new Vector4(-10.0f, -10.0f, 10.0f, 10.0f);
 
-    private void Start() {
+    private void Start()
+    {
         blobAssetStore = new BlobAssetStore();
         // Get ECS representation
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
@@ -72,8 +73,8 @@ public class BulletSpawner : MonoBehaviour {
         // Get Current ECS manager
         worldEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<BulletMovementSystem>();
-        bulletMovementSystem.WorldLimits = worldLimits; // Set up world limits
+        ContainedDestroySystem containedDestroySystemSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<ContainedDestroySystem>();
+        containedDestroySystemSystem.WorldLimits = worldLimits; // Set up world limits
     }
 
     /// <summary>
@@ -84,7 +85,8 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
     /// <param name="belongsToTeamMask">Which Team the Bullet Belongs</param>
     /// <param name="collidesWithTeamMask">Which Team the Bullet Will Collide and be Destroyed</param>
-    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam belongsToTeamMask, BulletTeam collidesWithTeamMask) {
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, BulletTeam belongsToTeamMask, BulletTeam collidesWithTeamMask)
+    {
         ShootBullet(position, velocity, angularSpeed, belongsToTeamMask.value, collidesWithTeamMask.value);
     }
 
@@ -96,7 +98,8 @@ public class BulletSpawner : MonoBehaviour {
     /// <param name="angularSpeed">Bullet's Angular Speed in Radians</param>
     /// <param name="belongsToTeamMask">Which Team the Bullet Belongs</param>
     /// <param name="collidesWithTeamMask">Which Team the Bullet Will Collide and be Destroyed</param>
-    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, int belongsToTeamMask, int collidesWithTeamMask) {
+    public void ShootBullet(Vector2 position, Vector2 velocity, float angularSpeed, int belongsToTeamMask, int collidesWithTeamMask)
+    {
         // Create new bullet instance
         Entity newBullet = worldEntityManager.Instantiate(bulletPrefabEntity);
 
@@ -121,6 +124,9 @@ public class BulletSpawner : MonoBehaviour {
 
         // Add the Bullet Team Mask
         worldEntityManager.AddComponentData(newBullet, new ShipCollisionMask { belongsTo = belongsToTeamMask, collidesWith = collidesWithTeamMask });
+
+        // Add tag to destroy bullet if outside game zone
+        worldEntityManager.AddComponentData(newBullet, new ContaidedDestroyable { });
     }
 
 #if UNITY_EDITOR
@@ -144,8 +150,10 @@ public class BulletSpawner : MonoBehaviour {
     }
 #endif // UNITY_EDITOR
 
-    private void OnDestroy() {
-        if (blobAssetStore != null) {
+    private void OnDestroy()
+    {
+        if (blobAssetStore != null)
+        {
             blobAssetStore.Dispose();
             blobAssetStore = null;
         }
@@ -154,9 +162,9 @@ public class BulletSpawner : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (worldEntityManager != null && World.DefaultGameObjectInjectionWorld != null) {
-            BulletMovementSystem bulletMovementSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<BulletMovementSystem>();
-            if (bulletMovementSystem != null) {
-                bulletMovementSystem.WorldLimits = worldLimits;
+            ContainedDestroySystem containedDestroySystemSystem = World.DefaultGameObjectInjectionWorld.GetExistingSystem<ContainedDestroySystem>();
+            if (containedDestroySystemSystem != null) {
+                containedDestroySystemSystem.WorldLimits = worldLimits;
             }
         }
     }

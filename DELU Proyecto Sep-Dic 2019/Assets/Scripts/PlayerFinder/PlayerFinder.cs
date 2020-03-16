@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerFinder : MonoBehaviour
 {
     public static PlayerFinder Finder { get; private set; }
-    
+
     /// <summary>
     /// Jugador
     /// </summary>
@@ -32,6 +30,6 @@ public class PlayerFinder : MonoBehaviour
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player");
-        }    
+        }
     }
 }

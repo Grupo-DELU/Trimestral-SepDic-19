@@ -66,12 +66,12 @@ public class Quadrant
                 quad.childTL = null;
             }
             if (quad.childTR.childTL == null)
-            { 
+            {
                 quad.pointsInside.AddRange(quad.childTR.pointsInside);
                 quad.childTR = null;
             }
             if (quad.childBL.childTL == null)
-            { 
+            {
                 quad.pointsInside.AddRange(quad.childBL.pointsInside);
                 quad.childBL = null;
             }
@@ -120,19 +120,19 @@ public class Quadrant
     /// <returns>Menor cuadrante en el que se encuentra el punto</returns>
     public Quadrant GetPointQuadrant(Vector2 point, Quadrant root)
     {
-            // Chequea si es un cuadrante hoja
-            // Solo es necesario chequear un hijo ya que todos los cuadrantes que
-            // no son minimos deberian de tener 4 hijos no nulos
-            if (root.childBL == null) return root;
-            else
-            {
-                // Revisa en que cuadrante de los hijos esta y sigue la recursion
-                if (root.childBL.IsInside(point)) return GetPointQuadrant(point, root.childBL);
-                if (root.childBR.IsInside(point)) return GetPointQuadrant(point, root.childBR);
-                if (root.childTL.IsInside(point)) return GetPointQuadrant(point, root.childTL);
-                if (root.childTR.IsInside(point)) return GetPointQuadrant(point, root.childTR);
-                else return null;
-            }
+        // Chequea si es un cuadrante hoja
+        // Solo es necesario chequear un hijo ya que todos los cuadrantes que
+        // no son minimos deberian de tener 4 hijos no nulos
+        if (root.childBL == null) return root;
+        else
+        {
+            // Revisa en que cuadrante de los hijos esta y sigue la recursion
+            if (root.childBL.IsInside(point)) return GetPointQuadrant(point, root.childBL);
+            if (root.childBR.IsInside(point)) return GetPointQuadrant(point, root.childBR);
+            if (root.childTL.IsInside(point)) return GetPointQuadrant(point, root.childTL);
+            if (root.childTR.IsInside(point)) return GetPointQuadrant(point, root.childTR);
+            else return null;
+        }
     }
 
 
@@ -207,16 +207,16 @@ public class Quadrant
         {
             //if (root.pointsInside.Count <= maxPoints || Mathf.Pow(Mathf.Abs(root.cornerTL.x - root.cornerBR.x) / 2, 2) < minArea)
             //{
-                float min = Vector2.SqrMagnitude(point - best);
-                foreach (Vector2 rPoint in root.pointsInside)
+            float min = Vector2.SqrMagnitude(point - best);
+            foreach (Vector2 rPoint in root.pointsInside)
+            {
+                float dist = Vector2.SqrMagnitude(rPoint - point);
+                if (dist < min)
                 {
-                    float dist = Vector2.SqrMagnitude(rPoint - point);
-                    if (dist < min)
-                    {
-                        best = rPoint;
-                        min = dist;
-                    }
+                    best = rPoint;
+                    min = dist;
                 }
+            }
             //}
         }
         // aca puede ir un else
@@ -228,8 +228,8 @@ public class Quadrant
         best = GetNearestPoint(point, best, root.childTR);
         return best;
     }
-    
-    
+
+
     /// <summary>
     /// Indica si un punto esta dentro del cuadrante
     /// </summary>

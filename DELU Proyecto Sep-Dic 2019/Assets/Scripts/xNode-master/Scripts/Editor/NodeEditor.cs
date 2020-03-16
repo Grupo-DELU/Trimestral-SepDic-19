@@ -9,10 +9,12 @@ using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 #endif
 
-namespace XNodeEditor {
+namespace XNodeEditor
+{
     /// <summary> Base class to derive custom Node editors from. Use this to create your own custom inspectors and editors for your nodes. </summary>
     [CustomNodeEditor(typeof(XNode.Node))]
-    public class NodeEditor : XNodeEditor.Internal.NodeEditorBase<NodeEditor, NodeEditor.CustomNodeEditorAttribute, XNode.Node> {
+    public class NodeEditor : XNodeEditor.Internal.NodeEditorBase<NodeEditor, NodeEditor.CustomNodeEditorAttribute, XNode.Node>
+    {
 
         private readonly Color DEFAULTCOLOR = new Color32(90, 97, 105, 255);
 
@@ -24,12 +26,14 @@ namespace XNodeEditor {
         internal static bool inNodeEditor = false;
 #endif
 
-        public virtual void OnHeaderGUI() {
+        public virtual void OnHeaderGUI()
+        {
             GUILayout.Label(target.name, NodeEditorResources.styles.nodeHeader, GUILayout.Height(30));
         }
 
         /// <summary> Draws standard field editors for all public fields </summary>
-        public virtual void OnBodyGUI() {
+        public virtual void OnBodyGUI()
+        {
 #if ODIN_INSPECTOR
             inNodeEditor = true;
 #endif
@@ -51,7 +55,8 @@ namespace XNodeEditor {
             // Iterate through serialized properties and draw them like the Inspector (But with ports)
             SerializedProperty iterator = serializedObject.GetIterator();
             bool enterChildren = true;
-            while (iterator.NextVisible(enterChildren)) {
+            while (iterator.NextVisible(enterChildren))
+            {
                 enterChildren = false;
                 if (excludes.Contains(iterator.name)) continue;
                 NodeEditorGUILayout.PropertyField(iterator, true);
@@ -59,7 +64,8 @@ namespace XNodeEditor {
 #endif
 
             // Iterate through dynamic ports and draw them in the order in which they are serialized
-            foreach (XNode.NodePort dynamicPort in target.DynamicPorts) {
+            foreach (XNode.NodePort dynamicPort in target.DynamicPorts)
+            {
                 if (NodeEditorGUILayout.IsDynamicPortListPort(dynamicPort)) continue;
                 NodeEditorGUILayout.PortField(dynamicPort);
             }
@@ -79,7 +85,8 @@ namespace XNodeEditor {
 #endif
         }
 
-        public virtual int GetWidth() {
+        public virtual int GetWidth()
+        {
             Type type = target.GetType();
             int width;
             if (type.TryGetAttributeWidth(out width)) return width;
@@ -87,7 +94,8 @@ namespace XNodeEditor {
         }
 
         /// <summary> Returns color for target node </summary>
-        public virtual Color GetTint() {
+        public virtual Color GetTint()
+        {
             // Try get color from [NodeTint] attribute
             Type type = target.GetType();
             Color color;
@@ -96,14 +104,17 @@ namespace XNodeEditor {
             else return DEFAULTCOLOR;
         }
 
-        public virtual GUIStyle GetBodyStyle() {
+        public virtual GUIStyle GetBodyStyle()
+        {
             return NodeEditorResources.styles.nodeBody;
         }
 
         /// <summary> Add items for the context menu when right-clicking this node. Override to add custom menu items. </summary>
-        public virtual void AddContextMenuItems(GenericMenu menu) {
+        public virtual void AddContextMenuItems(GenericMenu menu)
+        {
             // Actions if only one node is selected
-            if (Selection.objects.Length == 1 && Selection.activeObject is XNode.Node) {
+            if (Selection.objects.Length == 1 && Selection.activeObject is XNode.Node)
+            {
                 XNode.Node node = Selection.activeObject as XNode.Node;
                 menu.AddItem(new GUIContent("Move To Top"), false, () => NodeEditorWindow.current.MoveNodeToTop(node));
                 menu.AddItem(new GUIContent("Rename"), false, NodeEditorWindow.current.RenameSelectedNode);
@@ -115,14 +126,16 @@ namespace XNodeEditor {
             menu.AddItem(new GUIContent("Remove"), false, NodeEditorWindow.current.RemoveSelectedNodes);
 
             // Custom sctions if only one node is selected
-            if (Selection.objects.Length == 1 && Selection.activeObject is XNode.Node) {
+            if (Selection.objects.Length == 1 && Selection.activeObject is XNode.Node)
+            {
                 XNode.Node node = Selection.activeObject as XNode.Node;
                 menu.AddCustomContextMenuItems(node);
             }
         }
 
         /// <summary> Rename the node asset. This will trigger a reimport of the node. </summary>
-        public void Rename(string newName) {
+        public void Rename(string newName)
+        {
             if (newName == null || newName.Trim() == "") newName = NodeEditorUtilities.NodeDefaultName(target.GetType());
             target.name = newName;
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(target));
@@ -130,15 +143,18 @@ namespace XNodeEditor {
 
         [AttributeUsage(AttributeTargets.Class)]
         public class CustomNodeEditorAttribute : Attribute,
-        XNodeEditor.Internal.NodeEditorBase<NodeEditor, NodeEditor.CustomNodeEditorAttribute, XNode.Node>.INodeEditorAttrib {
+        XNodeEditor.Internal.NodeEditorBase<NodeEditor, NodeEditor.CustomNodeEditorAttribute, XNode.Node>.INodeEditorAttrib
+        {
             private Type inspectedType;
             /// <summary> Tells a NodeEditor which Node type it is an editor for </summary>
             /// <param name="inspectedType">Type that this editor can edit</param>
-            public CustomNodeEditorAttribute(Type inspectedType) {
+            public CustomNodeEditorAttribute(Type inspectedType)
+            {
                 this.inspectedType = inspectedType;
             }
 
-            public Type GetInspectedType() {
+            public Type GetInspectedType()
+            {
                 return inspectedType;
             }
         }

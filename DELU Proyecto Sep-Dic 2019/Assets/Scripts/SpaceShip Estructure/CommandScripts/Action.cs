@@ -6,7 +6,7 @@
 /// Clase que define la estructura de una accion para
 /// el patronde diseño command. 
 /// </summary>
-public abstract class Action: ScriptableObject
+public abstract class Action : ScriptableObject
 {
     /// <summary>
     /// Identificador de la accion

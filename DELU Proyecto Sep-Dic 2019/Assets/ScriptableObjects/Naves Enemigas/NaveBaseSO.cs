@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Enemy_Ship", menuName = "Naves/NaveOrdinariaBase", order = 0)]
 public class NaveBaseSO : ScriptableObject

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 [ExecuteInEditMode]
@@ -37,7 +35,7 @@ public class CameraSizeSetter : MonoBehaviour
         {
             ForceYSize(ySize);
         }
-        else if (!forceX && !forceY )
+        else if (!forceX && !forceY)
         {
             Debug.Log("puto");
             ForceRatio(xSize, ySize);

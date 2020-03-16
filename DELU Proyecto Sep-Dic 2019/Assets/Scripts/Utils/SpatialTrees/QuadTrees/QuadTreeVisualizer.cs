@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class QuadTreeVisualizer : MonoBehaviour
@@ -90,7 +89,7 @@ public class QuadTreeVisualizer : MonoBehaviour
         }
     }
 
-    
+
 
     private void OnDrawGizmos()
     {
@@ -129,13 +128,13 @@ public class QuadTreeVisualizer : MonoBehaviour
             Gizmos.DrawLine(root.cornerTL, root.cornerTL - Vector2.up * width);
             Gizmos.DrawLine(root.cornerBR, root.cornerBR + Vector2.up * width);
             Gizmos.DrawLine(root.cornerBR, root.cornerBR - Vector2.right * width);
-            
+
             if (root.childTL != null) RecursiveDraw(root.childTL);
-            
+
             if (root.childTR != null) RecursiveDraw(root.childTR);
-            
+
             if (root.childBL != null) RecursiveDraw(root.childBL);
-            
+
             if (root.childBR != null) RecursiveDraw(root.childBR);
         }
     }
