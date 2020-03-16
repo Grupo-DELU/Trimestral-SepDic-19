@@ -97,11 +97,7 @@ public class Quadrant
         //}
         // Ahora se chequea si los subcuadrantes van a tener el area minima
         float width = (Mathf.Abs(parent.cornerTL.x - parent.cornerBR.x) / 2);
-        //if (width * width < minArea)
-        //{
-        //    Debug.Log("F: " + (parent.childTL != null));
-        //    return;
-        //}
+        if (width * width < minArea) return;
 
 
         // Hacemos la subdivision del cuadrante empezando por la esquina superior izquierda en sentido Z
@@ -165,27 +161,10 @@ public class Quadrant
 
     public void InsertInChild(Vector2 point)
     {
-        if (childBL.IsInside(point))
-        {
-            childBL.InsertPoint(point);
-            return;
-        }
-        else if (childBR.IsInside(point))
-        {
-            childBR.InsertPoint(point);
-            return;
-        }
-        else if (childTL.IsInside(point))
-        {
-            childTL.InsertPoint(point);
-            return;
-        }
-        else if (childTR.IsInside(point))
-        {
-            childTR.InsertPoint(point);
-            return;
-        }
-        //Debug.Log("aja f aca maricon");
+        if (childBL.IsInside(point)) childBL.InsertPoint(point);
+        else if (childBR.IsInside(point)) childBR.InsertPoint(point);
+        else if (childTL.IsInside(point)) childTL.InsertPoint(point);
+        else if (childTR.IsInside(point)) childTR.InsertPoint(point);
     }
 
     /// <summary>

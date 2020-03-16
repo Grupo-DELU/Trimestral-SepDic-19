@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Bezier;
+using Utils.SpatialTrees.QuadTrees;
 
 [System.Serializable]
 public class Curve
@@ -149,6 +150,9 @@ public class BezierCurvesEditor : Editor
     /// Separacion entre cada punto de la curva
     /// </summary>
     public float separation = 1f;
+
+    public Vector2 maxBound = Vector2.one * 50;
+    public Vector2 minBound = Vector2.one * -50;
     
     /// <summary>
     /// Precision del calculo de separacion uniforme de puntos en
@@ -271,6 +275,8 @@ public class BezierCurvesEditor : Editor
         GUILayout.Label("Precision step");
         prec_step = Mathf.Abs(EditorGUILayout.FloatField(prec_step));
 
+        maxBound = EditorGUILayout.Vector2Field("Tree TL Corner", maxBound);
+        minBound = EditorGUILayout.Vector2Field("Tree TL Corner", minBound);
         //Boton para crear scriptable object de curva
         if (GUILayout.Button("*honk* *honk*"))
         {
@@ -350,10 +356,9 @@ public class BezierCurvesEditor : Editor
             }
             
             CurveScriptObject final = ScriptableObject.CreateInstance<CurveScriptObject>();
-            final.CreateCurve(points.ToArray(), curve.isClosed);
+            final.CreateCurve(points.ToArray(), curve.isClosed, null);
             AssetDatabase.CreateAsset(final, "Assets/curva.asset");
             AssetDatabase.SaveAssets();
-            
         }
     }
 }

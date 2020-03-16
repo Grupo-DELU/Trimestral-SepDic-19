@@ -67,18 +67,7 @@ public class CurveEnemyMovement : ShipMovement
     /// <returns>Indice del punto mas cercano en el ScriptableObject</returns>
     public int CalculateNearestPoint(CurveScriptObject curve)
     {
-        float min = Vector2.SqrMagnitude((Vector2)transform.position - curve.points[0]);
-        int minInd = 0;
-        for (int i = 1; i < curve.points.Length; i++)
-        {
-            float aux = Vector2.SqrMagnitude((Vector2)transform.position - curve.points[i]);
-            if (aux < min)
-            {
-                min = aux;
-                minInd = i;
-            }
-        }
-        return minInd;
+        return curve.qTree.NearestNeighbor(transform.position).DataNode.Data;
     }
 
 
@@ -90,5 +79,6 @@ public class CurveEnemyMovement : ShipMovement
     {
         path = curve;
         iTargetIndex = CalculateNearestPoint(curve);
+        vTargetPoint = path.points[iTargetIndex];
     }
 }

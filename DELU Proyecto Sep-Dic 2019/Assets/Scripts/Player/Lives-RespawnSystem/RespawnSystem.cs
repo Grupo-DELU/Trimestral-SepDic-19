@@ -20,7 +20,7 @@ public class RespawnSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (respawnPoint == null) Debug.LogError("No hay punto de respawn! Agrega uno!", gameObject);
+        //if (respawnPoint == null) Debug.LogError("No hay punto de respawn! Agrega uno!", gameObject);
         hm = GetComponent<HealthManager>();
         lm = GetComponent<LivesSystem>();
     }

@@ -53,8 +53,7 @@ public class SpawningSystem : MonoBehaviour
         int pos = Random.Range(1, 100) % spawners.Length;
         Vector2 spawnPos = CalculateSpawnPoint(spawners[pos]);
 
-        GameObject spawnedEnemy = SpawnEnemyOfType(node.enemyType, node.bases);
-        spawnedEnemy.transform.position = spawnPos;
+        GameObject spawnedEnemy = SpawnEnemyOfType(node.enemyType, node.bases, spawnPos);
 
         return spawnedEnemy;
     }
@@ -82,16 +81,16 @@ public class SpawningSystem : MonoBehaviour
     /// El ScriptableObject debe de ser del tipo adecuado a la nave!
     /// Chequea los tipos en: <see cref="NaveBaseSO"/>
     /// </remarks>
-    public GameObject SpawnEnemyOfType(EnemyTypes type, ScriptableObject shipStats)
+    public GameObject SpawnEnemyOfType(EnemyTypes type, ScriptableObject shipStats, Vector2 position)
     {
         GameObject spawned = null;
         switch (type)
         {
             case EnemyTypes.curve:
-                spawned = InitializeCurveEnemy(shipStats as CurveShipBaseSO);
+                spawned = InitializeCurveEnemy(shipStats as CurveShipBaseSO, position);
                 break;
             case EnemyTypes.kamikaze:
-                spawned = InitializeKamikaze(shipStats as KamikazeBaseSO);
+                spawned = InitializeKamikaze(shipStats as KamikazeBaseSO, position);
                 break;
         }
         return spawned;
@@ -103,8 +102,9 @@ public class SpawningSystem : MonoBehaviour
     /// </summary>
     /// <param name="ship">Nave a inicializar</param>
     /// <param name="baseStats">Stats de la nave a inicializar</param>
-    public void InitializeEnemyGeneralStats(GameObject ship, NaveBaseSO baseStats)
+    public void InitializeEnemyGeneralStats(GameObject ship, NaveBaseSO baseStats, Vector2 position)
     {
+        ship.transform.position = position;
         ShipMovement sm = ship.GetComponent<ShipMovement>();
         sm.SetSpeed(baseStats.movementSpeed);
 
@@ -125,12 +125,12 @@ public class SpawningSystem : MonoBehaviour
     /// </summary>
     /// <param name="baseStats">Stats base del enemigo curva</param>
     /// <returns>Enemigo curva inicializado</returns>
-    public GameObject InitializeCurveEnemy(CurveShipBaseSO baseStats)
+    public GameObject InitializeCurveEnemy(CurveShipBaseSO baseStats, Vector2 position)
     {
         GameObject curveEnemy = shipPool.GetFromPool("Curve");
+        curveEnemy.transform.position = position;
         curveEnemy.GetComponent<CurveEnemyMovement>().SetCurve(baseStats.curve);
-
-        InitializeEnemyGeneralStats(curveEnemy, baseStats);
+        InitializeEnemyGeneralStats(curveEnemy, baseStats, position);
 
         return curveEnemy;
     }
@@ -141,12 +141,12 @@ public class SpawningSystem : MonoBehaviour
     /// </summary>
     /// <param name="baseStats">Stats base del enemigo kamikaze</param>
     /// <returns>Enemigo kamikaze inicializado</returns>
-    public GameObject InitializeKamikaze(KamikazeBaseSO baseStats)
+    public GameObject InitializeKamikaze(KamikazeBaseSO baseStats, Vector2 position)
     {
         GameObject kamikaze = shipPool.GetFromPool("Kamikaze");
-
         kamikaze.GetComponent<KamikazeEnemyManager>().ResetKamikaze();
-        InitializeEnemyGeneralStats(kamikaze, baseStats);
+
+        InitializeEnemyGeneralStats(kamikaze, baseStats, position);
 
         return kamikaze;
     }
