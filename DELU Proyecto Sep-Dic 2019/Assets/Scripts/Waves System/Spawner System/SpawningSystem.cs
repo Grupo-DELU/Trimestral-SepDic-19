@@ -25,6 +25,9 @@ public class SpawningSystem : MonoBehaviour
     private float fSpawnRadius = 1;
 
 
+    public bool warning = true;
+
+
     private void Awake()
     {
         #region Singleton
@@ -91,6 +94,8 @@ public class SpawningSystem : MonoBehaviour
                 spawned = InitializeKamikaze(shipStats as KamikazeBaseSO, position);
                 break;
         }
+        ProcessEnemyToScore(spawned, (NaveBaseSO)shipStats);
+        ProcessEnemyToStorage(spawned);
         return spawned;
     }
 
@@ -119,7 +124,6 @@ public class SpawningSystem : MonoBehaviour
         }
         ship.GetComponent<EnemyShipManager>().SetAIStatus(true);
         ship.GetComponent<HealthManager>().ReplenishLife();
-
     }
 
 
@@ -163,8 +167,19 @@ public class SpawningSystem : MonoBehaviour
     public void ProcessEnemyToScore(GameObject enemy, NaveBaseSO stats)
     {
         // No hay score (puede ser partida sin score)
-        if (ScoreSystem.Manager == null) return;
-        enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ScoreSystem.Manager.AddScore(stats.points));
+        if (ScoreSystem.Manager == null && warning) Debug.LogWarning("No hay score para el SpawningSystem");
+        else enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ScoreSystem.Manager.AddScore(stats.points));
+    }
+
+
+    /// <summary>
+    /// Agrega el enemigo activo al sistema de storage de naves activas en la escena
+    /// </summary>
+    /// <param name="enemy"></param>
+    public void ProcessEnemyToStorage(GameObject enemy)
+    {
+        if (ActiveShipStorage.Storage == null && warning) Debug.LogWarning("No hay storage para el SpawningSystem");
+        else ActiveShipStorage.Storage.AddShip(enemy.GetComponent<EnemyShipManager>());
     }
 
 

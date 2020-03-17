@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iMaxLives: 3
+  iInitialLives: 3
   iLives: 3
 --- !u!114 &6707363454312698405
 MonoBehaviour:
@@ -456,6 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8c38fc8fdd6674d9a0e59fba738713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnable: 0
   respawnPoint: {fileID: 0}
 --- !u!114 &374649084283679435
 MonoBehaviour:
@@ -495,7 +497,7 @@ MonoBehaviour:
   bulletCollMask:
     value: 2
   bReloading: 0
-  iShotNumber: 5
+  iShotNumber: 20
   fFireRate: 0.15
   fBulletSpeed: 5
   spawnPos: {fileID: 374649083459947081}
@@ -533,10 +535,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collidesWith:
-    value: 10
+    value: -1
   belongsTo:
-    value: 1
+    value: -1
   onCollision:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetupComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetupDestroy:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7447488301687826519

@@ -145,6 +145,10 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  - 1
+  - 1
+  - 1
+  - 1
   spawningPos: 000000000100000002000000
   enemyType: 0
   bases: {fileID: 11400000, guid: bf0bdf461c32bb54a9cbb3dd873964fa, type: 2}
@@ -218,6 +222,7 @@ MonoBehaviour:
   quantity: 1
   delay:
   - 1
+  - 1
   spawningPos: 0100000001000000
   enemyType: 1
   bases: {fileID: 11400000, guid: 0118289a200ef434dbbc8566de674467, type: 2}
@@ -241,7 +246,7 @@ MonoBehaviour:
   - {fileID: -3747281007735863848}
   - {fileID: -3602950204732540829}
   initialWave: {fileID: -8766921057460271464}
-  currentNode: {fileID: 6935374105655986680}
+  currentNode: {fileID: -8766921057460271464}
 --- !u!114 &6935374105655986680
 MonoBehaviour:
   m_ObjectHideFlags: 0

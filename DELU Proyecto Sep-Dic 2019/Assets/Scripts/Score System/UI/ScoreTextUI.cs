@@ -7,6 +7,9 @@ public class ScoreTextUI : MonoBehaviour
     /// </summary>
     public Text scoreText;
 
+    public bool warning = true;
+
+
     void Start()
     {
         if (scoreText == null)
@@ -14,7 +17,8 @@ public class ScoreTextUI : MonoBehaviour
             Debug.LogError("No hay texto de Score!", this);
             return;
         }
-        ScoreSystem.Manager.onScoreChange.AddListener(UpdateScoreText);
+        if (ScoreSystem.Manager == true && warning) Debug.LogWarning("No hay ScoreManager para el ScoreTextUI");
+        else ScoreSystem.Manager.onScoreChange.AddListener(UpdateScoreText);
         //Empieza con 0 de score naive
         UpdateScoreText(0);
     }

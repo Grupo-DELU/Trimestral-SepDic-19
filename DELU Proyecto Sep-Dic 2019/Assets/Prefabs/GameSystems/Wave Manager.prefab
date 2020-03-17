@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca761ef67639804bb7fb817d3e3ba39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onWaveSpawned:
+    m_PersistentCalls:
+      m_Calls: []
   debug: 1
 --- !u!114 &6868114123546383166
 MonoBehaviour:
@@ -79,3 +82,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   fSpawnRadius: 2
+  warning: 1

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// WaveManager se encarga del spawneo de las naves de una wave
@@ -15,6 +16,11 @@ public class WaveManager : MonoBehaviour
     /// Se llama cuando no quedan mas enemigos en la wave
     /// </summary>
     public WavesEvents onNoMoreEnemies = new WavesEvents();
+
+    /// <summary>
+    /// Se llama cuando un enemigo es spawneado. USADO PARA ACTIVESHIPSTORAGE.
+    /// </summary>
+    public UnityEvent onWaveSpawned = new UnityEvent();
 
 #if UNITY_EDITOR
     public bool debug = true;
