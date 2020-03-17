@@ -24,15 +24,18 @@ public class ShipDeathSystem : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     private void DisableShooting()
     {
         GetComponent<ShipShootingSystem>().SetSystemOnOff(false);
     }
 
+
     private void DisableMovement()
     {
         GetComponent<ShipMovement>().SetSystemOnOff(false);
     }
+
 
     private void DisableAI()
     {
