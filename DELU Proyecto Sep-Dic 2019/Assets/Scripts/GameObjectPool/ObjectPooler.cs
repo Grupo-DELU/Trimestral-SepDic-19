@@ -28,7 +28,8 @@ public class ObjectPooler : MonoBehaviour
             for (int j = 0; j < pools[i].iQuantity; j++)
             {
                 GameObject obj = (GameObject)Instantiate(pools[i].gObject);
-                obj.SetActive(false);
+                obj.GetComponent<ShipCollider>().onSetupComplete.AddListener((a) => obj.SetActive(false));
+                obj.GetComponent<EnemyShipManager>().SetAIStatus(false);
                 pools[i].lInstantiated.Add(obj);
             }
         }
@@ -53,7 +54,7 @@ public class ObjectPooler : MonoBehaviour
                 {
                     pool.iQuantity += 1;
                     GameObject obj = (GameObject)Instantiate(pool.gObject);
-                    obj.SetActive(false);
+                    obj.SetActive(true);
                     pool.lInstantiated.Add(obj);
                     return obj;
                 }

@@ -156,12 +156,12 @@ MonoBehaviour:
     cornerBR: {x: 0, y: 0}
     minArea: 0
     maxPoints: 0
-  cornerTL: {x: -20, y: 20}
-  cornerBL: {x: 20, y: -20}
-  maxPoints: 90
-  minArea: 1
+  cornerTL: {x: -500, y: 500}
+  cornerBL: {x: 500, y: -500}
+  maxPoints: 8
+  minArea: 28.28
   pointToLook: {x: -3.7, y: 8.5}
-  randomPoints: 120
+  randomPoints: 1000000
 --- !u!4 &360006544
 Transform:
   m_ObjectHideFlags: 0

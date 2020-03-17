@@ -9,6 +9,13 @@ using UnityEngine;
 [RequireComponent(typeof(HealthManager), typeof(LivesSystem))]
 public class RespawnSystem : MonoBehaviour
 {
+    public bool IsRespawnable { get { return respawnable; } }
+    /// <summary>
+    /// Indica si el enemigo es respawneable
+    /// </summary>
+    [SerializeField]
+    private bool respawnable = false;
+
     /// <summary>
     /// Punto de respawn de la nave.
     /// </summary>
@@ -20,14 +27,14 @@ public class RespawnSystem : MonoBehaviour
 
     private void Awake()
     {
-        //if (respawnPoint == null) Debug.LogError("No hay punto de respawn! Agrega uno!", gameObject);
+        if (respawnPoint == null && respawnable) Debug.LogError("No hay punto de respawn! Agrega uno!", gameObject);
         hm = GetComponent<HealthManager>();
         lm = GetComponent<LivesSystem>();
     }
 
     private void Start()
     {
-        //lm.onLiveLoss.AddListener((a) => RespawnShip());
+        lm.onLiveLoss.AddListener((a) => RespawnShip());
     }
 
     /// <summary>
@@ -35,7 +42,8 @@ public class RespawnSystem : MonoBehaviour
     /// </summary>
     public void RespawnShip()
     {
-        //if (lm.LivesDepleted()) return;
+        if (!respawnable) return;
+        if (lm.LivesDepleted()) return;
         transform.position = respawnPoint.position;
         hm.Revive();
     }

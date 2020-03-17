@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(HealthManager), typeof(LivesSystem), typeof(RespawnSystem))]
+[RequireComponent(typeof(HealthManager))]
 public class ShipDeathSystem : MonoBehaviour
 {
-    private LivesSystem ls = null;
-    private RespawnSystem rs = null;
     private HealthManager hm = null;
 
     private void Awake()
     {
-        ls = GetComponent<LivesSystem>();
-        rs = GetComponent<RespawnSystem>();
         hm = GetComponent<HealthManager>();
     }
 
@@ -24,14 +20,24 @@ public class ShipDeathSystem : MonoBehaviour
 
     protected virtual void KillShip()
     {
-        if (!ls.LivesDepleted())
-        {
-            rs.RespawnShip();
-        }
-        else
-        {
-            // has una animacion primero
-            Destroy(gameObject);
-        }
+        DisableShooting();
+        DisableMovement();
+        DisableAI();
+        gameObject.SetActive(false);
+    }
+
+    private void DisableShooting()
+    {
+        GetComponent<ShipShootingSystem>().SetSystemOnOff(false);
+    }
+
+    private void DisableMovement()
+    {
+        GetComponent<ShipMovement>().SetSystemOnOff(false);
+    }
+
+    private void DisableAI()
+    {
+        GetComponent<EnemyShipManager>().SetAIStatus(false);
     }
 }

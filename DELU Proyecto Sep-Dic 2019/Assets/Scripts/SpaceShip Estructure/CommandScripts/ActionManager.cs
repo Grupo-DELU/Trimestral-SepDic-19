@@ -12,6 +12,11 @@ using UnityEngine;
 /// </summary>
 public class ActionManager : MonoBehaviour
 {
+    /// <summary>
+    /// Indica si la AI esta activa
+    /// </summary>
+    protected bool bIsActive = true;
+
     // Diccionario de aciones del objeto que usa como llaves su tag de accion.
     /// <summary>
     /// Diccionario de acciones por tag

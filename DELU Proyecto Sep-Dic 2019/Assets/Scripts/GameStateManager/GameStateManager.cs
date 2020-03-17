@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public enum GameStates { Starting, Playing, Paused, LevelOver, GameOver }
 public class GameStateEvents : UnityEvent { }
 
+//[RequireComponent(typeof(ShipCurveInitializer))]
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Manager { get; private set; }
@@ -46,8 +47,8 @@ public class GameStateManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(StartGame());
-
+        //StartCoroutine(StartGameRoutine());
+        GetComponent<ShipCurveInitializer>().onCurvesRdy.AddListener(() => StartCoroutine(StartGameRoutine()));
         // Asociamos el fin del nivel al fin de waves
         if (LevelWavesManager.Manager == null) Debug.LogError("No hay Manager de waves para el GameStateManager!", gameObject);
         else LevelWavesManager.Manager.onAllWavesCompleted.AddListener(FinishLevel);
@@ -104,11 +105,10 @@ public class GameStateManager : MonoBehaviour
         onGameOver.Invoke();
     }
 
-
     /// <summary>
     /// Empieza el sistema de waves tras un delay y manda la senal asociada a inicio de juego
     /// </summary>
-    private IEnumerator StartGame()
+    private IEnumerator StartGameRoutine()
     {
         yield return new WaitForSeconds(fStartDelay);
         state = GameStates.Playing;

@@ -220,12 +220,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curve:
     points:
-    - {x: 0.97884464, y: 14.225512}
-    - {x: -5.3130517, y: 14.198364}
-    - {x: 6.5434504, y: 5.098337}
-    - {x: 0.15129995, y: 5.294652}
-    - {x: -6.3133836, y: 5.490967}
-    - {x: 7.1982064, y: 14.252659}
+    - {x: -6.395293, y: 5.481679}
+    - {x: 9.044771, y: 5.4767046}
+    - {x: 12.602891, y: 10.78561}
+    - {x: 1, y: 0}
+    - {x: -10.694252, y: -10.694249}
+    - {x: -21.835358, y: 5.5780153}
     isClosed: 1
 --- !u!114 &551981899
 MonoBehaviour:
@@ -248,10 +248,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: path
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2229041300723685544, guid: d9198d3939d641d4697bd3a4017f271a,
         type: 3}
       propertyPath: iShotNumber

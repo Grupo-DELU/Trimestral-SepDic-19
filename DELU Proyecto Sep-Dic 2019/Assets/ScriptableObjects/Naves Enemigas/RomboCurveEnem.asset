@@ -19,4 +19,4 @@ MonoBehaviour:
   bulletSpeed: 6
   points: 100
   movementSpeed: 5
-  curve: {fileID: 11400000, guid: 7df8e8174ec8efd479d74aeb9a0d4fc8, type: 2}
+  curve: {fileID: 11400000, guid: 631682784d2793f44961f5226c984cbc, type: 2}

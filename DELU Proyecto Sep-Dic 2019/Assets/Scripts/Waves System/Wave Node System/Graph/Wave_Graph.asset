@@ -139,13 +139,13 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  quantity: 1
+  quantity: 8
   delay:
   - 1
   - 1
   - 1
   - 1
-  spawningPos: 00000000
+  spawningPos: 000000000100000002000000
   enemyType: 0
   bases: {fileID: 11400000, guid: bf0bdf461c32bb54a9cbb3dd873964fa, type: 2}
 --- !u!114 &-3747281007735863848

@@ -154,6 +154,15 @@ public class HealthManager : MonoBehaviour
         if (oldHP != iHP) onLifeChange.Invoke(oldHP, iHP);
     }
 
+
+    /// <summary>
+    /// Devuelve toda la vida a la nave
+    /// </summary>
+    public void ReplenishLife()
+    {
+        iHP = iMaxHP;
+    }
+
     /// <summary>
     /// Por los momentos solo le sube la vida, deberia de agregar un evento
     /// </summary>

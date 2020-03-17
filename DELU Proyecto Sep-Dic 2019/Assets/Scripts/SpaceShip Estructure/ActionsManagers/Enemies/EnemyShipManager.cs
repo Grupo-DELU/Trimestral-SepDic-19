@@ -6,12 +6,6 @@ using UnityEngine;
 public class EnemyShipManager : ActionManager
 {
     /// <summary>
-    /// Indica si la AI esta activa
-    /// </summary>
-    [SerializeField]
-    protected bool bIsActive = true;
-
-    /// <summary>
     /// Sistema de movimiento de la nave
     /// </summary>
     [HideInInspector]

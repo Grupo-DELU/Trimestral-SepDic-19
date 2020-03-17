@@ -230,9 +230,7 @@ GameObject:
   - component: {fileID: 2229041300723685544}
   - component: {fileID: 1919321015}
   - component: {fileID: 1919321016}
-  - component: {fileID: 166941030466960405}
   - component: {fileID: 2423167473511329276}
-  - component: {fileID: 3775002214373431422}
   m_Layer: 0
   m_Name: CurveEnemy
   m_TagString: Ship
@@ -355,7 +353,6 @@ MonoBehaviour:
   actionsObjects:
   - {fileID: 11400000, guid: 6ea96a3a2b7f5414381d05594e97016c, type: 2}
   - {fileID: 11400000, guid: c0a867788221ce94c9d2050e46e0e535, type: 2}
-  bIsActive: 1
   movementSyst: {fileID: 0}
   shootingSyst: {fileID: 0}
 --- !u!114 &4760188376097575362
@@ -459,20 +456,12 @@ MonoBehaviour:
   onCollision:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &166941030466960405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9100183926234304339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68f5776afd3e6a6479f7d37f47cd9df6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iMaxLives: 3
-  iLives: 3
+  onSetupComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetupDestroy:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2423167473511329276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,16 +474,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8066424d843ac2e4da2089db1fd33e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3775002214373431422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9100183926234304339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8c38fc8fdd6674d9a0e59fba738713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoint: {fileID: 0}

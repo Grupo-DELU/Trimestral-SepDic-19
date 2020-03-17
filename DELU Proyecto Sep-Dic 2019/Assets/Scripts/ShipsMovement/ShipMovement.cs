@@ -155,4 +155,9 @@ public class ShipMovement : MonoBehaviour
     {
         return fMovementSpeed;
     }
+
+    public void SetSystemOnOff(bool toSet)
+    {
+        bIsActive = toSet;
+    }
 }

@@ -107,8 +107,10 @@ public class SpawningSystem : MonoBehaviour
         ship.transform.position = position;
         ShipMovement sm = ship.GetComponent<ShipMovement>();
         sm.SetSpeed(baseStats.movementSpeed);
+        sm.SetSystemOnOff(true);
 
         ShipShootingSystem ss = ship.GetComponent<ShipShootingSystem>();
+        ss.SetSystemOnOff(true);
         if (baseStats.bulletNum <= 0) ss.SetSystemOnOff(false);
         else
         {
@@ -117,6 +119,9 @@ public class SpawningSystem : MonoBehaviour
             ss.SetBulletSpeed(baseStats.bulletSpeed);
             ss.SetFireRate(baseStats.reloadime);
         }
+        ship.GetComponent<EnemyShipManager>().SetAIStatus(true);
+        ship.GetComponent<HealthManager>().ReplenishLife();
+
     }
 
 

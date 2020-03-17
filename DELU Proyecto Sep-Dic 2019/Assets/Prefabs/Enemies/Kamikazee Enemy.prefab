@@ -232,8 +232,6 @@ GameObject:
   - component: {fileID: 496021402621166355}
   - component: {fileID: 5153624404157176027}
   - component: {fileID: 8903705103976744639}
-  - component: {fileID: 4059413263939597381}
-  - component: {fileID: 6939276608730040775}
   m_Layer: 0
   m_Name: Kamikazee Enemy
   m_TagString: Ship
@@ -249,7 +247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8694306587624673272}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 21.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7118951939998422969}
@@ -357,7 +355,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f2ae76ce9edd9c64b95223f9ff4cf4ff, type: 2}
   - {fileID: 11400000, guid: 68ad93c9f07ae734cb6666691f70dcfe, type: 2}
   - {fileID: 11400000, guid: c6fac33096748e5459780fcd05e9c28e, type: 2}
-  bIsActive: 1
   movementSyst: {fileID: 0}
   shootingSyst: {fileID: 0}
   bIsMoving: 1
@@ -462,6 +459,12 @@ MonoBehaviour:
   onCollision:
     m_PersistentCalls:
       m_Calls: []
+  onSetupComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetupDestroy:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5153624404157176027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,30 +491,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8066424d843ac2e4da2089db1fd33e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4059413263939597381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694306587624673272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68f5776afd3e6a6479f7d37f47cd9df6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iMaxLives: 3
-  iLives: 3
---- !u!114 &6939276608730040775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694306587624673272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8c38fc8fdd6674d9a0e59fba738713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoint: {fileID: 0}

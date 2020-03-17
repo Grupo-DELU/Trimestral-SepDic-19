@@ -24,6 +24,11 @@ public class LivesSystem : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int iMaxLives = 3;
+    /// <summary>
+    /// Vidas iniciales de la nave
+    /// </summary>
+    [SerializeField]
+    private int iInitialLives = 3;
 
     /// <summary>
     /// Vidas de la nave
@@ -63,15 +68,23 @@ public class LivesSystem : MonoBehaviour
             iMaxLives = 3;
             Debug.LogWarning("Settea las vidas maximas tal que iMaxLives > -1", gameObject);
         }
-        if (iLives > iMaxLives)
+        if (iInitialLives > iMaxLives)
         {
+            iInitialLives = iMaxLives;
             iLives = iMaxLives;
             Debug.LogWarning("Settea las vidas de la nave tal que iLives <= iMaxLives", gameObject);
         }
-
+        else
+        {
+            iLives = iInitialLives;
+        }
         hm.onDepletedLife.AddListener((a, b) => LooseLife());
     }
 
+    public void ReplenishLives()
+    {
+        iLives = iInitialLives;
+    }
     /// <summary>
     /// Quita una vida a la nave
     /// </summary>

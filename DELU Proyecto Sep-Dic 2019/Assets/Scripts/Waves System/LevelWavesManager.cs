@@ -53,8 +53,8 @@ public class LevelWavesManager : MonoBehaviour
         #region Singleton
         if (Manager != null && Manager != this)
         {
-            Debug.LogError("Hay dos sistemas de wave! Intentado identificar/eliminar el otro...", Manager.gameObject);
-            Destroy(Manager.gameObject);
+            Debug.LogError("Hay dos sistemas de wave! Intentado borrar este...", gameObject);
+            Destroy(gameObject);
         }
         Manager = this;
         #endregion
@@ -72,7 +72,7 @@ public class LevelWavesManager : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-      if (bDebug && Input.GetKeyDown(KeyCode.Space) && currentNode == null)
+      if (bDebug && Input.GetKeyDown(KeyCode.Return) && currentNode == null)
         {
             StartLevelWaves();
         }  
