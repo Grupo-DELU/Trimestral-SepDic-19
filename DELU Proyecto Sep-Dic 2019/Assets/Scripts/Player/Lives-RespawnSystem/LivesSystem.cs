@@ -5,6 +5,7 @@ using UnityEngine.Events;
 /// Eventos de vidas de las naves
 /// </summary>
 /// <remarks>Envia consigo la NUEVA CANTIDAD DE VIDA</remarks>
+[System.Serializable]
 public class LivesEvents : UnityEvent<int> { };
 
 /// <summary>
@@ -76,7 +77,7 @@ public class LivesSystem : MonoBehaviour
         {
             iLives = iInitialLives;
         }
-        hm.onDepletedLife.AddListener((a, b) => LooseLife());
+        //hm.onDepletedLife.AddListener((a, b) => LooseLife()); Puede hacer conflicto con PlayerDeath, se chequea si el player tiene vida y luego se baja la vida seria F
     }
 
     public void ReplenishLives()

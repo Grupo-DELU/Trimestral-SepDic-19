@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 1919321015}
   - component: {fileID: 1919321016}
   - component: {fileID: 2423167473511329276}
+  - component: {fileID: 2912560733662607437}
   m_Layer: 0
   m_Name: CurveEnemy
   m_TagString: Ship
@@ -416,8 +417,8 @@ MonoBehaviour:
   bulletCollMask:
     value: 1
   bReloading: 0
-  iShotNumber: 1
-  fFireRate: 10
+  iShotNumber: 10
+  fFireRate: 1
   fBulletSpeed: 10
   spawnPos: {fileID: 7217477742482183954}
 --- !u!114 &1919321015
@@ -474,3 +475,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8066424d843ac2e4da2089db1fd33e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2912560733662607437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100183926234304339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8fd94abf8173634b93f8351e6c0ceb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bInstakill: 0
+  iCrashDamage: 1

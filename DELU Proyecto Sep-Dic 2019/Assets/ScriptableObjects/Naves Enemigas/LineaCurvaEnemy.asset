@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   damage: 1
-  bulletNum: 1
-  reloadime: 10
-  bulletSpeed: 6
+  bulletNum: 10
+  reloadime: 1
+  bulletSpeed: 10
   points: 100
   movementSpeed: 5
   curve: {fileID: 11400000, guid: 631682784d2793f44961f5226c984cbc, type: 2}

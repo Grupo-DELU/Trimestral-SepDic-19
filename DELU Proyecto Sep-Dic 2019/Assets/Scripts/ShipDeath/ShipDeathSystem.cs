@@ -3,11 +3,15 @@
 [RequireComponent(typeof(HealthManager))]
 public class ShipDeathSystem : MonoBehaviour
 {
-    private HealthManager hm = null;
+    protected HealthManager hm = null;
+    protected ShipShootingSystem ss = null;
+    protected ShipMovement ms = null;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         hm = GetComponent<HealthManager>();
+        ss = GetComponent<ShipShootingSystem>();
+        ms = GetComponent<ShipMovement>();
     }
 
     private void Start()
@@ -25,18 +29,18 @@ public class ShipDeathSystem : MonoBehaviour
     }
 
 
-    private void DisableShooting()
+    protected void DisableShooting()
     {
-        GetComponent<ShipShootingSystem>().SetSystemOnOff(false);
+        ss.SetSystemOnOff(false);
     }
 
 
-    private void DisableMovement()
+    protected void DisableMovement()
     {
-        GetComponent<ShipMovement>().SetSystemOnOff(false);
+        ms.SetSystemOnOff(false);
     }
 
-
+    // Solo en caso de que sea nave enemiga
     private void DisableAI()
     {
         GetComponent<EnemyShipManager>().SetAIStatus(false);

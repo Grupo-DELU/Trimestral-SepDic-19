@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
 public class HPEvents : UnityEvent<int, int> { }
 public class HealthManager : MonoBehaviour
 {

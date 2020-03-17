@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8468437713056668300
+--- !u!1 &4378222880471404526
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,52 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8468437713056668298}
-  - component: {fileID: 8468437713056668299}
-  - component: {fileID: 982492489}
+  - component: {fileID: 4378222880471404520}
+  - component: {fileID: 4378222880471404521}
+  - component: {fileID: 4378222880471404522}
+  - component: {fileID: 4378222880471404523}
+  - component: {fileID: 4378222880471404053}
   m_Layer: 0
-  m_Name: CurveINITIALIZER
+  m_Name: GameState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8468437713056668298
+--- !u!4 &4378222880471404520
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8468437713056668300}
+  m_GameObject: {fileID: 4378222880471404526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.881615, y: 2.3012655, z: -25.335938}
+  m_LocalPosition: {x: 0, y: 0, z: -32.5346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8468437713056668299
+--- !u!114 &4378222880471404521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8468437713056668300}
+  m_GameObject: {fileID: 4378222880471404526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a55dfd36fe938343a87df2d36242a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fStartDelay: 4
+--- !u!114 &4378222880471404522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378222880471404526}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bab7302e69cf3ca4f9abbb9c0c16b084, type: 3}
@@ -51,16 +66,29 @@ MonoBehaviour:
   onCurvesRdy:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &982492489
+--- !u!114 &4378222880471404523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8468437713056668300}
+  m_GameObject: {fileID: 4378222880471404526}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ac4834222d44a8408babb65576f4119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyShips: []
+--- !u!114 &4378222880471404053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378222880471404526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68658bc76e4159b4a9dca4b80d52da23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}

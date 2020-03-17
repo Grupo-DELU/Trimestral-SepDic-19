@@ -23,13 +23,13 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// Tiempo de carga final
     /// </summary>
     [SerializeField]
-    private readonly float fChargeTime = 2;
+    private float fChargeTime = 2;
 
     /// <summary>
     /// Segundos para que updatee la posicion del jugador
     /// </summary>
     [SerializeField]
-    private readonly int timeToUpate = 10;
+    private int timeToUpate = 10;
     /// <summary>
     /// Contador de tiempo para updatear
     /// </summary>
@@ -38,7 +38,7 @@ public class KamikazeEnemyManager : EnemyShipManager
     /// Distancia a la que dejara de actualizar la posicion del jugador
     /// </summary>
     [SerializeField]
-    private readonly float updateDist = 5f;
+    private float updateDist = 5f;
 
     /// <summary>
     /// Ultima direccion conocida hacia el jugador
@@ -64,8 +64,8 @@ public class KamikazeEnemyManager : EnemyShipManager
         if (!bIsActive) return;
         //Si ya pasaron los frames de update posicion jugador
         //updatea la posicion
-        float distSqr = (transform.position.y - playerT.position.y);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.forward, lastPlayerDir), 2f);
+        float dist = (transform.position.y - playerT.position.y);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.forward, lastPlayerDir), 4f);
         if (bSeek)
         {
             if (updateCounter >= timeToUpate)
@@ -73,7 +73,7 @@ public class KamikazeEnemyManager : EnemyShipManager
                 lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
                 updateCounter = 0;
             }
-            if (distSqr < updateDist)
+            if (dist < updateDist)
             {
                 bSeek = false;
                 executeAction("ChargeKamikaze");

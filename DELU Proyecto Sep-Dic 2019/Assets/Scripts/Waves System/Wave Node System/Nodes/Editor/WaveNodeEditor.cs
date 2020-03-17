@@ -30,7 +30,7 @@ public class WaveNodeEditor : NodeEditor
         {
             if (GUILayout.Button("Set as first wave"))
             {
-                graph.initialWave.firstWave = false;
+                if (graph.initialWave != null) graph.initialWave.firstWave = false;
                 graph.initialWave = node;
                 graph.currentNode = node;
                 node.firstWave = true;

@@ -247,7 +247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8694306587624673272}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7118951939998422969}
@@ -360,6 +360,9 @@ MonoBehaviour:
   bIsMoving: 1
   bSeek: 1
   fLaunchSpeed: 15
+  fChargeTime: 2
+  timeToUpate: 1
+  updateDist: 5
 --- !u!114 &8694306587624673255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +442,30 @@ MonoBehaviour:
   iMaxHP: 4
   bInmortal: 0
   fReviveProtTime: 1
+  onLifeChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onLifeLoss:
+    m_PersistentCalls:
+      m_Calls: []
+  onLifeGain:
+    m_PersistentCalls:
+      m_Calls: []
+  onDepletedLife:
+    m_PersistentCalls:
+      m_Calls: []
+  onFullLife:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivateInm:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeactivateInm:
+    m_PersistentCalls:
+      m_Calls: []
+  onRevive:
+    m_PersistentCalls:
+      m_Calls: []
   bDebug: 0
 --- !u!114 &496021402621166355
 MonoBehaviour:
@@ -477,8 +504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fd94abf8173634b93f8351e6c0ceb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bInstakill: 1
-  iCrashDamage: 1
+  bInstakill: 0
+  iCrashDamage: 3
 --- !u!114 &8903705103976744639
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Sistema de respawneo de las naves
@@ -23,6 +24,8 @@ public class RespawnSystem : MonoBehaviour
     private HealthManager hm = null;
     private LivesSystem lm = null;
 
+    public UnityEvent onShipRespawn = new UnityEvent();
+
     private void Awake()
     {
         if (respawnPoint == null && respawnable) Debug.LogError("No hay punto de respawn! Agrega uno!", gameObject);
@@ -44,5 +47,6 @@ public class RespawnSystem : MonoBehaviour
         if (lm.LivesDepleted()) return;
         transform.position = respawnPoint.position;
         hm.Revive();
+        onShipRespawn.Invoke();
     }
 }
