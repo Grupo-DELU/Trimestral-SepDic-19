@@ -163,4 +163,14 @@ public class PlayerMovement : MonoBehaviour
         bCanRoll = true;
         onCanRollAgain.Invoke();
     }
+
+
+    /// <summary>
+    /// Activa/Desactiva el sistema
+    /// </summary>
+    /// <param name="toSet"></param>
+    public void SetSystemOnOff(bool toSet)
+    {
+        bIsActive = toSet;
+    }
 }

@@ -18,6 +18,7 @@ public class GameStateManager : MonoBehaviour
     /// <summary>
     /// Delay antes de iniciar el juego
     /// </summary>
+    [SerializeField]
     private float fStartDelay = 4f;
 
     [SerializeField]
@@ -48,8 +49,9 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(StartGameRoutine());
-        GetComponent<ShipCurveInitializer>().onCurvesRdy.AddListener(() => StartCoroutine(StartGameRoutine()));
+        //GetComponent<ShipCurveInitializer>().onCurvesRdy.AddListener(() => StartCoroutine(StartGameRoutine()));
         // Asociamos el fin del nivel al fin de waves
+        StartCoroutine(StartGameRoutine());
         if (LevelWavesManager.Manager == null) Debug.LogError("No hay Manager de waves para el GameStateManager!", gameObject);
         else LevelWavesManager.Manager.onAllWavesCompleted.AddListener(FinishLevel);
 
@@ -62,7 +64,7 @@ public class GameStateManager : MonoBehaviour
     private void Update()
     {
         if (state == GameStates.Playing && Input.GetKeyDown(KeyCode.Escape)) PauseGame();
-        else if (state == GameStates.Playing && Input.GetKeyDown(KeyCode.Escape)) ResumeGame();
+        else if (state == GameStates.Paused && Input.GetKeyDown(KeyCode.Escape)) ResumeGame();
     }
 
 
@@ -73,9 +75,10 @@ public class GameStateManager : MonoBehaviour
     {
         state = GameStates.Paused;
         onPause.Invoke();
+        Time.timeScale = 0;
     }
 
-
+    
     /// <summary>
     /// Setea el estado del juego como en juego y manda la senal asociada a continuar
     /// </summary>
@@ -83,6 +86,7 @@ public class GameStateManager : MonoBehaviour
     {
         state = GameStates.Playing;
         onResume.Invoke();
+        Time.timeScale = 1;
     }
 
 

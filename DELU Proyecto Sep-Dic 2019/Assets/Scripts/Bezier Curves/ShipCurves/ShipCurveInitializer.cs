@@ -20,5 +20,6 @@ public class ShipCurveInitializer : MonoBehaviour
             for (int i = 0; i < curve.points.Length; i++) qt.Insert(curve.points[i], i);
             curve.qTree = qt;
         }
+        onCurvesRdy.Invoke();
     }
 }
