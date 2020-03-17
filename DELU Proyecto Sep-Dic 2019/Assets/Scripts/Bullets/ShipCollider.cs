@@ -46,6 +46,11 @@ public class ShipCollider : MonoBehaviour
     private BulletTeam belongsTo = new BulletTeam();
 
     /// <summary>
+    /// Enabled status of the ECS Entity
+    /// </summary>
+    private bool _ecsEnabled = true;
+
+    /// <summary>
     /// Unity Event to send two ints 
     /// </summary>
     [System.Serializable]
@@ -99,12 +104,49 @@ public class ShipCollider : MonoBehaviour
         _manager.SetComponentData(_entity, rotation);
         _manager.AddComponentData(_entity, new ShipCollision { collisionMask = 0 });
         _manager.AddComponentData(_entity, new ShipCollisionMask { belongsTo = belongsTo.value, collidesWith = collidesWith.value });
+        SetECSEnabled(true);
         onSetupComplete.Invoke(this);
+    }
+
+    /// <summary>
+    /// Set internal enabled status
+    /// </summary>
+    /// <param name="enabled">New Enabled Status</param>
+    public void SetECSEnabled(bool enabled)
+    {
+        if (_manager != null && _entity != null && _manager.IsCreated && _manager.Exists(_entity))
+        {
+            _manager.SetEnabled(_entity, enabled);
+            _ecsEnabled = enabled;
+        }
+    }
+
+    /// <summary>
+    /// Get internal enabled status
+    /// </summary>
+    public bool GetECSEnabled()
+    {
+        if (_manager != null && _entity != null && _manager.IsCreated && _manager.Exists(_entity))
+        {
+            _ecsEnabled = _manager.GetEnabled(_entity);
+            return _ecsEnabled;
+        }
+        return false;
+    }
+
+    private void OnDisable()
+    {
+        SetECSEnabled(false);
+    }
+
+    private void OnEnable()
+    {
+        SetECSEnabled(true);
     }
 
     private void Update()
     {
-        if (_manager != null)
+        if (_ecsEnabled && _manager != null)
         {
             translation.Value = transform.position;
             rotation.Value = transform.rotation;
@@ -125,12 +167,7 @@ public class ShipCollider : MonoBehaviour
     private void OnDestroy()
     {
         onSetupDestroy.Invoke(this);
-        if (!_manager.IsCreated)
-        {
-            _manager = null;
-        }
-
-        if (_manager != null && _manager.Exists(_entity))
+        if (_manager != null && _manager.IsCreated && _manager.Exists(_entity))
         {
             _manager.DestroyEntity(_entity);
         }
