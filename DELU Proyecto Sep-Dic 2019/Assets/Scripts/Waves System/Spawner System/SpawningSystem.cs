@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Enumerador que indica las posibles posiciones de spawn de los enemigos 
 /// </summary>
-public enum SpawningPositions { left, upper_left, up, upper_right, right}
-public enum EnemyTypes { curve, kamikaze}
+public enum SpawningPositions { left, upper_left, up, upper_right, right }
+public enum EnemyTypes { curve, kamikaze }
 
 public class SpawningSystem : MonoBehaviour
 {
@@ -66,7 +64,7 @@ public class SpawningSystem : MonoBehaviour
     /// <returns></returns>
     public Vector2 CalculateSpawnPoint(SpawningPositions pos)
     {
-        return (Vector2)tSpawnPoints[(int)pos].position 
+        return (Vector2)tSpawnPoints[(int)pos].position
                + Random.insideUnitCircle * fSpawnRadius;
     }
 
@@ -166,7 +164,7 @@ public class SpawningSystem : MonoBehaviour
     {
         // No hay score (puede ser partida sin score)
         if (ScoreSystem.Manager == null) return;
-        enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a,b) => ScoreSystem.Manager.AddScore(stats.points));
+        enemy.GetComponent<HealthManager>().onDepletedLife.AddListener((a, b) => ScoreSystem.Manager.AddScore(stats.points));
     }
 
 

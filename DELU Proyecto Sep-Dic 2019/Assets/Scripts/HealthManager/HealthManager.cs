@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -103,7 +102,7 @@ public class HealthManager : MonoBehaviour
     private void Start()
     {
         iHP = iMaxHP;
-       if (TryGetComponent(out ShipCollider coll))
+        if (TryGetComponent(out ShipCollider coll))
         {
             coll.onCollision.AddListener((a, b) => RemoveLife(1));
         }
@@ -172,7 +171,7 @@ public class HealthManager : MonoBehaviour
         ActivateInmortality(fReviveProtTime);
         onRevive.Invoke(0, iMaxHP);
     }
-    
+
     public void ActivateInmortality()
     {
         bInmortal = true;
@@ -204,7 +203,7 @@ public class HealthManager : MonoBehaviour
         StopCoroutine(cInmortalityRoutine);
         bInmortal = false;
     }
-    
+
     /// <summary>
     /// Timer de la inmortalidad
     /// </summary>

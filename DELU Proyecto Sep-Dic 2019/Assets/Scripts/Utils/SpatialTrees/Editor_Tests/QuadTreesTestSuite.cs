@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
-using Utils.SpatialTrees.QuadTrees;
 using TestQuadTree = Utils.SpatialTrees.QuadTrees.DataQuadTree<int>;
 
 namespace Tests

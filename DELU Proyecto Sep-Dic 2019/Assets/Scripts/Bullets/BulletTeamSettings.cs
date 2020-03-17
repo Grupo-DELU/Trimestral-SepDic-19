@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 #endif
 
@@ -13,7 +13,8 @@ using UnityEngine.UIElements.Experimental;
 /// Bullet Team for Collision Detection
 /// </summary>
 [System.Serializable]
-public class BulletTeam {
+public class BulletTeam
+{
     /// <summary>
     /// Layers affected by bullet in a Collision
     /// </summary>

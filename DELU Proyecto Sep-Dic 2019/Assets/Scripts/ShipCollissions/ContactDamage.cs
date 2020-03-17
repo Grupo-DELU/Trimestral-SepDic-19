@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class ContactDamage : MonoBehaviour
@@ -18,7 +16,7 @@ public class ContactDamage : MonoBehaviour
     /// Solo es tomado en cuenta si la nave no hace instakill
     /// </remarks>
     [SerializeField]
-    private int iCrashDamage = 1; 
+    private int iCrashDamage = 1;
 
 
     // LLAMADO CUANDO EL QUE TENGA ESTE SCRIPT ENTRA A UN TRIGGERR

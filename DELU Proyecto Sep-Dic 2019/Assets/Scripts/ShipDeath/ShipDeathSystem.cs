@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(HealthManager))]
 public class ShipDeathSystem : MonoBehaviour
@@ -14,7 +12,7 @@ public class ShipDeathSystem : MonoBehaviour
 
     private void Start()
     {
-        hm.onDepletedLife.AddListener((a,b) => KillShip());
+        hm.onDepletedLife.AddListener((a, b) => KillShip());
     }
 
 

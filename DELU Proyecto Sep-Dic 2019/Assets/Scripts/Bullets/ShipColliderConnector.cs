@@ -1,17 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
+﻿using Unity.Entities;
 using UnityEngine;
 
-public class ShipColliderConnector : MonoBehaviour, IConvertGameObjectToEntity {
-    void IConvertGameObjectToEntity.Convert(Entity entity, EntityManager entityManager, GameObjectConversionSystem gameObjectConversionSystem) {
-        if (transform.parent == null) {
+public class ShipColliderConnector : MonoBehaviour, IConvertGameObjectToEntity
+{
+    void IConvertGameObjectToEntity.Convert(Entity entity, EntityManager entityManager, GameObjectConversionSystem gameObjectConversionSystem)
+    {
+        if (transform.parent == null)
+        {
             Debug.LogError("Parent is not assigned", this);
         }
 
         ShipCollider shipCollider = transform.parent.GetComponent<ShipCollider>();
 
-        if (shipCollider == null) {
+        if (shipCollider == null)
+        {
             Debug.LogError("Parent ShipCollider is not present", this);
         }
 

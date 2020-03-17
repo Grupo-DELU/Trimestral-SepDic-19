@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
@@ -57,7 +55,7 @@ public class LivesSystem : MonoBehaviour
 
     private void Awake()
     {
-        hm = GetComponent<HealthManager>();    
+        hm = GetComponent<HealthManager>();
     }
 
     // Start is called before the first frame update

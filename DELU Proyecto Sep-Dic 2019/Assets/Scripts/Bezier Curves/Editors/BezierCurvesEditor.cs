@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using Bezier;
+#endif
 using Utils.SpatialTrees.QuadTrees;
 
 [System.Serializable]
@@ -10,14 +12,14 @@ public class Curve
 {
     public List<Vector2> points;
     public bool isClosed = false;
-    
+
     public void StartCurve(Vector2 anchorPosition)
     {
         points = new List<Vector2>();
         points.Add(anchorPosition);
         points.Add(anchorPosition + Vector2.up);
         points.Add(anchorPosition + Vector2.right + Vector2.down);
-        points.Add(anchorPosition + Vector2.right);       
+        points.Add(anchorPosition + Vector2.right);
     }
 
     public int NumSegments
@@ -48,7 +50,7 @@ public class Curve
         {
             Vector2 oldPos = points[i];
             Vector2 delta = (newPos - oldPos);
-            
+
             if (i == 0)
             {
                 points[1] += delta;

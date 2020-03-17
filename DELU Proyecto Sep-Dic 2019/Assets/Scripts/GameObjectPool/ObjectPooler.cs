@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,7 +21,7 @@ public class ObjectPooler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < pools.Length; i++)
+        for (int i = 0; i < pools.Length; i++)
         {
             pools[i].lInstantiated = new List<GameObject>();
             for (int j = 0; j < pools[i].iQuantity; j++)
@@ -38,11 +37,11 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject GetFromPool(string poolName)
     {
-        foreach(Pooler pool in pools)
+        foreach (Pooler pool in pools)
         {
             if (pool.sName == poolName)
             {
-                foreach(GameObject obj in pool.lInstantiated)
+                foreach (GameObject obj in pool.lInstantiated)
                 {
                     if (!obj.activeInHierarchy)
                     {

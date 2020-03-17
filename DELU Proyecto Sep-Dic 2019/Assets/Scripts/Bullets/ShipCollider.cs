@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShipCollider : MonoBehaviour {
+public class ShipCollider : MonoBehaviour
+{
 
     /// <summary>
     /// Entity Manager
@@ -50,7 +49,8 @@ public class ShipCollider : MonoBehaviour {
     /// Unity Event to send two ints 
     /// </summary>
     [System.Serializable]
-    public class IntEvent : UnityEvent<int, int> {
+    public class IntEvent : UnityEvent<int, int>
+    {
 
     }
 
@@ -65,7 +65,8 @@ public class ShipCollider : MonoBehaviour {
     /// Ship Event for other systems to use
     /// </summary>
     [System.Serializable]
-    public class ShipEvent : UnityEvent<ShipCollider> {
+    public class ShipEvent : UnityEvent<ShipCollider>
+    {
 
     }
 
@@ -88,7 +89,8 @@ public class ShipCollider : MonoBehaviour {
     /// </summary>
     /// <param name="entity">Associated Entity</param>
     /// <param name="manager">Entity manager</param>
-    public void Register(Entity entity, EntityManager manager) {
+    public void Register(Entity entity, EntityManager manager)
+    {
         _manager = manager;
         _entity = entity;
         translation = new Translation { Value = transform.position };
@@ -100,14 +102,17 @@ public class ShipCollider : MonoBehaviour {
         onSetupComplete.Invoke(this);
     }
 
-    private void Update() {
-        if (_manager != null) {
+    private void Update()
+    {
+        if (_manager != null)
+        {
             translation.Value = transform.position;
             rotation.Value = transform.rotation;
             _manager.SetComponentData(_entity, translation);
             _manager.SetComponentData(_entity, rotation);
             collision = _manager.GetComponentData<ShipCollision>(_entity);
-            if (collision.collisionMask != 0) {
+            if (collision.collisionMask != 0)
+            {
 
                 // Inform Event
                 onCollision.Invoke(collision.collisionMask, collidesWith.value);
@@ -117,13 +122,16 @@ public class ShipCollider : MonoBehaviour {
         }
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         onSetupDestroy.Invoke(this);
-        if (!_manager.IsCreated) {
+        if (!_manager.IsCreated)
+        {
             _manager = null;
         }
 
-        if (_manager != null && _manager.Exists(_entity)) {
+        if (_manager != null && _manager.Exists(_entity))
+        {
             _manager.DestroyEntity(_entity);
         }
         _manager = null;

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using XNode;
+﻿using UnityEngine;
 using XNodeEditor;
 [CustomNodeEditor(typeof(WaveNode))]
 public class WaveNodeEditor : NodeEditor

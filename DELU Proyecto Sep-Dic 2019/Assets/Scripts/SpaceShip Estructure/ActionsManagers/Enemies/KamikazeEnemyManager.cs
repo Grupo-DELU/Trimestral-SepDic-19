@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KamikazeEnemyManager : EnemyShipManager
@@ -103,7 +102,7 @@ public class KamikazeEnemyManager : EnemyShipManager
     private IEnumerator Charge()
     {
         bIsMoving = false;
-        yield return new WaitForSeconds(fChargeTime);      
+        yield return new WaitForSeconds(fChargeTime);
         bIsMoving = true;
         lastPlayerDir = (Vector2)playerT.position - (Vector2)transform.position;
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 // Para la inmunidad del roll
 [RequireComponent(typeof(HealthManager), typeof(Rigidbody2D))]
