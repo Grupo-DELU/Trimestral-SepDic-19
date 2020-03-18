@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 374649083459947081}
   - component: {fileID: 374649083459947078}
   - component: {fileID: 374649083459947079}
-  - component: {fileID: 374649083459947080}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -80,19 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &374649083459947080
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374649083459947082}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &374649083942863843
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +414,7 @@ MonoBehaviour:
   iHP: 0
   iMaxHP: 10
   bInmortal: 0
-  fReviveProtTime: 1
+  fReviveProtTime: 5
   onLifeChange:
     m_PersistentCalls:
       m_Calls: []
@@ -493,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8c38fc8fdd6674d9a0e59fba738713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnable: 0
+  respawnable: 1
   respawnPoint: {fileID: 0}
   onShipRespawn:
     m_PersistentCalls:
