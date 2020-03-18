@@ -103,11 +103,11 @@ public class LivesSystem : MonoBehaviour
     /// <summary>
     /// Le da una vida a la nave 
     /// </summary>
-    public void GainLife()
+    public void GainLife(int toGain = 1)
     {
         if (iLives < iMaxLives)
         {
-            iLives += 1;
+            iLives = Mathf.Clamp(iLives + toGain, 0, iMaxLives);
             onLiveGain.Invoke(iLives);
             onLiveChange.Invoke(iLives);
         }
