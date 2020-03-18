@@ -1,6 +1,10 @@
-﻿using Unity.Entities;
+﻿// From https://forum.unity.com/threads/how-to-do-frame-rate-independent-physics-in-dots.844252/
+
+using Unity.Entities;
 using UnityEngine;
 using Unity.Physics.Systems;
+
+
 
 [UpdateBefore(typeof(BuildPhysicsWorld))]
 public class PrePhysicsSetDeltaTimeSystem : ComponentSystem
