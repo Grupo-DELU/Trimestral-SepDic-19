@@ -1,0 +1,47 @@
+TODO LIST
+[]Enemigo Laser
+[]Muerte Jugador
+	[x] Conectar al evento
+	[] Conectar animaciones y cosas asi
+[]Bosses y todo lo que conlleva
+[x]Fixear a los kamikazes
+[]Hacer UI
+	[] Vida  (Alguna clase de icono)
+	[] Vidas (Contador)
+	[] Score
+	[] Pausa
+	[] GameOver
+	[] Terminaste nivel
+[]Conectar Eventos/Estados del GameState con otros sistemas/UI
+	[] PlayingState
+	[] Pause State
+		[x] Parar naves
+		[x] Parar spawneo
+		[] Parar multiplicador de score
+		[] Aparicion UI
+	[] Resume State
+		[x] Resumir naves
+		[x] Resumir spawneo
+		[] Reaparicion UI
+	[] GameOver State
+		[] Definir que haran las naves al morir el jugador
+		[] Aparicion UI
+	[] FinNivel State
+		[] Definir que hara la nave del jugador al ganar
+		[] Aparicion UI
+[] Hacer manejador de escenas
+[] Hacer multiplicador de Score
+[] Animaciones de Muerte
+[] Telegrafiado
+	[] Disparo normal
+	[] Laser
+	[] Kamikaze
+[] Camara
+	[X] Area minima visible
+		[X] Compensar viewport rect modificado
+	[] Explicar why funciona mi x2 o x4
+	[] Minimo X
+		[] Compensar viewport rect modificado
+	[] Minimo Y
+		[] Compensar viewport rect modificado
+	[] Probar ProjectionMatrixOrtho

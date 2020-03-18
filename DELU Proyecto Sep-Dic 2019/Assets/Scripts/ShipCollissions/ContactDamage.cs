@@ -19,12 +19,12 @@ public class ContactDamage : MonoBehaviour
     private int iCrashDamage = 1;
 
 
-    // LLAMADO CUANDO EL QUE TENGA ESTE SCRIPT ENTRA A UN TRIGGERR
+    // Llamado cuando el que tenga script entra a un trigger2D
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // TODO
-        // [] Evitar que las naves enemigas choquen entre si!
-
+        // [X] Evitar que las naves enemigas choquen entre si!
+        if (!collision.CompareTag("Player") && !CompareTag("Player")) return; 
         if (collision.CompareTag("Ship") || collision.CompareTag("Player"))
         {
             if (collision.TryGetComponent(out HealthManager hm))

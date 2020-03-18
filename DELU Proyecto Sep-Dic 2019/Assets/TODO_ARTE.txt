@@ -1,0 +1,46 @@
+TODO LIST DE ARTE PARA EL JUEGO!
+
+[] Definir como va a ser el estilo de arte de la UI
+	Esto es tal cual lo que dice, hay que definir el estilo predominante de la UI
+	para que haya consistencia en el arte tipo botones, fuente, iconos...
+	
+Una vez definido eso, los assets de arte UI necesarios son:
+
+*** UI ***
+[] Iconos de vida de la nave (¿alguna parte de una nave?)
+	[] Icono del punto de vida ACTIVO
+	[] Icono del punto de vida INACTIVO 
+		Con esto me refiero a que puede ser que cuando tengas 3 de vida, los iconos esten sin
+		ningun deterioro. Cuando pierdes vida, los iconos de los puntos perdidos pueden mostrar
+		un sprite deteriorado. Puede hacerse solo el ACTIVO y le bajamos el alpha!
+
+[] Iconos de VIDAS de la nave (puede ser una navesita o hasta un modelo 3D de los que se haran)
+	EJEMPLO:
+		https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1UaZM2fYvflY8p6LYhNMsgMZBDIHLqUbSJ7i66GUAfII01Z57&s
+	NOTA:
+		Hay que cuadrar si será el modelo 3D (para que está animado 3D y sea más sencillo) o 2D
+		
+[] Fondo de los botones del juego para los menues! (Los de UNITY son muy feos jeje)
+[] Bordes de la pantalla/rectangulos
+	[] POWER UPS!
+	EJEMPLOS: 
+		https://www.bonusstage.co.uk/wp-content/uploads/2018/09/Shikhondo-Soul-Eater-Review-Screenshot-2.jpg
+		https://www.androidpolice.com/wp-content/uploads/2017/06/nexus2cee_unnamed-7-1.png
+	IMPORTANTE: Hay que hacer varios, pueden ser con cambio de color... Pero que indiquen que se está usando
+				un powerUP bien perro (esto es el [] de POWER UPS!)
+[] Señales de WARNING/PELIGRO para el telegrafiado de lasers
+	EJEMPLOS:
+		Serían del estilo del triángulo con !
+		https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMDWv_YdIY1sSJ71tHv6S8ViCFgpDdn8-bZy_cjnE4_-qOifA7Jg&s 
+	NOTA:
+		Lo más importante es el triángulo con !, pero hacer una barra entera como la imagen sería genial para anunciar bosses
+
+*** GENERAL ***
+[] Fondos espaciales varios para el juego
+[] Power Ups del juego
+	NOTA: Son como las cositas flotantes de CONTRA o algunos juegos de naves que te permiten mejorar tu ataque temporalmente
+[] Kits de curación
+	NOTA: Como los anteriores pero para curarte (¿una caja de tuercas quizás?)
+
+*** NO NECESARIO AUN ***
+[] Algun titulo para el juego

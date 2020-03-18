@@ -16,7 +16,8 @@ public class PlayerDeath : ShipDeathSystem
     {
         // NOTA: Si vas a llamar animaciones de muerte y cosas asi, puedes hacerlo usando los eventos de muerte
         // como onLifeDepleted del HealthManager o el onLivesDepleted de LivesSystem (para el gameover). Esto puede
-        // hacerse por script o arrastrando manualmente y cosas asi!
+        // hacerse por script o arrastrando manualmente y cosas asi! Se puede agregar delay al respawnship para que
+        // corran las animacionesw y eso jeje
         lm.LooseLife();
         if (CanRespawn())
         {

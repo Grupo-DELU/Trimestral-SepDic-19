@@ -1,78 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 [ExecuteInEditMode]
 public class CameraSizeSetter : MonoBehaviour
 {
-    public float ySize = 5;
-    public float xSize = 5;
-    public bool forceY = true;
-    public bool forceX = false;
-    public bool copiado = false;
+    public float x = 10;
+    public float y = 10;
 
-    private Camera cam;
+    public float left = -1;
+    public float right = 1;
+    public float bottom = -1;
+    public float top = 1;
+    public float near = -1;
+    public float far = 1;
+    // Use this for initialization
 
-    private void Awake()
+    public bool enableTest = true;
+    public float test = 2;
+    public bool enableMatrix = false;
+
+    void Update()
     {
-        cam = GetComponent<Camera>();
-    }
+        float screenRatio = (float)Screen.width / (float)Screen.height; // Que tanto X hay por cada Y actualmente
+        float targetRatio = x / y; // Que tanto X quiero que haya por Y
 
-    private void Start()
-    {
-        if (!cam.orthographic)
+        if (screenRatio >= targetRatio) // Si hay mas de lo que quiero, me asegura que alcance si seteo la Y
         {
-            cam.orthographic = true;
+            Camera.main.orthographicSize = y / 2;
         }
+        else // Si no, calculamos la diferencia
+        {
+            float differenceInSize = targetRatio / screenRatio; // Que tanto de lo que quiero es lo que tengo
+            Camera.main.orthographicSize = (y / 2) * differenceInSize;
+        }
+        // Compensando el viewport rect. Funciona pero no estoy seguro porque la idea es que compense en X, no Y, pero igual lo arregla.
+        // Se que PIERDE la MITAD de las X, deberia aumentarle es ESAS X pero creo que depende tammbien del targetRatio! Y si hay mas Y que X?
+        // Tiene realmente prioridad Y porque siempre va a cumplir las X pero hmmmm
+        if (enableTest) Camera.main.orthographicSize = Camera.main.orthographicSize * test; 
+        if (enableMatrix) Camera.main.projectionMatrix = Matrix4x4.Ortho(left, right, bottom, top, near, far);
     }
-
-    private void Update()
-    {
-        if (forceX && !forceY)
-        {
-            ForceXSize(xSize);
-        }
-        else if (forceY && !forceX)
-        {
-            ForceYSize(ySize);
-        }
-        else if (!forceX && !forceY)
-        {
-            Debug.Log("puto");
-            ForceRatio(xSize, ySize);
-        }
-    }
-
-    private void ForceXSize(float size)
-    {
-        cam.orthographicSize = size * (float)Screen.height / (float)Screen.width * 0.5f;
-    }
-
-    private void ForceYSize(float size)
-    {
-        // Camera height formula is height = size * 2
-        cam.orthographicSize = size / 2;
-    }
-
-    private void ForceRatio(float x, float y)
-    {
-        float screenRatio = cam.aspect; // Widht / Height
-        float target = x / y;
-        Debug.Log("Target:" + target);
-        Debug.Log("Screenratio: " + screenRatio);
-        // El aspect Ratio actual es mas ancho que el buscado
-        if (screenRatio >= target)
-        {
-            Debug.Log("1");
-            cam.orthographicSize = y / 2;
-        }
-        // El aspect ratio actual es mas chico que el buscado
-        else
-        {
-            Debug.Log("2");
-            float differenceInSize = (target / screenRatio) * .5f;
-            cam.orthographicSize = (y / 2) * differenceInSize;
-        }
-        // cam.orthographicSize /= .5f;
-    }
-
 }

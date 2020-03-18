@@ -59,7 +59,7 @@ public class ActionManager : MonoBehaviour
         foreach (Action act in actions_to_load)
         {
 #if UNITY_EDITOR
-            Debug.Log(act.tag);
+            //Debug.Log(act.tag);
             if (act.tag == "default") Debug.LogWarning("There's an action without tag");
 #endif
             actions[act.tag] = act;

@@ -2,31 +2,61 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// UNUSED
+//public class HPIconBar
+//{
+//    public GameObject panelObject;
+//    public List<Image> hpIcons;
+//
+//    public HPIconBar(GameObject panel)
+//    {
+//        this.panelObject = panel;
+//        for (int i = 0; i < panel.transform.childCount; i++)
+//        {
+//            Image icon = panel.transform.GetChild(i).GetComponent<Image>();
+//            hpIcons.Add(icon);
+//            icon.gameObject.SetActive(false);
+//        }
+//    }
+//}
+
+/// <summary>
+/// IMPORTANTE. POR LOS MOMENTOS FUNCIONA PARA 4 BARRAS DE 5 ICONOS (20 DE VIDA)
+/// </summary>
 public class HPUI : MonoBehaviour
 {
     /// <summary>
     /// Iconos de vida
     /// </summary>
-    public List<Image> hpIcons;
+    public GameObject bigObject;
 
-    void Start()
+    public List<Image> hpIcons = new List<Image>();
+
+    void Awake()
     {
-        if (PlayerFinder.Player.TryGetComponent(out HealthManager hm))
+        for (int i = 0; i < bigObject.transform.childCount; i++)
         {
-            hm.onLifeChange.AddListener(UpdateLives);
-            if (hpIcons.Count != hm.MaxHP)
+            Transform barra = bigObject.transform.GetChild(i);
+            for (int j = 0; j < barra.childCount; j++)
             {
-                Debug.LogError("No hay suficientes iconos de vida");
+                hpIcons.Add(barra.GetChild(j).GetComponent<Image>());
+                barra.GetChild(j).gameObject.SetActive(false);
             }
         }
-        else
+    }
+
+    private void Start()
+    {
+        try
         {
-            Debug.LogError("Player no tiene health manager");
+            PlayerFinder.Player.GetComponent<HealthManager>().onLifeChange.AddListener(UpdateLives);
         }
-        if (hpIcons.Count <= 0)
+        catch (System.NullReferenceException)
         {
-            Debug.LogError("No hay iconos de vida en la lista");
+            Debug.LogWarning("Jugador o HP Manager de el son null para los iconos de vida :(");
+            throw;
         }
+        UpdateLives(0, PlayerFinder.Player.GetComponent<HealthManager>().MaxHP);
     }
 
     /// <summary>
@@ -39,7 +69,8 @@ public class HPUI : MonoBehaviour
         // Desactivar las imagenes y eso
         if (newHP > oldHP)
         {
-            for (int i = oldHP - 1; i < newHP; i++)
+            // aja y si es 0... xD
+            for (int i = oldHP; i < newHP; i++)
             {
                 hpIcons[i].gameObject.SetActive(true);
             }

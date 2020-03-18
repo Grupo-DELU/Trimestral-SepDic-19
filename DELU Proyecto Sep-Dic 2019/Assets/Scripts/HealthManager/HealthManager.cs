@@ -102,7 +102,8 @@ public class HealthManager : MonoBehaviour
     }
     private void Start()
     {
-        iHP = iMaxHP;
+        ReplenishLife();
+        // esto es para las balas
         if (TryGetComponent(out ShipCollider coll))
         {
             coll.onCollision.AddListener((a, b) => RemoveLife(1));
@@ -112,9 +113,11 @@ public class HealthManager : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        if (CompareTag("Player") && bDebug && Input.GetKeyDown(KeyCode.T))
+        if (CompareTag("Player") && bDebug)
         {
-            RemoveLife(100000000);
+            if (Input.GetKeyDown(KeyCode.K)) RemoveLife(100000000);
+            else if (Input.GetKeyDown(KeyCode.R)) AddLife(1);
+            else if (Input.GetKeyDown(KeyCode.T)) RemoveLife(1);
         }
     }
 #endif
@@ -160,7 +163,9 @@ public class HealthManager : MonoBehaviour
     /// </summary>
     public void ReplenishLife()
     {
+        int oldHP = iHP;
         iHP = iMaxHP;
+        onLifeChange.Invoke(oldHP, iHP);
     }
 
     /// <summary>
@@ -170,6 +175,7 @@ public class HealthManager : MonoBehaviour
     {
         iHP = iMaxHP;
         ActivateInmortality(fReviveProtTime);
+        onLifeChange.Invoke(0, iHP);
         onRevive.Invoke(0, iMaxHP);
     }
 
