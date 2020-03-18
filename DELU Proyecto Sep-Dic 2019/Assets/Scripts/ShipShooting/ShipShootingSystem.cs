@@ -31,6 +31,7 @@ public class ShipShootingSystem : MonoBehaviour
     /// <remarks>Funciona mejor con numeros impares para siempre tener uno en medio</remarks>
     [SerializeField]
     private int iShotNumber = 1;
+    public int ShotNumber { get { return iShotNumber; } }
     /// <summary>
     /// Cadencia de disparo de la nave
     /// </summary>
