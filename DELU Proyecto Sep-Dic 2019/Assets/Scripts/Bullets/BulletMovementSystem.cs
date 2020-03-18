@@ -32,7 +32,6 @@ public class BulletMovementSystem : JobComponentSystem
                 velocity.Linear = math.mul(rotation.Value, localFront) * bulletMovement.speed;
                 velocity.Linear.z = 0;
 
-                float3 angVel = velocity.Angular;
                 velocity.Angular.x = 0;
                 velocity.Angular.y = 0;
             }

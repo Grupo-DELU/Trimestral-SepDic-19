@@ -223,6 +223,12 @@ MonoBehaviour:
   onCollision:
     m_PersistentCalls:
       m_Calls: []
+  onSetupComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetupDestroy:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &779448819
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +262,10 @@ MonoBehaviour:
     type: 3}
   testSpawn: 10
   testEnabled: 1
+  bulletTeamMask:
+    value: 0
+  bulletCollisionMask:
+    value: 0
   worldLimits: {x: -10, y: -10, z: 10, w: 10}
 --- !u!4 &779448821
 Transform:
