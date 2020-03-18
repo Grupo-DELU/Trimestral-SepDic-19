@@ -13,6 +13,11 @@ public class ECSPhysicsManager : MonoBehaviour
     private StepPhysicsWorld stepPhysicsWorld = null;
 
     /// <summary>
+    /// TimeScale System
+    /// </summary>
+    private PrePhysicsSetDeltaTimeSystem prePhysicsSetDeltaTimeSystem = null;
+
+    /// <summary>
     /// If the ECS Physics Updating is Paused
     /// </summary>
     public bool IsPaused { get { return stepPhysicsWorld != null && !stepPhysicsWorld.Enabled; } }
@@ -33,17 +38,22 @@ public class ECSPhysicsManager : MonoBehaviour
         }
         Manager = this;
         stepPhysicsWorld = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<StepPhysicsWorld>();
+        prePhysicsSetDeltaTimeSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<PrePhysicsSetDeltaTimeSystem>();
     }
 
     private void Start()
     {
         if (Manager == this)
         {
+            if (!GameStateManager.Manager)
+            {
+                Debug.LogError("Failed to Find GameStateManager", this);
+                Debug.DebugBreak();
+            }
             // Register to Game State Manager Manager
             GameStateManager.Manager.onResume.AddListener(UnPaused);
             GameStateManager.Manager.onPause.AddListener(Paused);
         }
-
     }
 
     private void OnDestroy()
@@ -82,5 +92,29 @@ public class ECSPhysicsManager : MonoBehaviour
     public void UnPaused()
     {
         SetPaused(false);
+    }
+
+    /// <summary>
+    /// Set TimeScale for ECS Physics, note that 0.0 or 1.0 doesn't pause or unpause
+    /// </summary>
+    /// <param name="scale"></param>
+    public void SetTimeScale(float scale)
+    {
+        if (stepPhysicsWorld != null)
+        {
+            prePhysicsSetDeltaTimeSystem.TimeScale = scale;
+        }
+    }
+
+    /// <summary>
+    /// If the physics system is using directly deltaTime rather fixedDeltaTime
+    /// </summary>
+    /// <param name="useRealTimeStep">True to use directly deltaTime</param>
+    public void SetTimeRealTimeStep(bool useRealTimeStep)
+    {
+        if (stepPhysicsWorld != null)
+        {
+            prePhysicsSetDeltaTimeSystem.IsRealTimeStep = useRealTimeStep;
+        }
     }
 }
