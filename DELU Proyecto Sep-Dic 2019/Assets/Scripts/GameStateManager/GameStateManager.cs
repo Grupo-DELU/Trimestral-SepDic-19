@@ -21,6 +21,11 @@ public class GameStateManager : MonoBehaviour
     [SerializeField]
     private float fStartDelay = 4f;
 
+    /// <summary>
+    /// TimeScale anterior
+    /// </summary>
+    private float prevTimeScale = 1;
+
     [SerializeField]
     public GameStateEvents onGameStart = new GameStateEvents();
     [SerializeField]
@@ -52,6 +57,7 @@ public class GameStateManager : MonoBehaviour
         //GetComponent<ShipCurveInitializer>().onCurvesRdy.AddListener(() => StartCoroutine(StartGameRoutine()));
         // Asociamos el fin del nivel al fin de waves
         StartCoroutine(StartGameRoutine());
+
         if (LevelWavesManager.Manager == null) Debug.LogError("No hay Manager de waves para el GameStateManager!", gameObject);
         else LevelWavesManager.Manager.onAllWavesCompleted.AddListener(FinishLevel);
 
@@ -75,7 +81,7 @@ public class GameStateManager : MonoBehaviour
     {
         state = GameStates.Paused;
         onPause.Invoke();
-        Time.timeScale = 0;
+        SetTimeScale(0);
     }
 
     
@@ -86,7 +92,7 @@ public class GameStateManager : MonoBehaviour
     {
         state = GameStates.Playing;
         onResume.Invoke();
-        Time.timeScale = 1;
+        SetTimeScale(prevTimeScale);
     }
 
 
@@ -129,5 +135,16 @@ public class GameStateManager : MonoBehaviour
     public GameStates GetCurrentState()
     {
         return state;
+    }
+
+
+    /// <summary>
+    /// Setea el timeScale del juego y guarda el anterior en caso de pausa y slowmo 
+    /// </summary>
+    /// <param name="toSet">Nuevo timeScale</param>
+    public void SetTimeScale(float toSet)
+    {
+        prevTimeScale = Time.timeScale;
+        Time.timeScale = toSet;
     }
 }

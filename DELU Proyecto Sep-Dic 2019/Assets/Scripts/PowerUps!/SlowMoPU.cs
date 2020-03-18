@@ -6,11 +6,13 @@ public class SlowMoPU : PowerUp
 {
     public override void ApplyPowerUp(GameObject toApply)
     {
-        Time.timeScale = 0.5f;
+        GameStateManager.Manager.SetTimeScale(0.5f);
+        ECSPhysicsManager.Manager.SetTimeScale(0.5f);
     }
 
     public override void DeApplyPowerUp(GameObject toDeApply)
     {
-        Time.timeScale = 1f;
+        GameStateManager.Manager.SetTimeScale(1f);
+        ECSPhysicsManager.Manager.SetTimeScale(1f);
     }
 }
