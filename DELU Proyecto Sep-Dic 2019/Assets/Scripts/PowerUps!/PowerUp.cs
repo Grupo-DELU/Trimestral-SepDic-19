@@ -89,7 +89,7 @@ public abstract class PowerUp : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (!canBeTaken) return;
         // En teoria puede ser para todas las naves! Seria interesante explorar PowerUps que haya que destruir

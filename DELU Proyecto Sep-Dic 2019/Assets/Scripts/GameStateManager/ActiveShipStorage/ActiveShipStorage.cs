@@ -12,6 +12,7 @@ public class ActiveShipStorage : MonoBehaviour
     [SerializeField]
     private List<EnemyShipManager> enemyShips = new List<EnemyShipManager>();
 
+
     private void Awake()
     {
         #region Singleton
@@ -24,6 +25,7 @@ public class ActiveShipStorage : MonoBehaviour
         #endregion
     }
 
+
     private void Start()
     {
         if (enemyShips == null) enemyShips = new List<EnemyShipManager>();
@@ -33,6 +35,7 @@ public class ActiveShipStorage : MonoBehaviour
             GameStateManager.Manager.onResume.AddListener(ResumeShips);
         }
     }
+
 
     public void AddShip(EnemyShipManager toAdd)
     {
@@ -64,6 +67,7 @@ public class ActiveShipStorage : MonoBehaviour
         }
     }
 
+
     public void ResumeShips()
     {
         foreach (EnemyShipManager ship in enemyShips)
@@ -72,5 +76,10 @@ public class ActiveShipStorage : MonoBehaviour
             ship.shootingSyst.SetSystemOnOff(true);
             ship.movementSyst.SetSystemOnOff(true);
         }
+    }
+
+    public List<EnemyShipManager> GetAllShips()
+    {
+        return enemyShips;
     }
 }

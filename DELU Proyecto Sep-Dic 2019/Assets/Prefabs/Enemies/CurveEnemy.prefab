@@ -158,10 +158,10 @@ MonoBehaviour:
         CombineMode: 2
     m_BelongsTo:
       m_Override: 0
-      m_Value: 0101010101010101010101010101010101010101010101010101010101010101
+      m_Value: 0000010000000000000000000000000000000000000000000000000000000000
     m_CollidesWith:
       m_Override: 0
-      m_Value: 0101010101010101010101010101010101010101010101010101010101010101
+      m_Value: 0001000000000000000000000000000000000000000000000000000000000000
     m_RaisesCollisionEvents:
       m_Override: 0
       m_Value: 0
@@ -437,6 +437,30 @@ MonoBehaviour:
   iMaxHP: 4
   bInmortal: 0
   fReviveProtTime: 1
+  onLifeChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onLifeLoss:
+    m_PersistentCalls:
+      m_Calls: []
+  onLifeGain:
+    m_PersistentCalls:
+      m_Calls: []
+  onDepletedLife:
+    m_PersistentCalls:
+      m_Calls: []
+  onFullLife:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivateInm:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeactivateInm:
+    m_PersistentCalls:
+      m_Calls: []
+  onRevive:
+    m_PersistentCalls:
+      m_Calls: []
   bDebug: 0
 --- !u!114 &1919321016
 MonoBehaviour:

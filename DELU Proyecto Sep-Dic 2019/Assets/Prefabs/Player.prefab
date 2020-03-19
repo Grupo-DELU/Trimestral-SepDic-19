@@ -560,9 +560,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collidesWith:
-    value: -1
+    value: 10
   belongsTo:
-    value: -1
+    value: 1
   onCollision:
     m_PersistentCalls:
       m_Calls: []

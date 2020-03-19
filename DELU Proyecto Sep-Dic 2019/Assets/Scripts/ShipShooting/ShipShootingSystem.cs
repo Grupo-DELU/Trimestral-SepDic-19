@@ -38,6 +38,11 @@ public class ShipShootingSystem : MonoBehaviour
     [SerializeField]
     private float fFireRate = 0.15f;
     /// <summary>
+    /// Modificador de velocidad de disparo
+    /// </summary>
+    [Range(0f, 0.99f)]
+    private float fFRModifier = 0;
+    /// <summary>
     /// Rapidez de la bala
     /// </summary>
     [SerializeField]
@@ -88,7 +93,7 @@ public class ShipShootingSystem : MonoBehaviour
     public IEnumerator FireRate()
     {
         bReloading = true;
-        yield return new WaitForSeconds(fFireRate);
+        yield return new WaitForSeconds(fFireRate - fFireRate * fFRModifier);
         bReloading = false;
     }
 
@@ -102,6 +107,11 @@ public class ShipShootingSystem : MonoBehaviour
     public void SetFireRate(float newRate)
     {
         fFireRate = newRate;
+    }
+
+    public void SetFireRateModifier(float newModifier)
+    {
+        fFRModifier = newModifier;
     }
 
 

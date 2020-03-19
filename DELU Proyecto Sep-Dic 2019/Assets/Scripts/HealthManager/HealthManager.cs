@@ -104,9 +104,9 @@ public class HealthManager : MonoBehaviour
     {
         ReplenishLife();
         // esto es para las balas
-        if (TryGetComponent(out ShipCollider coll))
+        if (TryGetComponent(out ShipCollider ship))
         {
-            coll.onCollision.AddListener((a, b) => RemoveLife(1));
+            ship.onCollision.AddListener((a, b) => RemoveLife(1));
         }
     }
 
