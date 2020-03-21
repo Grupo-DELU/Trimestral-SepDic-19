@@ -88,6 +88,7 @@ public class WaveManager : MonoBehaviour
         if (iEnemyCount <= 0)
         {
             onNoMoreEnemies.Invoke();
+            LevelWavesManager.Manager.onFinishWave.Invoke();
         }
     }
 }

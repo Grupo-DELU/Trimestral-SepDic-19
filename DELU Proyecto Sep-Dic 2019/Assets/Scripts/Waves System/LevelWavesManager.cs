@@ -33,6 +33,7 @@ public class LevelWavesManager : MonoBehaviour
     private WaveNode currentNode = null;
 
     //esta deberia de ir en el manager de la wave
+    public WavesEvents onStartWave = new WavesEvents();
     public WavesEvents onFinishWave = new WavesEvents();
     public WavesEvents onNoMoreWaves = new WavesEvents();
     public WavesEvents onAllWavesCompleted = new WavesEvents();
@@ -97,6 +98,7 @@ public class LevelWavesManager : MonoBehaviour
     /// <param name="node">Nodo con informacion de la wave</param>
     public void StartWave(WaveNode node)
     {
+        onStartWave.Invoke();
         Debug.Log("Empezando la wave!");
         EnemyNode[] enemies = GetWaveEnemyNodes(node).ToArray();
         foreach (EnemyNode enemy in enemies)
